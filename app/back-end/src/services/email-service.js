@@ -50,13 +50,28 @@ class EmailService {
         this.mailOptions.text = text;
         return this;
     }
+    setHTML(html){
+        this.mailOptions.html = html;
+        return this;
+    }
+    setCC(emails){ // array of string email
+        this.mailOptions.cc = emails;
+        return this;
+    }
+    setBCC(emails){ // arrays of string email
+        this.mailOptions.bcc = emails;
+        return this;
+    }
 
-    async send(mailOptions) {
+    send(mailOptions) {
     	if (mailOptions != null) {
     		this.mailOptions.from = mailOptions.from ?? this.mailOptions.from;
     		this.mailOptions.to = mailOptions.to ?? this.mailOptions.to;
     		this.mailOptions.subject = mailOptions.subject ?? this.mailOptions.subject;
     		this.mailOptions.text = mailOptions.text ?? this.mailOptions.text;
+            this.mailOptions.html = mailOptions.html ?? this.mailOptions.html;
+            this.mailOptions.cc = mailOptions.cc ?? this.mailOptions.cc;
+            this.mailOptions.bcc = mailOptions.bcc ?? this.mailOptions.bcc;
     	}
         this.transporter.sendMail(this.mailOptions, function(error, info) {
             if (error) {

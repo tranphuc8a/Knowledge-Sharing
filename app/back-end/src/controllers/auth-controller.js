@@ -6,7 +6,8 @@ class AuthController {
     }
 
     async login(req, res, next) {
-        res.send('login successfully');
+        // res.send('login successfully');
+        next();
     }
 
     async getListAccount(req, res, next) {

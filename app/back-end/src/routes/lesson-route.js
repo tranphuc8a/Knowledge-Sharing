@@ -1,6 +1,6 @@
 
 var AuthController = require('../controllers/auth-controller');
-var mailer = require('../services/email-service');
+var LessonController = require('../controllers/lesson-controller');
 
 let content = `121341543`;
 
@@ -8,20 +8,15 @@ class LessonRoute{
 	constructor(app){
 		this.app = app;
 		this.authcontroller = new AuthController();
+		this.lessonController = new LessonController();
 	}
 
 	async route(){
-		this.app.get('/api/lesson/', this.authcontroller.login , function(req, res, next){
-			mailer.send({
-				from: 'Knowledge-Sharing system',
-				to: 'nhungthisope123@gmail.com',
-				subject: 'Email thông báo mã lấy lại mật khẩu',
-				text: "<br> <br> <i>content </i>"
-			});
-			res.send("Send email success");
-
-		});
-	}
+		this.app.get('/api/lesson/', 
+			this.authcontroller.login,
+			this.lessonController.getListLesson
+		);
+	} 
 }
 
 
