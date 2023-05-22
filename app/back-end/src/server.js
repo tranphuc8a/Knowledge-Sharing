@@ -16,13 +16,12 @@ route.route();
 global.connection
 var connectDB = async () => {
     try {
-        global.connection = await mysql.createConnection(dbConfig.localhost);
+        global.connection = await mysql.createConnection(dbConfig.db4host);
         await global.connection.ping();
         console.log('connect to freaking db successfully');
     } catch (e) {
         console.log(e);
     }
-    console.log(global.connection + '222222222222222');
 };
 connectDB();
 
@@ -35,7 +34,6 @@ app.listen(serverConfig.port, () => {
     });
 })
 
-console.log(global.connection + '11111111111111111111');
 
 
 
