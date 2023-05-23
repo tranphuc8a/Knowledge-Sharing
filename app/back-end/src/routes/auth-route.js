@@ -8,13 +8,10 @@ class AuthRoute {
     }
 
     route() {
-        this.app.get(apiUrlConfig.auth.login, (req, res, next) => {
+        // login
+        this.app.post(apiUrlConfig.auth.login, (req, res, next) => {
             this.authcontroller.login(req, res, next);
         });
-
-        this.app.get(apiUrlConfig.auth.accounts, (req, res, next) => {
-            this.authcontroller.getListAccount(req, res, next);
-        })
     }
 
 }

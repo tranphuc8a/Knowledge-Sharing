@@ -16,7 +16,7 @@ route.route();
 global.connection
 var connectDB = async () => {
     try {
-        global.connection = await mysql.createConnection(dbConfig.db4host);
+        global.connection = await mysql.createConnection(dbConfig.localhost);
         await global.connection.ping();
         console.log('connect to freaking db successfully');
     } catch (e) {
