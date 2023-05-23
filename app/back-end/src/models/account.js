@@ -1,10 +1,10 @@
 
 class Account {
-    constructor(email, password, role, warning) {
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.warning = warning;
+    constructor(account) {
+        this.email = account.email;
+        this.password = account.password;
+        this.role = account.role;
+        this.warning = account.warning;
     }
 }
 

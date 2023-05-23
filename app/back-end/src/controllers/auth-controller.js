@@ -1,4 +1,5 @@
 const AccountDAO = require("../services/accountDAO");
+const jwt = require("jsonwebtoken");
 
 class AuthController {
     constructor() {
@@ -6,14 +7,10 @@ class AuthController {
     }
 
     async login(req, res, next) {
-        // res.send('login successfully');
-        next();
+        const { email, password } = req.body;
+
     }
 
-    async getListAccount(req, res, next) {
-        let listAccount = await AccountDAO.getInstance().getListAccount();
-        res.json(listAccount);
-    }
 }
 
 module.exports = AuthController;
