@@ -1,6 +1,6 @@
 // const { connection } = require("../server");
-const Account = require("../models/account");
-const Transformer = require("../utils/class-transformer");
+const Account = require("../../models/account");
+const Transformer = require("../../utils/class-transformer");
 
 class AccountDAO {
     static instance = null;
