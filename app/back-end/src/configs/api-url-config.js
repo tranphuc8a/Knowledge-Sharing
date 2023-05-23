@@ -33,9 +33,9 @@ module.exports = {
         register: '/api/courses/register/:courseid',
         pay: '/api/courses/pay/:courseid',
         request: '/api/courses/request/:courseid',
-        updateRequest: '/api/courses/request/:requestid',
-        invite: '/api/courses/invite/:courseid',
-        updateInvite: '/api/courses/invite/:courseid',
+        confirmRequest: '/api/courses/request/:requestid',
+        invite: '/api/courses/invite/:email/:courseid',
+        confirmInvite: '/api/courses/invite/:courseid',
         member: '/api/courses/members/:cid'
     },
     lesson: {

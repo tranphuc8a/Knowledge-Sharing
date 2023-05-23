@@ -20,6 +20,12 @@ class AuthController {
         next();
     }
 
+    async checkPassword(req, res, next){
+        let { password } = req.params;
+        console.log("Check password: " + password);
+        next();
+    }
+
 }
 
 module.exports = AuthController;

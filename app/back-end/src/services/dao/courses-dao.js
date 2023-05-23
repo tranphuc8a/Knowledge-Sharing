@@ -8,7 +8,6 @@ class CoursesDAO{
         if (this.instance == null) this.instance = new CoursesDAO();
         return this.instance;
     }
-
     constructor(){
         this.conn = global.connection;
     }
