@@ -1,16 +1,16 @@
 
 
-class SQLUtils{
-    
-    static getKeys(keys){
+class SQLUtils {
+
+    static getKeys(keys) {
         let keysString = '*';
-        if (keys != null){
+        if (keys != null) {
             keysString = keys.join(', ');
         }
         return keysString;
     }
 
-    static getPagination(pagination){
+    static getPagination(pagination) {
         let paginationString = '';
         if (pagination != null){
             paginationString = `LIMIT ${pagination.length} OFFSET ${pagination.offset}`;
@@ -18,30 +18,30 @@ class SQLUtils{
         return paginationString;
     }
 
-    static getWheres(wheres){
-        if (wheres == null) return {sql: null, values: null};
+    static getWheres(wheres) {
+        if (wheres == null) return { sql: null, values: null };
         let sql = [];
         let values = [];
         Object.keys(wheres).forEach((key, index) => {
-                sql.push(`${key} = ?`);
-                values.push(wheres[key]);
-            }
+            sql.push(`${key} = ?`);
+            values.push(wheres[key]);
+        }
         );
         sql.join(' AND ');
-        return {sql, values};
+        return { sql, values };
     }
 
-    static getSets(obj){
-        if (obj == null) return {sql: null, values: null};
+    static getSets(obj) {
+        if (obj == null) return { sql: null, values: null };
         let sql = [];
         let values = [];
         Object.keys(obj).forEach((key, index) => {
-                sql.push(`${key} = ?`);
-                values.push(obj[key]);
-            }
+            sql.push(`${key} = ?`);
+            values.push(obj[key]);
+        }
         );
         sql.join(', ');
-        return {sql, values};
+        return { sql, values };
     }
 }
 
