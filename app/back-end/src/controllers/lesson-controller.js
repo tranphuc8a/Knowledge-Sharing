@@ -148,23 +148,26 @@ class LessonController{
 				if (lesson.visible == 1) return isFollow;	// default
 				return false;								// private
 			})
-			lessons.forEach(lesson=>{
-				lesson.visible = null;
-			});
+			if (account.email != course.owner_email)
+				lessons.forEach(lesson => {
+					lesson.visible = null;
+				});
 			return Response.response(res, Response.ResponseCode.OK, "Success", lessons);
 		} 
 		if (courseid){ // get list lesson of courseid (only owner and register)
 			let course = await CoursesDAO.getInstance().getById(courseid);
 			if (!course) return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Course is not existed");
 			let isLessonInCourse = this.crsCtrl.checkAccountInCourse(account, course);
-			if (!isLessonInCourse) return Response.response(res, Response.ResponseCode.BAD_REQUEST, "You need registered");
+			if (!isLessonInCourse && account.email != course.owner_email) 
+				return Response.response(res, Response.ResponseCode.BAD_REQUEST, "You need registered");
 			let lessons = await LessonDAO.getInstance().select({
 				courses_id: courseid
 			}, null, pagination);
 			await this.updateInforListLesson(lessons);
-			lessons.forEach(lesson => {
-				lesson.visible = null;
-			});
+			if (account.email != course.owner_email)
+				lessons.forEach(lesson => {
+					lesson.visible = null;
+				});
 			return Response.response(res, Response.ResponseCode.OK, "Successs", lessons);
 		}
 		return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Params are not invalid");
