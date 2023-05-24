@@ -1,4 +1,5 @@
 const Follow = require("../../models/follow");
+const SQLUtils = require("../../utils/sql-utils");
 
 
 class FollowDAO{
@@ -36,18 +37,12 @@ class FollowDAO{
         }
     }
 
-    async update(follow, wheres){
-        try{
-            
-        } catch(e){
-            console.log(e);
-            return null;
-        }
-    }
-
     async delete(wheres){
         try {
-           
+           let {sql, values} = SQLUtils.getWheres(wheres);
+           sql = `delete from follow where ${sql};`;
+           let [res] = await this.conn.query(sql, values);
+           return res;
         } catch(e){
             console.log(e);
             return null;

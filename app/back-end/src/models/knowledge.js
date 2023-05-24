@@ -10,6 +10,7 @@ class Knowledge{
 		this.create_at = knowledge.create_at;
 		this.thumbnail = knowledge.thumbnail;
 		this.learning_time = knowledge.learning_time;
+		this.categories = knowledge.categories;
 	}
 }
 
