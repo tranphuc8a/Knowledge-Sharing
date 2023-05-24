@@ -1,11 +1,21 @@
 
 const AccountDAO = require('../services/dao/account-dao');
+const FollowDAO = require('../services/dao/follow-dao');
 const LoginDAO = require('../services/dao/login-dao');
 var Res = require('../utils/response')
 
 class AccountController {
 	constructor(){}
-
+	
+	async checkAccountFollowAccount(followingAcc, followedAcc){
+		if (followingAcc == null || followedAcc == null) return false;
+		let follows = await FollowDAO.getInstance().select({
+			following: followingAcc.email,
+			followed: followedAcc.email
+		});
+		return follows.length > 0;
+	}
+	
 	async getAccountFromToken(token){
 		if (token == null) return null;
 		let logins = await LoginDAO.getInstance().select({

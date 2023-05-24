@@ -1,6 +1,7 @@
 const { Transform } = require("class-transformer");
 const SQLUtils = require("../../utils/sql-utils");
 const CoursesLesson = require("../../models/courses-lesson");
+const Transformer = require("../../utils/class-transformer");
 
 
 
@@ -35,7 +36,7 @@ class CoursesLessonDAO{
                         ${wheres != null ? "where " + whereObj.sql : ""}
                         ${SQLUtils.getPagination(pagination)};`;
             let [res] = await this.conn.query(sql, whereObj.values);
-            return Transform.getInstance().jsonToInstance(CoursesLesson, res);
+            return Transformer.getInstance().jsonToInstance(CoursesLesson, res);
         } catch(e){
             console.log(e);
             return null;

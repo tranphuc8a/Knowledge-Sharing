@@ -9,6 +9,22 @@ var Res = require('../utils/response')
 class CourseController{
 	constructor(){}
 
+	async checkAccountInCourse(account, course){
+		if (account == null || course == null) return false;
+		let learns = await LearnDAO.select({
+			email: account.email,
+			courses_id: course.knowledge_id
+		});
+		return learns.length >= 1;
+	}
+	async checkLessonInCourse(lesson, course){
+		if (lesson == null || course == null) return false;
+		let csls = await CoursesLessonDAO.select({
+			courses_id: course.knowledge_id,
+			lesson_id: lesson.knowledge_id
+		});
+		return csls.lengh > 0;
+	}
 // middle-ware:
 	async checkCourseExisted(req, res, next){
 		let { courseid } = req.params;
