@@ -20,6 +20,7 @@ class RequestController{
     }
 
     // post api/courses/request/:courseid
+	// header: token
 	async request(req, res, next){
 		let {account, course} = req;
 		// check user is full courses:
@@ -62,6 +63,8 @@ class RequestController{
 	}
 
     // delete api/courses/request/:requestid
+	// header: token
+	// body: type (0/1)
     async confirmRequest(req, res, next){
         let {account, request} = req;
         let type = Number(req.params.type);
@@ -91,6 +94,7 @@ class RequestController{
     }
 
     // post api/courses/invite/:courseid
+	// header: token
     async invite(req, res, next){
 		let {account, course, user} = req;
 		// check user is full courses:
@@ -135,6 +139,8 @@ class RequestController{
 	}
 
     // delete api/courses/invite/:requestid
+	// header: token
+	// body: type (0/1)
     async confirmInvite(req, res, next){
         let {account, request} = req;
         let type = Number(req.params.type);
@@ -164,6 +170,10 @@ class RequestController{
     }
 
 	// get api/courses/request/:coursesid*
+	// header: token
+	/**
+		body: offset*, length*
+	 */
 	async getListRequest(req, res, next){
 		let {account} = req;
 		let {coursesid, offset, length} = req.params;
@@ -190,6 +200,8 @@ class RequestController{
 	}
 
 	// get api/courses/invite/:coursesid*
+	// header: token
+	// body: offet*, length*
 	async getListInvite(req, res, next){
 		let {account} = req;
 		let {coursesid, offset, length} = req.params;

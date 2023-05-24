@@ -16,6 +16,12 @@ class LessonRoute{
 		this.app.get(this.lessonUrl.detail,
 			this.lsnCtrl.checkLessonExisted,
 			this.lsnCtrl.getLessonDetail)
+
+		// get list lesson
+		this.app.get(this.lessonUrl.list,
+			this.authCtrl.checkToken,
+			this.lsnCtrl.getListLesson
+			)
 	} 
 }
 

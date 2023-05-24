@@ -25,9 +25,8 @@ class SQLUtils {
         Object.keys(wheres).forEach((key, index) => {
             sql.push(`${key} = ?`);
             values.push(wheres[key]);
-        }
-        );
-        sql.join(' AND ');
+        });
+        sql = sql.join(' AND ');
         return { sql, values };
     }
 
@@ -38,9 +37,8 @@ class SQLUtils {
         Object.keys(obj).forEach((key, index) => {
             sql.push(`${key} = ?`);
             values.push(obj[key]);
-        }
-        );
-        sql.join(', ');
+        });
+        sql = sql.join(', ');
         return { sql, values };
     }
 }

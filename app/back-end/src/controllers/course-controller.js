@@ -48,6 +48,7 @@ class CourseController{
 // endware:
 
 	// post api/courses/register/:courseid
+	// header: token
 	async freeCourseRegister(req, res, next){
 		let {account, course} = req;
 
@@ -79,6 +80,8 @@ class CourseController{
 	}
 
 	// post api/courses/pay/:courseid
+	// header: token, password
+	// body: money 
 	async payCourse(req, res, next){
 		let {account, course} = req;
 
@@ -95,7 +98,7 @@ class CourseController{
 		}
 
 		// check money:
-		let money = Number(req.params.money);
+		let money = Number(req.body.money);
 		if (money < course.fee){
 			return Res.response(res, Res.ResponseCode.INFO, "Not enough money")
 		}
