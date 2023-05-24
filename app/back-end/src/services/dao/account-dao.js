@@ -57,9 +57,7 @@ class AccountDAO {
             let { sql, values } = SQLUtils.getWheres(wheres);
             sql = `SELECT ${SQLUtils.getKeys(keys)} from account ${sql != null ?
                 "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
-            console.log(sql);
             let [res] = await global.connection.query(sql, values);
-            console.log(res);
 
             return Transformer.getInstance().jsonToInstance(Account, res);
 

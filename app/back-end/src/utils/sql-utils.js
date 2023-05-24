@@ -12,7 +12,7 @@ class SQLUtils {
 
     static getPagination(pagination) {
         let paginationString = '';
-        if (pagination != null){
+        if (pagination != null) {
             paginationString = `LIMIT ${pagination.length} OFFSET ${pagination.offset}`;
         }
         return paginationString;

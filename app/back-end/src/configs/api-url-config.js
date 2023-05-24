@@ -3,7 +3,7 @@ module.exports = {
     domain: 'https://localhost:3000/api/',
     auth: {
         login: '/api/auth/login',
-        checkToken: '/api/auth/checkToken',
+        validateToken: '/api/auth/validateToken',
         refreshToken: '/api/auth/refreshToken',
         logout: '/api/auth/logout',
         logoutAll: '/api/auth/logoutAll',
