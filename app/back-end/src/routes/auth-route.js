@@ -8,6 +8,10 @@ class AuthRoute {
     }
 
     route() {
+        // for testing
+        this.app.post('/api/auth/test', (req, res, next) => {
+            this.authcontroller.test(req, res, next);
+        });
         // login
         this.app.post(apiUrlConfig.auth.login, (req, res, next) => {
             this.authcontroller.login(req, res, next);
