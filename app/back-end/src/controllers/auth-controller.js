@@ -78,6 +78,21 @@ class AuthController {
         });
     }
 
+    async checkToken(req, res, next){
+        console.log("Checked token");
+        req.account = {
+            warning: 0,
+            role: 'user'
+        };
+        next();
+    }
+
+    async checkPassword(req, res, next){
+        let { password } = req.params;
+        console.log("Check password: " + password);
+        next();
+    }
+
 }
 
 module.exports = AuthController;

@@ -5,7 +5,7 @@ class Response {
         OK: 200,
         BAD_REQUEST: 400,
         FILE_NOT_FOUND: 404,
-        sERVER_ERROR: 500
+        SERVER_ERROR: 500
     }
 
     static response(res, code, message = null, data = null, detail = null) {
