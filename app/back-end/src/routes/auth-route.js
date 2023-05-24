@@ -16,6 +16,10 @@ class AuthRoute {
         this.app.post(apiUrlConfig.auth.login, (req, res, next) => {
             this.authcontroller.login(req, res, next);
         });
+        // validate
+        this.app.post(apiUrlConfig.auth.validateToken, 
+            this.authcontroller.checkToken,
+             this.authcontroller.validateToken)
     }
 
 }

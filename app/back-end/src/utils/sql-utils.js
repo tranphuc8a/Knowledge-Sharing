@@ -12,7 +12,7 @@ class SQLUtils {
 
     static getPagination(pagination) {
         let paginationString = '';
-        if (pagination != null){
+        if (pagination != null) {
             paginationString = `LIMIT ${pagination.length} OFFSET ${pagination.offset}`;
         }
         return paginationString;
@@ -27,7 +27,7 @@ class SQLUtils {
             values.push(wheres[key]);
         }
         );
-        sql.join(' AND ');
+        sql = sql.join(' AND ');
         return { sql, values };
     }
 
@@ -40,7 +40,7 @@ class SQLUtils {
             values.push(obj[key]);
         }
         );
-        sql.join(', ');
+        sql = sql.join(', ');
         return { sql, values };
     }
 }
