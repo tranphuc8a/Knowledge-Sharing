@@ -2,7 +2,7 @@
 const Learn = require('../models/learn');
 const CoursesDAO = require('../services/dao/courses-dao');
 const LearnDAO = require('../services/dao/learn-dao');
-const RequestDAO = require('../services/dao/request.dao');
+const RequestDAO = require('../services/dao/request-dao');
 const DateTime = require('../utils/datetime');
 var Res = require('../utils/response')
 
@@ -97,7 +97,6 @@ class CourseController{
 		return Res.response(res, Res.ResponseCode.OK, course, "Register success");
 
 	}
-
 	
 }
 

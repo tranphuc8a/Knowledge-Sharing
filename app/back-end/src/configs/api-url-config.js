@@ -27,6 +27,7 @@ module.exports = {
         create: '/api/courses/',
         update: '/api/courses/:cid',
         list: '/api/courses/list/:email',
+        listRegistered: 'api/courses/list-registered',
         detail: '/api/courses/detail/:cid',
         lesson: '/api/courses/lesson/:cid/:lessonid',
         

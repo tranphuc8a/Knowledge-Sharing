@@ -51,6 +51,40 @@ class RequestDAO{
             return null;
         }
     }
+    
+    async selectDetailRequest(wheres, keys, pagination){
+        try{
+            let {sql, values} = SQLUtils.getWheres(wheres);
+
+            sql = `select ${SQLUtils.getKeys(keys)} from request 
+                    join profile on request.learner_email = profile.email
+                    join knowledge on request.courses_id = knowledge.id
+                    where type = 'request'
+                        ${wheres != null ? "AND " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
+            let [res] = await this.conn.query(sql, values);
+            return res;     
+        } catch(e){
+            console.log(e);
+            return null;
+        }
+    }
+
+    async selectDetailInvite(wheres, keys, pagination){
+        try{
+            let {sql, values} = SQLUtils.getWheres(wheres);
+
+            sql = `select ${SQLUtils.getKeys(keys)} from request 
+                    join profile on request.learner_email = profile.email
+                    join knowledge on request.courses_id = knowledge.id
+                    where type = 'invite'
+                        ${wheres != null ? "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
+            let [res] = await this.conn.query(sql, values);
+            return res;     
+        } catch(e){
+            console.log(e);
+            return null;
+        }
+    }
 
     async update(request, wheres){
         try{

@@ -1,21 +1,21 @@
 
 var AuthController = require('../controllers/auth-controller');
 var LessonController = require('../controllers/lesson-controller');
-
-let content = `121341543`;
+var ApiUrl = require('../configs/api-url-config');
 
 class LessonRoute{
 	constructor(app){
 		this.app = app;
-		this.authcontroller = new AuthController();
-		this.lessonController = new LessonController();
+		this.authCtrl = new AuthController();
+		this.lsnCtrl = new LessonController();
+		this.lessonUrl = ApiUrl.lesson;
 	}
 
 	async route(){
-		this.app.get('/api/lesson/', 
-			this.authcontroller.login,
-			this.lessonController.getListLesson
-		);
+		// get lesson detail
+		this.app.get(this.lessonUrl.detail,
+			this.lsnCtrl.checkLessonExisted,
+			this.lsnCtrl.getLessonDetail)
 	} 
 }
 

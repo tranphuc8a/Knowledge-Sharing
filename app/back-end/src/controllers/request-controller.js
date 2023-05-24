@@ -1,7 +1,7 @@
 const Learn = require("../models/learn");
 const CoursesDAO = require("../services/dao/courses-dao");
 const LearnDAO = require("../services/dao/learn-dao");
-const RequestDAO = require("../services/dao/request.dao");
+const RequestDAO = require("../services/dao/request-dao");
 const DateTime = require("../utils/datetime");
 const Response = require("../utils/response");
 
@@ -162,6 +162,58 @@ class RequestController{
         }
         return Response.response(res, Response.ResponseCode.BAD_REQUEST, "type is not valid");
     }
+
+	// get api/courses/request/:coursesid*
+	async getListRequest(req, res, next){
+		let {account} = req;
+		let {coursesid, offset, length} = req.params;
+		let pagination = null;
+		if (offset && length){
+			pagination = {
+				offset: offset, length: length
+			}
+		}
+
+		if (coursesid == null){ // get list requesting
+			let requests = await RequestDAO.getInstance().getDetailRequest({
+				leaner_email: account.email
+			}, ["id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "request.time"], 
+			pagination);
+			return Response.response(res, Response.ResponseCode.OK, "Success", requests);
+		} else { // get list requested of course
+			let requests = await RequestDAO.getInstance().getDetailRequest({
+				courses_id: coursesid
+			}, ["id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "request.time"], 
+			pagination);
+			return Response.response(res, Response.ResponseCode.OK, "Success", requests);
+		}
+	}
+
+	// get api/courses/invite/:coursesid*
+	async getListInvite(req, res, next){
+		let {account} = req;
+		let {coursesid, offset, length} = req.params;
+		let pagination = null;
+		if (offset && length){
+			pagination = {
+				offset: offset, length: length
+			}
+		}
+
+		if (coursesid == null){ // get list invited
+			let requests = await RequestDAO.getInstance().getDetailInvite({
+				leaner_email: account.email
+			}, ["id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "request.time"], 
+			pagination);
+			return Response.response(res, Response.ResponseCode.OK, "Success", requests);
+		} else { // get list requesting of a course
+			let requests = await RequestDAO.getInstance().getDetailInvite({
+				courses_id: coursesid
+			}, ["id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "request.time"], 
+			pagination);
+			return Response.response(res, Response.ResponseCode.OK, "Success", requests);
+		}
+	}
 }
 
 module.exports = RequestController;

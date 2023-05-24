@@ -17,6 +17,7 @@ class CourseRoute {
 		this.reqCtrl = new RequestController();
 	}
 	route(){
+		// free courses register
 		this.app.post(this.courseUrl.register, 
 			this.authCtrl.checkToken,
 			this.accCtrl.checkUser,
@@ -24,6 +25,7 @@ class CourseRoute {
 			this.crsCtrl.checkCourseExisted,
 			this.crsCtrl.freeCourseRegister);
 
+		// courses paying
 		this.app.post(this.courseUrl.pay,
 			this.authCtrl.checkToken,
 			this.authCtrl.checkPassword,
@@ -33,6 +35,7 @@ class CourseRoute {
 			this.crsCtrl.payCourse
 		);
 
+		// courses request
 		this.app.post(this.courseUrl.request,
 			this.authCtrl.checkToken,
 			this.accCtrl.checkUser,
@@ -40,6 +43,7 @@ class CourseRoute {
 			this.crsCtrl.checkCourseExisted,
 			this.reqCtrl.request)
 		
+		// courses accept/deny request
 		this.app.delete(this.courseUrl.confirmRequest,
 			this.authCtrl.checkToken,
 			this.accCtrl.checkUser,
@@ -48,6 +52,7 @@ class CourseRoute {
 			this.reqCtrl.confirmRequest
 			)
 
+		// courses invite
 		this.app.post(this.courseUrl.invite,
 			this.authCtrl.checkToken,
 			this.accCtrl.checkUser,
@@ -56,7 +61,8 @@ class CourseRoute {
 			this.crsCtrl.checkCourseExisted,
 			this.reqCtrl.invite
 			)
-
+		
+		// courses accept/deny invite
 		this.app.delete(this.courseUrl.confirmInvite,
 			this.authCtrl.checkToken,
 			this.accCtrl.checkUser,
@@ -64,6 +70,22 @@ class CourseRoute {
 			this.reqCtrl.checkRequestExisted,
 			this.reqCtrl.confirmInvite
 			)
+		
+		// get list request
+		this.app.get(this.courseUrl.request,
+			this.authCtrl.checkToken,
+			this.accCtrl.checkUser,
+			this.limitCtrl.checkLimitLevelOne,
+			this.reqCtrl.getListRequest)
+		
+		// get list invite
+		this.app.get(this.courseUrl.invite,
+			this.authCtrl.checkToken,
+			this.accCtrl.checkUser,
+			this.limitCtrl.checkLimitLevelOne,
+			this.reqCtrl.getListInvite
+			)
+		
 	}
 }
 

@@ -1,9 +1,9 @@
 
 
-class LoginDAO{
+class ProfileDAO{
     static instance = null;
     static getInstance() {
-        if (this.instance == null) this.instance = new LoginDAO();
+        if (this.instance == null) this.instance = new ProfileDAO();
         return this.instance;
     }
     constructor(){
@@ -57,4 +57,4 @@ class LoginDAO{
     }
 }
 
-module.exports = LoginDAO;
+module.exports = ProfileDAO; 
