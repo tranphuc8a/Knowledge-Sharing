@@ -70,13 +70,13 @@ class LoginDAO {
         }
     }
 
-    async update(account, wheres) {
+    async update(login, wheres) {
         try {
-            let accountObj = SQLUtils.getSets(account);
+            let loginObj = SQLUtils.getSets(login);
             let wheresObj = SQLUtils.getWheres(wheres);
 
-            let sql = `UPDATE account set ${accountObj.sql} where ${wheresObj.sql}`;
-            let [res] = await global.connection.query(sql, [...accountObj.values, ...wheresObj.values]);
+            let sql = `UPDATE login set ${loginObj.sql} where ${wheresObj.sql}`;
+            let [res] = await global.connection.query(sql, [...loginObj.values, ...wheresObj.values]);
 
             return res;
 
@@ -89,7 +89,7 @@ class LoginDAO {
     async delete(wheres) {
         try {
             let whereObj = SQLUtils.getWheres(wheres);
-            let sql = `DELETE from account where ${whereObj.sql};`;
+            let sql = `DELETE from login where ${whereObj.sql};`;
             let [res] = await global.connection.query(sql, whereObj.values);
             return res;
         } catch (error) {
