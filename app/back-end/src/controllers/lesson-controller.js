@@ -1,6 +1,7 @@
 
 const Follow = require('../models/follow');
 const AccountDAO = require('../services/dao/account-dao');
+const CategoriesDAO = require('../services/dao/categories-dao');
 const CoursesDAO = require('../services/dao/courses-dao');
 const CoursesLessonDAO = require('../services/dao/courses-lesson-dao');
 const FollowDAO = require('../services/dao/follow-dao');
@@ -28,7 +29,7 @@ class LessonController{
 		return csls.lengh > 0;
 	}
 	
-	async checkVisible(account, lesson, course){
+	async checkVisible(account, lesson, course){ // check account can access lesson
 		if (lesson == null) return false;
 		if (lesson.visible == 2) return true;  // public
 		let owner = await AccountDAO.getById(lesson.owner_email);
@@ -85,6 +86,7 @@ class LessonController{
 		// check ismark:
 
 		// get categories:
+		lesson.categories = await CategoriesDAO.getInstance().getCategories(lesson.knowledge_id);
 
 
 		return Response.response(res, Response.ResponseCode.OK, "Success", lesson);

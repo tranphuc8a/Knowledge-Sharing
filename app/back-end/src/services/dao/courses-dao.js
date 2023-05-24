@@ -1,6 +1,7 @@
 const Courses = require("../../models/courses");
 const Transformer = require("../../utils/class-transformer");
 const SQLUtils = require("../../utils/sql-utils");
+const CategoriesDAO = require("./categories-dao");
 
 class CoursesDAO{
     static instance = null;
@@ -52,7 +53,7 @@ class CoursesDAO{
             sql = `select ${SQLUtils.getKeys(keys)} from courses join knowledge on courses.knowledge_id=knowledge.id
                         ${wheres != null ? "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
             let [res] = await this.conn.query(sql, values);
-            return Transformer.getInstance().jsonToInstance(Courses, res);     
+            return Transformer.getInstance().jsonToInstance(Courses, res);
         } catch(e){
             console.log(e);
             return null;
