@@ -1,5 +1,6 @@
 const Login = require("../../models/login");
 const Transformer = require("../../utils/class-transformer");
+const SQLUtils = require("../../utils/sql-utils");
 
 
 class LoginDAO {
@@ -58,9 +59,8 @@ class LoginDAO {
             let { sql, values } = SQLUtils.getWheres(wheres);
             sql = `SELECT ${SQLUtils.getKeys(keys)} from login ${sql != null ?
                 "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
-            console.log(sql);
+            
             let [res] = await global.connection.query(sql, values);
-            console.log(res);
 
             return Transformer.getInstance().jsonToInstance(Login, res);
 

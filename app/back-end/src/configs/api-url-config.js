@@ -30,7 +30,7 @@ module.exports = {
         listRegistered: 'api/courses/list-registered',
         detail: '/api/courses/detail/:cid',
         lesson: '/api/courses/lesson/:cid/:lessonid',
-        
+
         register: '/api/courses/register/:courseid',
         pay: '/api/courses/pay/:courseid',
         request: '/api/courses/request/:courseid',

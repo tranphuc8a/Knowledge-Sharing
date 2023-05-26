@@ -17,9 +17,15 @@ class AuthRoute {
             this.authcontroller.login(req, res, next);
         });
         // validate
-        this.app.post(apiUrlConfig.auth.validateToken, 
+        this.app.post(apiUrlConfig.auth.validateToken,
             this.authcontroller.checkToken,
-             this.authcontroller.validateToken)
+            this.authcontroller.validateToken);
+        // logout
+        this.app.post(apiUrlConfig.auth.logout,
+            this.authcontroller.logout);
+        // logoutAll
+        this.app.post(apiUrlConfig.auth.logoutAll,
+            this.authcontroller.logoutAll);
     }
 
 }
