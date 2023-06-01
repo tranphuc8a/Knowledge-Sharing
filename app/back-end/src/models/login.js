@@ -2,6 +2,7 @@
 class Login {
     constructor(login) {
         if (login == null) return;
+        this.id = id;
         this.email = login.email;
         this.token = login.token;
         this.refresh_token = login.refresh_token;

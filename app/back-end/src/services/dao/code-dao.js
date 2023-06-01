@@ -1,35 +1,37 @@
-const Account = require("../../models/account");
+const Code = require("../../models/code");
 const Transformer = require("../../utils/class-transformer");
 const SQLUtils = require("../../utils/sql-utils");
 
-class AccountDAO {
+
+class CodeDAO {
     static instance = null;
 
     static getInstance() {
         if (this.instance == null) {
-            this.instance = new AccountDAO();
+            this.instance = new CodeDAO();
         }
         return this.instance
     }
 
-    async insert(account) {
+    async insert(code) {
         try {
-            let value = [account.email, account.password, account.role, account.warning];
-            let query = `INSERT into account(email, password, role, warning) value (?, ?, ?, ?);`;
+            let value = [code.email, code.code, code.type, code.time];
+            let query = `INSERT into code(email, code, type, time) value (?, ?, ?, ?);`;
             let [res] = await global.connection.query(query, value);
+            code.id = res.insertId;
 
-            return Transformer.getInstance().jsonToInstance(Account, account);
+            return Transformer.getInstance().jsonToInstance(Code, code);
         } catch (error) {
             console.log(error);
             return null;
         }
     }
 
-    // get by id (with keys or not)
-    async getById(email, keys) {
+    // get by id (keys is optional)
+    async getById(id, keys) {
         try {
-            // check email null
-            if (email == null) return null;
+            // check id null
+            if (id == null) return null;
 
             // create query keys
             let queryKeys;
@@ -39,12 +41,12 @@ class AccountDAO {
                 queryKeys = keys.map(key => `${key}`).join(', ');
             }
 
-            let query = `SELECT ${queryKeys} from account where email = '${email}'`;
+            let query = `SELECT ${queryKeys} from code where id = '${id}'`;
 
             // query
-            let [account] = await global.connection.query(query);
+            let [code] = await global.connection.query(query);
 
-            return Transformer.getInstance().jsonToInstance(Account, account[0]);
+            return Transformer.getInstance().jsonToInstance(Code, code[0]);
 
         } catch (error) {
             console.log(error);
@@ -56,11 +58,11 @@ class AccountDAO {
     async select(wheres, keys, pagination) {
         try {
             let { sql, values } = SQLUtils.getWheres(wheres);
-            sql = `SELECT ${SQLUtils.getKeys(keys)} from account ${sql != null ?
+            sql = `SELECT ${SQLUtils.getKeys(keys)} from code ${sql != null ?
                 "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
-            let [res] = await global.connection.query(sql, values);
 
-            return Transformer.getInstance().jsonToInstance(Account, res);
+            let [res] = await global.connection.query(sql, values);
+            return Transformer.getInstance().jsonToInstance(Code, res);
 
         } catch (error) {
             console.log(error);
@@ -68,13 +70,13 @@ class AccountDAO {
         }
     }
 
-    async update(account, wheres) {
+    async update(code, wheres) {
         try {
-            let accountObj = SQLUtils.getSets(account);
+            let codeObj = SQLUtils.getSets(code);
             let wheresObj = SQLUtils.getWheres(wheres);
 
-            let sql = `UPDATE account set ${accountObj.sql} where ${wheresObj.sql}`;
-            let [res] = await global.connection.query(sql, [...accountObj.values, ...wheresObj.values]);
+            let sql = `UPDATE code set ${codeObj.sql} where ${wheresObj.sql}`;
+            let [res] = await global.connection.query(sql, [...codeObj.values, ...wheresObj.values]);
 
             return res;
 
@@ -87,7 +89,7 @@ class AccountDAO {
     async delete(wheres) {
         try {
             let whereObj = SQLUtils.getWheres(wheres);
-            let sql = `DELETE from account where ${whereObj.sql};`;
+            let sql = `DELETE from code where ${whereObj.sql};`;
             let [res] = await global.connection.query(sql, whereObj.values);
             return res;
         } catch (error) {
@@ -95,7 +97,6 @@ class AccountDAO {
             return null;
         }
     }
-
 }
 
-module.exports = AccountDAO;
+module.exports = CodeDAO;

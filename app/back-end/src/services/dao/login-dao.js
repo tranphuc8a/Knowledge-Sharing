@@ -49,6 +49,7 @@ class LoginDAO {
             return Transformer.getInstance().jsonToInstance(Login, login[0]);
 
         } catch (error) {
+            console.log(error);
             return null;
         }
     }
@@ -59,7 +60,7 @@ class LoginDAO {
             let { sql, values } = SQLUtils.getWheres(wheres);
             sql = `SELECT ${SQLUtils.getKeys(keys)} from login ${sql != null ?
                 "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
-            
+
             let [res] = await global.connection.query(sql, values);
 
             return Transformer.getInstance().jsonToInstance(Login, res);

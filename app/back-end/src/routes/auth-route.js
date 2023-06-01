@@ -26,6 +26,25 @@ class AuthRoute {
         // logoutAll
         this.app.post(apiUrlConfig.auth.logoutAll,
             this.authcontroller.logoutAll);
+        // getRegisterCode
+        this.app.post(apiUrlConfig.auth.getRegisterCode,
+            this.authcontroller.getRegisterCode);
+        // register
+        this.app.post(apiUrlConfig.auth.register,
+            this.authcontroller.register);
+        // changePassword
+        this.app.post(apiUrlConfig.auth.changePassword,
+            this.authcontroller.checkToken,
+            this.authcontroller.changePassword.bind(this.authcontroller));
+        // getForgotPassword code
+        this.app.post(apiUrlConfig.auth.getForgotPasswordCode,
+            this.authcontroller.getForgotPasswordCode);
+        // forgotPassword
+        this.app.post(apiUrlConfig.auth.forgotPassword,
+            this.authcontroller.forgotPassword);
+        // cancelAccount
+        this.app.post(apiUrlConfig.auth.cancelAccount,
+            this.authcontroller.cancelAccount);
     }
 
 }
