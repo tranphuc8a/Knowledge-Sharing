@@ -222,23 +222,33 @@ class AuthController {
                 return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Password has less than 8 characters");
             }
 
-            // check valid for code
-            let checkCode = await CodeDAO.getInstance().select({ code: code, email: email });
-
-            if (checkCode == null || checkCode[0] == null || checkCode[0].type != Code.TypeCode.REGISTER) {
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Invalid code or wrong email");
-            }
-
-            // check time expired for code
-            let durationMinutes = DateTime.durationMinutes(DateTime.now(), checkCode[0].time);
-            if (durationMinutes > 5) {
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Expired code");
-            }
+            // check code
+            let checkCodePromise = CodeDAO.getInstance().select({ code: code, email: email })
+                .then(checkCode => {
+                    // check valid for code
+                    if (checkCode == null || checkCode[0] == null || checkCode[0].type != Code.TypeCode.REGISTER) {
+                        throw new Error('Invalid code or wrong email');
+                    }
+                    // check time expired for code
+                    let durationMinutes = DateTime.durationMinutes(DateTime.now(), checkCode[0].time);
+                    if (durationMinutes > 5) {
+                        throw new Error('Expired code');
+                    }
+                });
 
             // check existed email
-            let exist = await AccountDAO.getInstance().select({ email: email });
-            if (exist != null && exist[0] != null) {
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Existed account");
+            let checkEmailPromise = AccountDAO.getInstance().select({ email: email })
+                .then(exist => {
+                    if (exist != null && exist[0] != null) {
+                        throw new Error('Existed account');
+                    }
+                });
+
+            // run 2 check promises parallel
+            try {
+                await Promise.all([checkCodePromise, checkEmailPromise]);
+            } catch (error) {
+                return Response.response(res, Response.ResponseCode.BAD_REQUEST, error.message);
             }
 
             // add account into account table
@@ -277,17 +287,24 @@ class AuthController {
                 return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Wrong password");
             }
 
-            // update to account table
-            let account = await AccountDAO.getInstance().update({ password: newPassword }, { email: req.account.email });
-            if (account == null) {
-                return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
-            }
+            // update new password in account table
+            let updateAccountPromise = AccountDAO.getInstance().update({ password: newPassword }, { email: req.account.email })
+                .then(account => {
+                    if (account == null) {
+                        throw new Error('Server error');
+                    }
+                });
 
-            // delete login session
-            let del = await LoginDAO.getInstance().delete({ email: req.account.email });
-            if (del == null) {
-                return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
-            }
+            // delete login sessins in login table
+            let deleteLoginPromise = LoginDAO.getInstance().delete({ email: req.account.email })
+                .then(del => {
+                    if (del == null) {
+                        throw new Error('Server error');
+                    }
+                });
+
+            // execute 2 promise parallel
+            await Promise.all([updateAccountPromise, deleteLoginPromise]);
 
             // re-login for user
             req.body.password = newPassword;
@@ -366,36 +383,52 @@ class AuthController {
                 return Response.response(res, Response.ResponseCode.BAD_REQUEST, "New password has less than 8 characters");
             }
 
-            // check valid for code
-            let checkCode = await CodeDAO.getInstance().select({ code: code, email: email, type: Code.TypeCode.FORGOT_PASSWORD });
+            // check code
+            let checkCodePromise = CodeDAO.getInstance().select({ code: code, email: email, type: Code.TypeCode.FORGOT_PASSWORD })
+                .then(checkCode => {
+                    // check valid for code
+                    if (checkCode == null || checkCode[0] == null) {
+                        throw new Error('Invalid code or wrong email');
+                    }
+                    // check time expired for code
+                    let durationMinutes = DateTime.durationMinutes(DateTime.now(), checkCode[0].time);
+                    if (durationMinutes > 5) {
+                        throw new Error('Expired code');
+                    }
+                });
 
-            if (checkCode == null || checkCode[0] == null) {
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Invalid code or wrong email");
+            // check email
+            let checkEmailPromise = AccountDAO.getInstance().select({ email: email })
+                .then(exist => {
+                    // check existed email
+                    if (exist == null || exist[0] == null) {
+                        throw new Error('Unexisted account');
+                    }
+                });
+
+            try {
+                await Promise.all([checkCodePromise, checkEmailPromise]);
+            } catch (error) {
+                return Response.response(res, Response.ResponseCode.BAD_REQUEST, error.message);
             }
 
-            // check time expired for code
-            let durationMinutes = DateTime.durationMinutes(DateTime.now(), checkCode[0].time);
-            if (durationMinutes > 5) {
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Expired code");
-            }
+            // update newPassword into account table
+            let updateAccountPromise = AccountDAO.getInstance().update({ password: newPassword }, { email: email })
+                .then(account => {
+                    if (account == null) {
+                        return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
+                    }
+                });
 
-            // check existed email
-            let exist = await AccountDAO.getInstance().select({ email: email });
-            if (exist == null || exist[0] == null) {
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Unexisted account");
-            }
+            // delete login session in login table
+            let deleteLoginPromise = LoginDAO.getInstance().delete({ email: email })
+                .then(del => {
+                    if (del == null) {
+                        return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
+                    }
+                });
 
-            // update to account table
-            let account = await AccountDAO.getInstance().update({ password: newPassword }, { email: email });
-            if (account == null) {
-                return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
-            }
-
-            // delete login session
-            let del = await LoginDAO.getInstance().delete({ email: email });
-            if (del == null) {
-                return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
-            }
+            await Promise.all([updateAccountPromise, deleteLoginPromise]);
 
             // response
             Response.response(res, Response.ResponseCode.OK, "Success", null, "Đổi mật khẩu thành công");
