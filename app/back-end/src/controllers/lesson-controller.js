@@ -45,6 +45,29 @@ class LessonController{
 		});
 		return csls.lengh > 0;
 	}
+
+	async checkAccessible(account, lesson){
+		if (lesson == null) return false;
+		if (lesson.visible == 2) return true;  // public
+		if (lesson.owner_email == account.email) return true; // owner of lesson
+		let owner = await AccountDAO.getById(lesson.owner_email);
+		if (lesson.visible == 1){ // default
+			// check follow:
+			let isFollowing = await this.accCtrl.checkAccountFollowAccount(account, owner);
+			if (isFollowing) return true;
+
+			// check register in course
+			let isAccountInCourse = await this.crsCtrl.checkAccountInCourse(account, course);
+			let isLessonInCourse = await this.checkLessonInCourse(lesson, course);
+			return isAccountInCourse && isLessonInCourse;
+		}
+		if (lesson.visible == 0){ // private
+			// check register in same courses
+			let csls = await CoursesLessonDAO.getInstance().getByAccountLesson(account.email, lesson.lesson_id);
+			return csls.lengh > 0;
+		}
+		return false;
+	}
 	
 	async checkVisible(account, lesson, course){ // check account can access lesson
 		if (lesson == null) return false;
@@ -157,7 +180,7 @@ class LessonController{
 		if (courseid){ // get list lesson of courseid (only owner and register)
 			let course = await CoursesDAO.getInstance().getById(courseid);
 			if (!course) return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Course is not existed");
-			let isLessonInCourse = this.crsCtrl.checkAccountInCourse(account, course);
+			let isLessonInCourse = await this.crsCtrl.checkAccountInCourse(account, course);
 			if (!isLessonInCourse && account.email != course.owner_email) 
 				return Response.response(res, Response.ResponseCode.BAD_REQUEST, "You need registered");
 			let lessons = await LessonDAO.getInstance().select({
@@ -168,7 +191,7 @@ class LessonController{
 				lessons.forEach(lesson => {
 					lesson.visible = null;
 				});
-			return Response.response(res, Response.ResponseCode.OK, "Successs", lessons);
+			return Response.response(res, Response.ResponseCode.OK, "Success", lessons);
 		}
 		return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Params are not invalid");
 	}

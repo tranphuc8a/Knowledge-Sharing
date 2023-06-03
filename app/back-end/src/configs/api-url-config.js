@@ -16,11 +16,10 @@ module.exports = {
         accounts: '/api/auth/accounts'
     },
     knowledge: {
-        score: '/api/knowledge/score',
-        comment: '/api/knowledge/comment',
+        score: '/api/knowledge/score/:knid',
+        comment: '/api/knowledge/comment/:knid',
         updateComment: '/api/knowledge/comment/:id',
-        listComment: '/api/knowledge/comment/:knid',
-        mark: '/api/knowledge/mark',
+        mark: '/api/knowledge/mark/:knid',
         updateMark: '/api/knowledge/mark/:knid'
     },
     course: {
