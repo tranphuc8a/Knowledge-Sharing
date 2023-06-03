@@ -19,8 +19,7 @@ module.exports = {
         score: '/api/knowledge/score/:knid',
         comment: '/api/knowledge/comment/:knid',
         updateComment: '/api/knowledge/comment/:id',
-        mark: '/api/knowledge/mark/:knid',
-        updateMark: '/api/knowledge/mark/:knid'
+        mark: '/api/knowledge/mark/:knid'
     },
     course: {
         create: '/api/courses/',

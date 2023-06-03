@@ -40,6 +40,23 @@ class MarkDAO {
             return null;
         }
     }
+    async selectDetail(wheres, keys, pagination){
+        try {
+            let { sql, values } = SQLUtils.getWheres(wheres);
+            sql = `SELECT ${SQLUtils.getKeys(keys)} from mark
+                    join profile on mark.email = profile.email
+                    join knowledge on mark.knowledge_id = knowledge.id
+                    left join lesson on knowledge.id = lesson.knowledge_id
+                    left join courses on knowledge.id = courses.knowledge_id
+                    ${sql != null ? "WHERE " + sql : ""} 
+                    ${SQLUtils.getPagination(pagination)};`;
+            let [res] = await global.connection.query(sql, values);
+            return res;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
 
     async update(mark, wheres) {
         try {

@@ -1,9 +1,11 @@
 const Comment = require('../models/comment');
+const Mark = require('../models/mark');
 const Score = require('../models/score');
 const CommentDAO = require('../services/dao/comment-dao');
 const CoursesDAO = require('../services/dao/courses-dao');
 const KnowledgeDAO = require('../services/dao/knowledge-dao');
 const LessonDAO = require('../services/dao/lesson-dao');
+const MarkDAO = require('../services/dao/mark-dao');
 const ScoreDAO = require('../services/dao/score-dao');
 const DateTime = require('../utils/datetime');
 const Response = require('../utils/response');
@@ -162,6 +164,85 @@ class KnowledgeController{
         }
         if (!comments) return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Failed");
         return Response.response(res, Response.ResponseCode.OK, "Success", comments);
+    }
+
+    // post api/knowledge/mark/:knid
+    // header: token 
+    // body: type: 0/1
+    async setMark(req, res, next){
+        let {account, knowledge} = req;
+        let {type} = req.body;
+        if (type != 0 && type != 1)
+            return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Type is not valid");
+        let marks = await MarkDAO.select({
+            email: account.email,
+            knowledge_id: knowledge.id
+        });
+        let mark = marks ? marks[0] : null;
+        let rs = null;
+        if (type == 0){
+            // unmark
+            if (mark) { // delete
+                rs = await MarkDAO.delete({
+                    email: account.email,
+                    knowledge_id: knowledge.id
+                });
+            } else rs = true;
+            if (!rs) return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Unmark failed!");
+            return Response.response(res, Response.ResponseCode.OK, "Unmark success");
+        }
+        if (type == 1){
+            // mark
+            if (!mark){ // insert
+                rs = await MarkDAO.insert(new Mark({
+                    email: account.email,
+                    knowledge_id: knowledge.id,
+                    time: DateTime.now()
+                }))
+            } else rs = true;
+            if (!rs) return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Mark failed!");
+            return Response.response(res, Response.ResponseCode.OK, "Mark success");
+        }
+        return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Pass if else");
+    }
+
+    // get api/knowledge/mark/:knid*
+    // header: token
+    // body: offset*, length*
+    async getListMark(req, res, next){
+        let {account} = req;
+        let {knid} = req.params;
+        let {offset, length} = req.body;
+        let pagination = null;
+        if (offset && length) pagination = {
+            offset: offset, length: length
+        }
+
+        let marks = null;
+        let keys = [
+            "profile.email as email", "name", "avatar", "time", 
+            "id", "id as knid", "thumbnail", "title", "owner_email", 
+            "course.knowledge_id as course_id", "lesson.knowledge_id as lesson_id"
+        ];
+        if (knid == null){
+            // get Knowledge be marked
+            marks = await MarkDAO.selectDetail({
+                email: account.email
+            }, keys, pagination);
+        } else if (knid != null){
+            // get User marked this knowledge
+            let marks = await MarkDAO.selectDetail({
+                knowledge_id: knid
+            }, keys, pagination);
+        }
+        if (!marks) return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Failed");
+        marks.is_course = marks.course_id != null ? 1 : 0;
+        marks.is_lesson = marks.lesson_id != null ? 1 : 0;
+        marks = {
+            length: marks.length,
+            data: marks
+        }
+        return Response.response(res, Response.ResponseCode.OK, "Successs", marks);
     }
 }
 

@@ -52,7 +52,23 @@ class KnowledgeRoute{
         // get List Comments
         this.app.get(this.knUrl.comment,
             this.knCtrl.checkKnowledgeExisted,
-            this.knCtrl.getListComments)
+            this.knCtrl.getListComments);
+        
+        // set mark knowledge
+        this.app.post(this.knUrl.mark,
+            this.authCtrl.checkToken,
+            this.accCtrl.checkUser,
+            this.limitCtrl.checkLimitLevelOne,
+            this.knCtrl.checkKnowledgeExisted,
+            this.knCtrl.setMark);
+
+        // get List marks
+        this.app.get(this.knUrl.mark,
+            this.authCtrl.checkToken,
+            this.accCtrl.checkUser,
+            this.limitCtrl.checkLimitLevelOne,
+            this.knCtrl.getListMark
+            )
     }
 }
 
