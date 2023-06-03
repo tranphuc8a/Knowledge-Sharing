@@ -28,7 +28,6 @@ class CourseRoute {
 		// courses paying
 		this.app.post(this.courseUrl.pay,
 			this.authCtrl.checkToken,
-			this.authCtrl.checkPassword,
 			this.accCtrl.checkUser,
 			this.limitCtrl.checkLimitLevelOne,
 			this.crsCtrl.checkCourseExisted,
@@ -43,6 +42,14 @@ class CourseRoute {
 			this.crsCtrl.checkCourseExisted,
 			this.reqCtrl.request)
 		
+		// course cancel register (leave course)	
+		this.app.delete(this.courseUrl.register,
+			this.authCtrl.checkToken,
+			this.accCtrl.checkUser,
+			this.limitCtrl.checkLimitLevelOne,
+			this.crsCtrl.checkCourseExisted,
+			this.crsCtrl.leaveCourse)
+
 		// courses accept/deny request
 		this.app.delete(this.courseUrl.confirmRequest,
 			this.authCtrl.checkToken,
@@ -79,7 +86,7 @@ class CourseRoute {
 			this.reqCtrl.getListRequest)
 		
 		// get list invite
-		this.app.get(this.courseUrl.invite,
+		this.app.get(this.courseUrl.listInvite,
 			this.authCtrl.checkToken,
 			this.accCtrl.checkUser,
 			this.limitCtrl.checkLimitLevelOne,

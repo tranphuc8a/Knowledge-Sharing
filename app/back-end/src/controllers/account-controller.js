@@ -44,7 +44,7 @@ class AccountController {
 	}
 	async checkAccountExisted(req, res, next){
 		let email = req.params.email;
-		let user = await AccountDAO.getById(email);
+		let user = await AccountDAO.getInstance().getById(email);
 		if (user == null) return Res.response(res, Res.ResponseCode.BAD_REQUEST, "email is not existed")
 		req.user = user;
 		next();

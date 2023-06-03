@@ -1,4 +1,6 @@
 const Request = require("../../models/request");
+const Transformer = require("../../utils/class-transformer");
+const SQLUtils = require("../../utils/sql-utils");
 
 
 class RequestDAO{
@@ -15,10 +17,10 @@ class RequestDAO{
         try {	
             let value = [request.owner_email, request.learner_email, request.courses_id, 
                          request.type, request.time];
-            let sql = `insert into knowledge(owner_email, learner_email, courses_id, type, time) 
+            let sql = `insert into request(owner_email, learner_email, courses_id, type, time) 
                         value (?, ?, ?, ?, ?);`;
             let [res] = await this.conn.query(sql, value);
-            request.id = res[0].insertId;
+            request.id = res.insertId;
             return request;
         } catch(e){
             console.log(e);
@@ -30,7 +32,6 @@ class RequestDAO{
         try {
             let sql = `select ${SQLUtils.getKeys(keys)} from request where request.id=?`;
             let [res] = await this.conn.query(sql, [id]);
-            console.log(id);
             return Transformer.getInstance().jsonToInstance(Request, res[0]);
         } catch(e){
             console.log(e);
@@ -61,6 +62,7 @@ class RequestDAO{
                     join knowledge on request.courses_id = knowledge.id
                     where type = 'request'
                         ${wheres != null ? "AND " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
+                        
             let [res] = await this.conn.query(sql, values);
             return res;     
         } catch(e){
@@ -91,7 +93,7 @@ class RequestDAO{
             let requestObj = SQLUtils.getSets(request);
             let whereObj = SQLUtils.getWheres(wheres);
 
-            sql = `update request
+            let sql = `update request
                    set ${requestObj.sql} where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, [...requestObj.values, ...whereObj.values]);
             return res;     
@@ -104,7 +106,7 @@ class RequestDAO{
     async delete(wheres){
         try {
             let whereObj = SQLUtils.getWheres(wheres);
-            sql = `delete from request where ${whereObj.sql}`;
+            let sql = `delete from request where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, whereObj.values);
             return res;  
         } catch(e){

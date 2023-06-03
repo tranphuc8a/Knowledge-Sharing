@@ -31,10 +31,11 @@ module.exports = {
 
         register: '/api/courses/register/:courseid',
         pay: '/api/courses/pay/:courseid',
-        request: '/api/courses/request/:courseid',
+        request: '/api/courses/request',
         confirmRequest: '/api/courses/request/:requestid',
+        listInvite: '/api/courses/invite',
         invite: '/api/courses/invite/:email/:courseid',
-        confirmInvite: '/api/courses/invite/:courseid',
+        confirmInvite: '/api/courses/invite/:requestid',
         member: '/api/courses/members/:cid'
     },
     lesson: {

@@ -38,7 +38,6 @@ class CoursesDAO{
         try {
             let sql = `select ${SQLUtils.getKeys(keys)} from courses join knowledge on courses.knowledge_id=knowledge.id where courses.knowledge_id=?`;
             let [res] = await this.conn.query(sql, [id]);
-            console.log(id);
             return Transformer.getInstance().jsonToInstance(Courses, res[0]);
         } catch(e){
             console.log(e);

@@ -1,3 +1,7 @@
+const Learn = require("../../models/learn");
+const Transformer = require("../../utils/class-transformer");
+const SQLUtils = require("../../utils/sql-utils");
+const RequestDAO = require("./request-dao");
 
 
 class LearnDAO{
@@ -9,8 +13,13 @@ class LearnDAO{
     constructor(){
         this.conn = global.connection;
     }
+
     async insert(learn){
         try {
+            RequestDAO.getInstance().delete({
+                learner_email: learn.email,
+                courses_id: learn.courses_id
+            });
             let value = [learn.email, learn.courses_id, learn.time];
             let sql = `insert into learn(email, courses_id, time) value (?, ?, ?);`;
             let [res] = await this.conn.query(sql, value);
@@ -51,7 +60,7 @@ class LearnDAO{
     async delete(wheres){
         try {
             let whereObj = SQLUtils.getWheres(wheres);
-            sql = `delete from learn where ${whereObj.sql}`;
+            let sql = `delete from learn where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, whereObj.values);
             return res;  
         } catch(e){
