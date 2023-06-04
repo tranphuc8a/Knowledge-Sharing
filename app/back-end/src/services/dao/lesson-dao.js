@@ -58,14 +58,70 @@ class LessonDAO{
         }
     }
 
-    async selectDetail(wheres, keys, pagination){
+    async selectJoinCourses(wheres, keys, pagination){
         try{
             let {sql, values} = SQLUtils.getWheres(wheres);
 
             sql = `select ${SQLUtils.getKeys(keys)} from lesson 
                     join knowledge on lesson.knowledge_id=knowledge.id
                     left join courses_lesson on lesson.knowledge_id=courses_lesson.lesson_id
-                    ${wheres != null ? "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
+                    ${wheres != null ? "WHERE " + sql : ""} 
+                    ${SQLUtils.getPagination(pagination)};`;
+            let [res] = await this.conn.query(sql, values);
+            return res;
+        } catch(e){
+            console.log(e);
+            return null;
+        }
+    }
+    
+
+    async selectDetail(wheres, keys, pagination){
+        try{
+            let {sql, values} = SQLUtils.getWheres(wheres);
+
+            sql = `select ${SQLUtils.getKeys(keys)} from 
+                        (SELECT table1.*, table2.score, knowledge.* FROM (
+                            SELECT lesson.*, count(comment.id) as numcmt FROM lesson
+                            left join comment on lesson.knowledge_id = comment.knowledge_id
+                            group by lesson.knowledge_id
+                        ) as table1 join (
+                            SELECT lesson.*, avg(score.score) - 1 as score
+                            from lesson 
+                            left join score on lesson.knowledge_id = score.knowledge_id 
+                            GROUP by lesson.knowledge_id
+                        ) as table2 on table1.knowledge_id = table2.knowledge_id
+                        join knowledge on table1.knowledge_id = knowledge.id) as lesson
+                    ${wheres != null ? "WHERE " + sql : ""} 
+                    ${SQLUtils.getPagination(pagination)};`;
+
+            let [res] = await this.conn.query(sql, values);
+            return res;
+        } catch(e){
+            console.log(e);
+            return null;
+        }
+    }
+
+    async selectDetailJoinCourses(wheres, keys, pagination){
+        try{
+            let {sql, values} = SQLUtils.getWheres(wheres);
+
+            sql = `select ${SQLUtils.getKeys(keys)} from 
+                        (SELECT table1.*, table2.score, knowledge.* FROM (
+                            SELECT lesson.*, count(comment.id) as numcmt FROM lesson
+                            left join comment on lesson.knowledge_id = comment.knowledge_id
+                            group by lesson.knowledge_id
+                        ) as table1 join (
+                            SELECT lesson.*, avg(score.score) - 1 as score
+                            from lesson 
+                            left join score on lesson.knowledge_id = score.knowledge_id 
+                            GROUP by lesson.knowledge_id
+                        ) as table2 on table1.knowledge_id = table2.knowledge_id
+                        join knowledge on table1.knowledge_id = knowledge.id) as lesson
+                        left join courses_lesson on lesson.knowledge_id=courses_lesson.lesson_id
+                    ${wheres != null ? "WHERE " + sql : ""} 
+                    ${SQLUtils.getPagination(pagination)};`;
             let [res] = await this.conn.query(sql, values);
             return res;
         } catch(e){

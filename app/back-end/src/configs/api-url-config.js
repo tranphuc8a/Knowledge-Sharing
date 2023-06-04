@@ -32,7 +32,8 @@ module.exports = {
 
         register: '/api/courses/register/:courseid',
         pay: '/api/courses/pay/:courseid',
-        request: '/api/courses/request',
+        request: '/api/courses/request/:courseid',
+        listRequest: '/api/courses/request',
         confirmRequest: '/api/courses/request/:requestid',
         listInvite: '/api/courses/invite',
         invite: '/api/courses/invite/:email/:courseid',

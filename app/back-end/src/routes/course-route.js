@@ -19,78 +19,78 @@ class CourseRoute {
 	route(){
 		// free courses register
 		this.app.post(this.courseUrl.register, 
-			this.authCtrl.checkToken,
-			this.accCtrl.checkUser,
-			this.limitCtrl.checkLimitLevelOne,
-			this.crsCtrl.checkCourseExisted,
-			this.crsCtrl.freeCourseRegister);
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
+			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.crsCtrl.freeCourseRegister.bind(this.crsCtrl));
 
 		// courses paying
 		this.app.post(this.courseUrl.pay,
-			this.authCtrl.checkToken,
-			this.accCtrl.checkUser,
-			this.limitCtrl.checkLimitLevelOne,
-			this.crsCtrl.checkCourseExisted,
-			this.crsCtrl.payCourse
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
+			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.crsCtrl.payCourse.bind(this.crsCtrl)
 		);
 
 		// courses request
 		this.app.post(this.courseUrl.request,
-			this.authCtrl.checkToken,
-			this.accCtrl.checkUser,
-			this.limitCtrl.checkLimitLevelOne,
-			this.crsCtrl.checkCourseExisted,
-			this.reqCtrl.request)
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
+			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.reqCtrl.request.bind(this.reqCtrl))
 		
 		// course cancel register (leave course)	
 		this.app.delete(this.courseUrl.register,
-			this.authCtrl.checkToken,
-			this.accCtrl.checkUser,
-			this.limitCtrl.checkLimitLevelOne,
-			this.crsCtrl.checkCourseExisted,
-			this.crsCtrl.leaveCourse)
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
+			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.crsCtrl.leaveCourse.bind(this.crsCtrl))
 
 		// courses accept/deny request
 		this.app.delete(this.courseUrl.confirmRequest,
-			this.authCtrl.checkToken,
-			this.accCtrl.checkUser,
-			this.limitCtrl.checkLimitLevelZero,
-			this.reqCtrl.checkRequestExisted,
-			this.reqCtrl.confirmRequest
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelZero.bind(this.limitCtrl),
+			this.reqCtrl.checkRequestExisted.bind(this.reqCtrl),
+			this.reqCtrl.confirmRequest.bind(this.reqCtrl)
 			)
 
 		// courses invite
 		this.app.post(this.courseUrl.invite,
-			this.authCtrl.checkToken,
-			this.accCtrl.checkUser,
-			this.limitCtrl.checkLimitLevelZero,
-			this.accCtrl.checkAccountExisted,
-			this.crsCtrl.checkCourseExisted,
-			this.reqCtrl.invite
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelZero.bind(this.limitCtrl),
+			this.accCtrl.checkAccountExisted.bind(this.accCtrl),
+			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.reqCtrl.invite.bind(this.reqCtrl)
 			)
 		
 		// courses accept/deny invite
 		this.app.delete(this.courseUrl.confirmInvite,
-			this.authCtrl.checkToken,
-			this.accCtrl.checkUser,
-			this.limitCtrl.checkLimitLevelZero,
-			this.reqCtrl.checkRequestExisted,
-			this.reqCtrl.confirmInvite
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelZero.bind(this.limitCtrl),
+			this.reqCtrl.checkRequestExisted.bind(this.reqCtrl),
+			this.reqCtrl.confirmInvite.bind(this.reqCtrl)
 			)
 		
 		// get list request
-		this.app.get(this.courseUrl.request,
-			this.authCtrl.checkToken,
-			this.accCtrl.checkUser,
-			this.limitCtrl.checkLimitLevelOne,
-			this.reqCtrl.getListRequest)
+		this.app.get(this.courseUrl.listRequest,
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
+			this.reqCtrl.getListRequest.bind(this.reqCtrl))
 		
 		// get list invite
 		this.app.get(this.courseUrl.listInvite,
-			this.authCtrl.checkToken,
-			this.accCtrl.checkUser,
-			this.limitCtrl.checkLimitLevelOne,
-			this.reqCtrl.getListInvite
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
+			this.reqCtrl.getListInvite.bind(this.reqCtrl)
 			)
 		
 	}

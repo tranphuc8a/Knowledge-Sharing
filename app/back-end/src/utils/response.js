@@ -19,6 +19,26 @@ class Response {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.json(responseData);
     }
+
+    static success(res, message = null, data = null, detail = null){
+        return Response.response(res, Response.ResponseCode.OK, message, data, detail);
+    }
+
+    static info(res, message = null, data = null, detail = null){
+        return Response.response(res, Response.ResponseCode.INFO, message, data, detail);
+    }
+
+    static badRequest(res, message = null, data = null, detail = null){
+        return Response.response(res, Response.ResponseCode.BAD_REQUEST, message, data, detail);
+    }
+
+    static fileNotFound(res, message = null, data = null, detail = null){
+        return Response.response(res, Response.ResponseCode.FILE_NOT_FOUND, message, data, detail);
+    }
+
+    static serverError(res, message = null, data = null, detail = null){
+        return Response.response(res, Response.ResponseCode.SERVER_ERROR, message, data, detail);
+    }
 }
 
 module.exports = Response;

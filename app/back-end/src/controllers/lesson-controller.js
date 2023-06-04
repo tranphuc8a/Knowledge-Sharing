@@ -13,25 +13,38 @@ var mailer = require('../services/email-service');
 const Response = require('../utils/response');
 const AccountController = require('./account-controller');
 const CourseController = require('./course-controller');
+const BaseController = require('./base-controller');
+const MarkDAO = require('../services/dao/mark-dao');
 
 
-class LessonController{
+class LessonController extends BaseController{
 	constructor(){
+		super();
 		this.crsCtrl = new CourseController();
 		this.accCtrl = new AccountController();
 	}
-	async updateInforListLesson(lessons){
+	async updateInforListLesson(account, lessons){
 		if (lessons == null) return;
 		let promises = [];
 		lessons.forEach(lesson => {	
-			// calculate ismark, nummark, numcmt
-
 			// calculate categories:
 			promises.push(async function(){
 				lesson.categories = await CategoriesDAO.getInstance().getCategories(lesson.knowledge_id);
 			});
 		});
 		await Promise.all(promises.map(f => f()));
+
+		// update isMark
+		if (account == null) return;
+		let marks = await MarkDAO.getInstance().select({
+			email: account.email
+		});
+		if (!marks) return;
+		lessons.forEach(lesson=>{
+			lesson.isMark = 0;
+			if (marks.find(mark => mark.knowledge_id == lesson.knowledge_id) != null)
+				lesson.isMark = 1;
+		})
 	}
 	// async updateVisibleForListLesson(account, lessons){
 	// 	promises = [];
@@ -70,45 +83,102 @@ class LessonController{
 		return false;
 	}
 	
+	async getListLessonOfMyself(account){
+		let lessons = await LessonDAO.getInstance().selectDetail({
+			owner_email: account.email
+		}, null, this.pagination);
+		if (lessons == null) return this.serverError();
+		await this.updateInforListLesson(account, lessons);
+		return this.success("Success", lessons);
+	}
+
+	async getListLessonOfUser(account, user){
+		if (account.email == user.email) return await this.getListLessonOfMyself(account);
+		
+		let lessons = await LessonDAO.getInstance().selectDetail({
+			owner_email: user.email
+		}, null, this.pagination);
+		if (lessons == null) return this.serverError();
+		
+		// update infor for list Lesson:
+		await this.updateInforListLesson(account, lessons);
+		// update visible:
+		let isFollow = await this.accCtrl.checkAccountFollowAccount(account, user);	
+		lessons = lessons.filter(lesson=>{
+			if (lesson.visible == 2) return true;		// public, always true
+			if (lesson.visible == 1) return isFollow;	// default, for following
+			return false;								// private, always false
+		});
+		lessons.forEach(lesson => lesson.visible = null);				
+		return this.success("Success", lessons);
+	}
+
+	async getListLessonOfCourse(account, course){
+		// anybody can see list lesson of course
+		// let isAccountInCourse = await this.crsCtrl.checkAccountInCourse(account, course);
+		// if (!isAccountInCourse && account.email != course.owner_email) 
+		// 	return this.badRequest("You need registered");
+		let lessons = await LessonDAO.getInstance().selectDetailJoinCourses({
+			courses_id: course.knowledge_id
+		}, ["lesson.*"], this.pagination);
+		if (lessons == null) return this.serverError();
+		await this.updateInforListLesson(account, lessons);
+		if (account.email != course.owner_email)
+			lessons.forEach(lesson => {
+				lesson.visible = null;
+			});
+		return this.success("Success", lessons);
+	}
+
 // middle-ware:
 	async checkLessonExisted(req, res, next){
+		this.updateMiddleWare(req, res, next);
 		let { lessonid } = req.params;
 		let lesson = await LessonDAO.getInstance().getById(lessonid);
-		if(lesson == null){
-			return Response.response(res, Response.ResponseCode.INFO, "This lesson is not exist");
-		}
+		if(lesson == null) return this.badRequest("This lesson is not exist");
 		req.lesson = lesson;
 		next();
 	}
 	
 // end-ware
+	
 	// get api/lesson/detail/:lessonid
 	// headers: token*
 	async getLessonDetail(req, res, next){
+		this.updateMiddleWare(req, res, next);
 		let { lesson } = req;
 		let token = req.headers.authorization;
 		let account = await this.accCtrl.getAccountFromToken(token);
 
 		// check visible
 		let isVisible = await this.checkAccessible(account, lesson);
-		if (!isVisible) return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Can not visible");
+		if (!isVisible) return this.badRequest("Can not visible");
 
 		// can visible:
+		let lessons = await LessonDAO.getInstance().selectDetail({
+			knowledge_id: lesson.knowledge_id
+		});
+		if (!lessons || lessons.length <= 0) return this.serverError("Get detail is null");
+		lesson = lessons[0];
+
 		// get owner
-		let owner = await ProfileDAO.getInstance().getById(lesson.owner_email);
+		let owner = await LessonDAO.getInstance().getById(lesson.owner_email);
 		lesson.owner = owner;
 
-		// get score:
-
-		// get numcmt:
-
 		// check ismark:
+		lesson.isMark = 0;
+		if (account){
+			let mark = await MarkDAO.getInstance().select({
+				email: account.email,
+				knowledge_id: lesson.knowledge_id
+			});
+			if (mark && mark.length > 0) lesson.isMark = 1;
+		}
 
 		// get categories:
 		lesson.categories = await CategoriesDAO.getInstance().getCategories(lesson.knowledge_id);
 
-
-		return Response.response(res, Response.ResponseCode.OK, "Success", lesson);
+		return this.success("Success", lesson);
 	}
 
 	// get api/lesson/list?email*=email&courseid*=courseid
@@ -118,59 +188,28 @@ class LessonController{
 			length* = 10
 	 */
 	async getListLesson(req, res, next){
+		this.updateMiddleWare(req, res, next);
 		let { account } = req;
 		let pagination = req.body;
 		let {email, courseid} = req.query;
 		if (!pagination.offset || !pagination.lengh) pagination = null;
+		this.pagination = pagination;
 
-		if (email && courseid){
-			return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Params are not invalid");
-		}
+		if (email && courseid) return this.badRequest("Params are not invalid");
 		if (!email && !courseid) { // get list lesson of myself
-			let lessons = await LessonDAO.getInstance().select({
-				owner_email: account.email
-			}, null, pagination);
-			await this.updateInforListLesson(lessons);
-			return Response.response(res, Response.ResponseCode.OK, "Success", lessons);
+			return await this.getListLessonOfMyself(account);
 		} 
 		if (email){ // get list lesson of useremail
 			let owner = await AccountDAO.getInstance().getById(email);
-			if (!owner) return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Email is not existed");
-			let lessons = await LessonDAO.getInstance().select({
-				owner_email: email
-			}, null, pagination);
-			await this.updateInforListLesson(lessons);
-			// update visible:
-			let isFollow = await this.accCtrl.checkAccountFollowAccount(account, owner);	
-			lessons = lessons.filter(lesson=>{
-				if (lesson.owner_email == account.email) return true; // owner
-				if (lesson.visible == 2) return true;		// public
-				if (lesson.visible == 1) return isFollow;	// default
-				return false;								// private
-			})
-			if (account.email != owner.email)
-				lessons.forEach(lesson => {
-					lesson.visible = null;
-				});
-			return Response.response(res, Response.ResponseCode.OK, "Success", lessons);
+			if (!owner) return this.badRequest("Email is not existed");
+			return await this.getListLessonOfUser(account, owner);
 		} 
-		if (courseid){ // get list lesson of courseid (only owner and register)
+		if (courseid){ // get list lesson of courseid
 			let course = await CoursesDAO.getInstance().getById(courseid);
-			if (!course) return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Course is not existed");
-			let isLessonInCourse = await this.crsCtrl.checkAccountInCourse(account, course);
-			if (!isLessonInCourse && account.email != course.owner_email) 
-				return Response.response(res, Response.ResponseCode.BAD_REQUEST, "You need registered");
-			let lessons = await LessonDAO.getInstance().selectDetail({
-				courses_id: courseid
-			}, ["lesson.*, knowledge.*"], pagination);
-			await this.updateInforListLesson(lessons);
-			if (account.email != course.owner_email)
-				lessons.forEach(lesson => {
-					lesson.visible = null;
-				});
-			return Response.response(res, Response.ResponseCode.OK, "Success", lessons);
+			if (course == null) return this.badRequest("Course is not existed");
+			return await this.getListLessonOfCourse(account, course);
 		}
-		return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Params are not invalid");
+		return this.badRequest("Params are not invalid");
 	}
 }
 
