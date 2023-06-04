@@ -4,9 +4,15 @@ const serverConfig = require('./configs/server-config')
 const Route = require('./routes/route')
 const mysql = require('mysql2/promise')
 const dbConfig = require('./configs/db-config')
+const bodyParser = require('body-parser');
 
 //create express app
 const app = express()
+
+//body parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 
 //route
 const route = new Route(app);
@@ -22,7 +28,6 @@ var connectDB = async () => {
     } catch (e) {
         console.log(e);
     }
-    console.log(global.connection + '222222222222222');
 };
 connectDB();
 
@@ -35,7 +40,6 @@ app.listen(serverConfig.port, () => {
     });
 })
 
-console.log(global.connection + '11111111111111111111');
 
 
 
