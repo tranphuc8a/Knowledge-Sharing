@@ -15,6 +15,10 @@ module.exports = {
         cancelAccount: '/api/auth/cancelAccount',
         accounts: '/api/auth/accounts'
     },
+    profile: {
+        update: '/api/profile',
+        get: '/api/profile/:email'
+    },
     knowledge: {
         score: '/api/knowledge/score',
         comment: '/api/knowledge/comment',

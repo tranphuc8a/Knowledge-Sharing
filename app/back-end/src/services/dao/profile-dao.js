@@ -1,4 +1,6 @@
 const Profile = require("../../models/profile");
+const Transformer = require("../../utils/class-transformer");
+const SQLUtils = require("../../utils/sql-utils");
 
 
 class ProfileDAO {
