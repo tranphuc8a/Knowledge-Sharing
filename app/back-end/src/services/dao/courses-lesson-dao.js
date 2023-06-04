@@ -67,6 +67,19 @@ class CoursesLessonDAO{
             return null;
         }
     }
+
+    async getByAccountLesson(email, lesson_id){
+        try{
+            let sql = `select * from courses_lesson 
+                       join learn on courses_lesson.courses_id=learn.courses_id
+                       where email=? and lesson_id=?;`;
+            let [res] = await this.conn.query(sql, [email, lesson_id]);
+            return res;
+        } catch(e){
+            console.log(e);
+            return null;
+        }
+    }
 }
 
 module.exports = CoursesLessonDAO;

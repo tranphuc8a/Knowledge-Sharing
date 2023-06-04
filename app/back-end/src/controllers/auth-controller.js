@@ -579,7 +579,7 @@ class AuthController {
 
     // create access token
     createAccessToken(email) {
-        let accessToken = jwt.sign({ email: email }, secretConfig.accessTokenKey, { expiresIn: '10m' }); // 10 minutes for access token
+        let accessToken = jwt.sign({ email: email }, secretConfig.accessTokenKey, { expiresIn: '10d' }); // 10 minutes for access token
         return accessToken;
     }
 

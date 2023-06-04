@@ -35,9 +35,8 @@ class LessonDAO{
 
     async getById(id, keys){
         try {
-            let sql = `select ${SQLUtils.getKeys(keys)} from lesson join knowledge on lessons.knowledge_id=knowledge.id where lesson.knowledge_id=?`;
+            let sql = `select ${SQLUtils.getKeys(keys)} from lesson join knowledge on lesson.knowledge_id=knowledge.id where lesson.knowledge_id=?`;
             let [res] = await this.conn.query(sql, [id]);
-            console.log(id);
             return Transformer.getInstance().jsonToInstance(Lesson, res[0]);
         } catch(e){
             console.log(e);
@@ -53,6 +52,22 @@ class LessonDAO{
                         ${wheres != null ? "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
             let [res] = await this.conn.query(sql, values);
             return Transformer.getInstance().jsonToInstance(Lesson, res);     
+        } catch(e){
+            console.log(e);
+            return null;
+        }
+    }
+
+    async selectDetail(wheres, keys, pagination){
+        try{
+            let {sql, values} = SQLUtils.getWheres(wheres);
+
+            sql = `select ${SQLUtils.getKeys(keys)} from lesson 
+                    join knowledge on lesson.knowledge_id=knowledge.id
+                    left join courses_lesson on lesson.knowledge_id=courses_lesson.lesson_id
+                    ${wheres != null ? "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
+            let [res] = await this.conn.query(sql, values);
+            return res;
         } catch(e){
             console.log(e);
             return null;

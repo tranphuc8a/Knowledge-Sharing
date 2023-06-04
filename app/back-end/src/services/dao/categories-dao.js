@@ -1,3 +1,4 @@
+const SQLUtils = require("../../utils/sql-utils");
 
 class CategoriesDAO{
     static instance = null;

@@ -21,7 +21,8 @@ class LessonController{
 		this.accCtrl = new AccountController();
 	}
 	async updateInforListLesson(lessons){
-		promises = [];
+		if (lessons == null) return;
+		let promises = [];
 		lessons.forEach(lesson => {	
 			// calculate ismark, nummark, numcmt
 
@@ -30,7 +31,7 @@ class LessonController{
 				lesson.categories = await CategoriesDAO.getInstance().getCategories(lesson.knowledge_id);
 			});
 		});
-		await Promise.all(promises);
+		await Promise.all(promises.map(f => f()));
 	}
 	// async updateVisibleForListLesson(account, lessons){
 	// 	promises = [];
@@ -45,30 +46,30 @@ class LessonController{
 		});
 		return csls.lengh > 0;
 	}
-	
-	async checkVisible(account, lesson, course){ // check account can access lesson
+
+	async checkAccessible(account, lesson){
 		if (lesson == null) return false;
 		if (lesson.visible == 2) return true;  // public
+		if (account == null) return false;
 		if (lesson.owner_email == account.email) return true; // owner of lesson
-		let owner = await AccountDAO.getById(lesson.owner_email);
+		let owner = await AccountDAO.getInstance().getById(lesson.owner_email);
 		if (lesson.visible == 1){ // default
 			// check follow:
 			let isFollowing = await this.accCtrl.checkAccountFollowAccount(account, owner);
 			if (isFollowing) return true;
 
-			// check register in course
-			let isAccountInCourse = await this.crsCtrl.checkAccountInCourse(account, course);
-			let isLessonInCourse = await this.checkLessonInCourse(lesson, course);
-			return isAccountInCourse && isLessonInCourse;
+			// check register in same courses
+			let csls = await CoursesLessonDAO.getInstance().getByAccountLesson(account.email, lesson.knowledge_id);
+			return csls && (csls.length > 0);
 		}
 		if (lesson.visible == 0){ // private
-			// check register in course
-			let isAccountInCourse = await this.crsCtrl.checkAccountInCourse(account, course);
-			let isLessonInCourse = await this.checkLessonInCourse(lesson, course);
-			return isAccountInCourse && isLessonInCourse;
+			// check register in same courses
+			let csls = await CoursesLessonDAO.getInstance().getByAccountLesson(account.email, lesson.knowledge_id);
+			return csls && (csls.length > 0);
 		}
 		return false;
 	}
+	
 // middle-ware:
 	async checkLessonExisted(req, res, next){
 		let { lessonid } = req.params;
@@ -81,17 +82,15 @@ class LessonController{
 	}
 	
 // end-ware
-	// get api/lesson/detail/:lessonid/:courseid*
+	// get api/lesson/detail/:lessonid
 	// headers: token*
 	async getLessonDetail(req, res, next){
 		let { lesson } = req;
-		let { courseid } = req.params;
-		let { token } = req.headers;
+		let token = req.headers.authorization;
 		let account = await this.accCtrl.getAccountFromToken(token);
-		let course = courseid ? await CoursesDAO.getInstance().getById(courseid) : null;
 
 		// check visible
-		let isVisible = await this.checkVisible(account, lesson, course);
+		let isVisible = await this.checkAccessible(account, lesson);
 		if (!isVisible) return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Can not visible");
 
 		// can visible:
@@ -121,7 +120,7 @@ class LessonController{
 	async getListLesson(req, res, next){
 		let { account } = req;
 		let pagination = req.body;
-		let {email, courseid} = req.params;
+		let {email, courseid} = req.query;
 		if (!pagination.offset || !pagination.lengh) pagination = null;
 
 		if (email && courseid){
@@ -144,11 +143,12 @@ class LessonController{
 			// update visible:
 			let isFollow = await this.accCtrl.checkAccountFollowAccount(account, owner);	
 			lessons = lessons.filter(lesson=>{
+				if (lesson.owner_email == account.email) return true; // owner
 				if (lesson.visible == 2) return true;		// public
 				if (lesson.visible == 1) return isFollow;	// default
 				return false;								// private
 			})
-			if (account.email != course.owner_email)
+			if (account.email != owner.email)
 				lessons.forEach(lesson => {
 					lesson.visible = null;
 				});
@@ -157,18 +157,18 @@ class LessonController{
 		if (courseid){ // get list lesson of courseid (only owner and register)
 			let course = await CoursesDAO.getInstance().getById(courseid);
 			if (!course) return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Course is not existed");
-			let isLessonInCourse = this.crsCtrl.checkAccountInCourse(account, course);
+			let isLessonInCourse = await this.crsCtrl.checkAccountInCourse(account, course);
 			if (!isLessonInCourse && account.email != course.owner_email) 
 				return Response.response(res, Response.ResponseCode.BAD_REQUEST, "You need registered");
-			let lessons = await LessonDAO.getInstance().select({
+			let lessons = await LessonDAO.getInstance().selectDetail({
 				courses_id: courseid
-			}, null, pagination);
+			}, ["lesson.*, knowledge.*"], pagination);
 			await this.updateInforListLesson(lessons);
 			if (account.email != course.owner_email)
 				lessons.forEach(lesson => {
 					lesson.visible = null;
 				});
-			return Response.response(res, Response.ResponseCode.OK, "Successs", lessons);
+			return Response.response(res, Response.ResponseCode.OK, "Success", lessons);
 		}
 		return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Params are not invalid");
 	}

@@ -20,12 +20,11 @@ module.exports = {
         get: '/api/profile/:email'
     },
     knowledge: {
-        score: '/api/knowledge/score',
-        comment: '/api/knowledge/comment',
-        updateComment: '/api/knowledge/comment/:id',
-        listComment: '/api/knowledge/comment/:knid',
-        mark: '/api/knowledge/mark',
-        updateMark: '/api/knowledge/mark/:knid'
+        score: '/api/knowledge/score/:knid',
+        comment: '/api/knowledge/comment/:knid',
+        updateComment: '/api/knowledge/comment/:commentid',
+        setMark: '/api/knowledge/mark/:knid',
+        mark: '/api/knowledge/mark'
     },
     course: {
         create: '/api/courses/',
@@ -37,15 +36,16 @@ module.exports = {
 
         register: '/api/courses/register/:courseid',
         pay: '/api/courses/pay/:courseid',
-        request: '/api/courses/request/:courseid',
+        request: '/api/courses/request',
         confirmRequest: '/api/courses/request/:requestid',
+        listInvite: '/api/courses/invite',
         invite: '/api/courses/invite/:email/:courseid',
-        confirmInvite: '/api/courses/invite/:courseid',
+        confirmInvite: '/api/courses/invite/:requestid',
         member: '/api/courses/members/:cid'
     },
     lesson: {
         create: '/api/lesson',
-        detail: '/api/lesson/detail/:lessonid/:courseid',
+        detail: '/api/lesson/detail/:lessonid',
         list: '/api/lesson/list',
         update: '/api/lesson/:lessonid'
     }
