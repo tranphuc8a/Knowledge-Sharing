@@ -12,7 +12,7 @@ class CourseController{
 
 	async checkAccountInCourse(account, course){
 		if (account == null || course == null) return false;
-		let learns = await LearnDAO.select({
+		let learns = await LearnDAO.getInstance().select({
 			email: account.email,
 			courses_id: course.knowledge_id
 		});
@@ -20,7 +20,7 @@ class CourseController{
 	}
 	async checkLessonInCourse(lesson, course){
 		if (lesson == null || course == null) return false;
-		let csls = await CoursesLessonDAO.select({
+		let csls = await CoursesLessonDAO.getInstance().select({
 			courses_id: course.knowledge_id,
 			lesson_id: lesson.knowledge_id
 		});

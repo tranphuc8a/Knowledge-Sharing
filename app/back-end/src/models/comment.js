@@ -2,11 +2,11 @@
 class Comment{
     constructor(comment){
         if (comment == null) return;
-        this.id = id;
-        this.email = email;
-        this.knowledge_id = knowledge_id;
-        this.content = content;
-        this.time = time;
+        this.id = comment.id;
+        this.email = comment.email;
+        this.knowledge_id = comment.knowledge_id;
+        this.content = comment.content;
+        this.time = comment.time;
     }
 }
 

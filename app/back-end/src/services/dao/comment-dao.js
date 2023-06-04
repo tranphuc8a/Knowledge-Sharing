@@ -1,6 +1,7 @@
 const { Transform } = require('class-transformer');
 var Transformer = require('../../utils/class-transformer');
 const Comment = require('../../models/comment');
+const SQLUtils = require('../../utils/sql-utils');
 
 class CommentDAO{
     static instance = null;
@@ -15,9 +16,10 @@ class CommentDAO{
     async insert(comment){
         try {
             let value = [comment.email, comment.knowledge_id, comment.content, comment.time]; 
-            let sql = `insert into knowledge(email, knowledge_id, content, time) value (?, ?, ?, ?);`;
+            let sql = `insert into comment(email, knowledge_id, content, time) value (?, ?, ?, ?);`;
             let [res] = await this.conn.query(sql, value);
-            return res;
+            comment.id = res.insertId;
+            return comment;
         } catch(e){
             console.log(e);
             return null;
@@ -53,7 +55,7 @@ class CommentDAO{
         try{
             let {sql, values} = SQLUtils.getWheres(wheres);
 
-            sql = `select ${SQLUtils.getKeys(keys)} from comment join profile where comment.email=profile.email
+            sql = `select ${SQLUtils.getKeys(keys)} from comment join profile on comment.email=profile.email
                         ${wheres != null ? "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
             let [res] = await this.conn.query(sql, values);
             return res;     
@@ -68,7 +70,7 @@ class CommentDAO{
             let commentObj = SQLUtils.getSets(comment);
             let whereObj = SQLUtils.getWheres(wheres);
 
-            sql = `update comment 
+            let sql = `update comment 
                    set ${commentObj.sql} where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, [...commentObj.values, ...whereObj.values]);
             return res;     
@@ -81,7 +83,7 @@ class CommentDAO{
     async delete(wheres){
         try {
             let whereObj = SQLUtils.getWheres(wheres);
-            sql = `delete from comment where ${whereObj.sql}`;
+            let sql = `delete from comment where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, whereObj.values);
             return res;  
         } catch(e){

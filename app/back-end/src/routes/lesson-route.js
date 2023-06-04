@@ -14,13 +14,13 @@ class LessonRoute{
 	async route(){
 		// get lesson detail
 		this.app.get(this.lessonUrl.detail,
-			this.lsnCtrl.checkLessonExisted,
-			this.lsnCtrl.getLessonDetail)
+			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
+			this.lsnCtrl.getLessonDetail.bind(this.lsnCtrl))
 
 		// get list lesson
 		this.app.get(this.lessonUrl.list,
-			this.authCtrl.checkToken,
-			this.lsnCtrl.getListLesson
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.lsnCtrl.getListLesson.bind(this.lsnCtrl)
 			)
 	} 
 }

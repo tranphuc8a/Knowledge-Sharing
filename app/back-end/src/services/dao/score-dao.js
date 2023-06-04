@@ -1,5 +1,6 @@
 const Score = require("../../models/score");
 const Transformer = require("../../utils/class-transformer");
+const SQLUtils = require("../../utils/sql-utils");
 
 
 class ScoreDAO{
@@ -45,7 +46,7 @@ class ScoreDAO{
             let scoreObj = SQLUtils.getSets(score);
             let whereObj = SQLUtils.getWheres(wheres);
 
-            sql = `update score set ${scoreObj.sql} where ${whereObj.sql}`;
+            let sql = `update score set ${scoreObj.sql} where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, [...scoreObj.values, ...whereObj.values]);
             return res;     
         } catch(e){
@@ -57,7 +58,7 @@ class ScoreDAO{
     async delete(wheres){
         try {
             let whereObj = SQLUtils.getWheres(wheres);
-            sql = `delete from score where ${whereObj.sql}`;
+            let sql = `delete from score where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, whereObj.values);
             return res;  
         } catch(e){

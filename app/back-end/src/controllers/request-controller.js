@@ -184,7 +184,7 @@ class RequestController{
 	 */
 	async getListRequest(req, res, next){
 		let {account} = req;
-		let {courseid} = req.params;
+		let {courseid} = req.query;
 		let {offset, length} = req.body;
 		let pagination = null;
 		if (offset && length){
@@ -220,7 +220,7 @@ class RequestController{
 	// body: offet*, length*
 	async getListInvite(req, res, next){
 		let {account} = req;
-		let {courseid} = req.params;
+		let {courseid} = req.query;
 		let {offset, length} = req.body;
 		let pagination = null;
 		if (offset && length){

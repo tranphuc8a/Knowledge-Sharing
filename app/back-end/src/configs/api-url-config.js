@@ -18,8 +18,9 @@ module.exports = {
     knowledge: {
         score: '/api/knowledge/score/:knid',
         comment: '/api/knowledge/comment/:knid',
-        updateComment: '/api/knowledge/comment/:id',
-        mark: '/api/knowledge/mark/:knid'
+        updateComment: '/api/knowledge/comment/:commentid',
+        setMark: '/api/knowledge/mark/:knid',
+        mark: '/api/knowledge/mark'
     },
     course: {
         create: '/api/courses/',
@@ -40,7 +41,7 @@ module.exports = {
     },
     lesson: {
         create: '/api/lesson',
-        detail: '/api/lesson/detail/:lessonid/:courseid',
+        detail: '/api/lesson/detail/:lessonid',
         list: '/api/lesson/list',
         update: '/api/lesson/:lessonid'
     }

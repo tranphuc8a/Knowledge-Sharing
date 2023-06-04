@@ -64,7 +64,7 @@ class CoursesDAO{
             let courseObj = SQLUtils.getSets(course);
             let whereObj = SQLUtils.getWheres(wheres);
 
-            sql = `update courses join knowledge on courses.knowledge_id=knowledge.id 
+            let sql = `update courses join knowledge on courses.knowledge_id=knowledge.id 
                    set ${courseObj.sql} where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, [...courseObj.values, ...whereObj.values]);
             return res;     
@@ -77,7 +77,7 @@ class CoursesDAO{
     async delete(wheres){
         try {
             let whereObj = SQLUtils.getWheres(wheres);
-            sql = `delete courses, knowledge from courses join knowledge on courses.knowledge_id=knowledge.id 
+            let sql = `delete courses, knowledge from courses join knowledge on courses.knowledge_id=knowledge.id 
                    where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, whereObj.values);
             return res;  

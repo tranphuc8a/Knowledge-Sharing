@@ -1,4 +1,4 @@
-const Lesson = require("../../models/lesson");
+const Knowledge = require("../../models/knowledge");
 const Transformer = require("../../utils/class-transformer");
 const SQLUtils = require("../../utils/sql-utils");
 
@@ -13,20 +13,16 @@ class KnowledgeDAO{
     }
 
 
-    async insert(lesson){
+    async insert(knowledge){
         try {
-            let value = [lesson.owner_email, lesson.title, lesson.update_at, 
-                         lesson.create_at, lesson.thumbnail, lesson.learning_time];
+            let value = [knowledge.owner_email, knowledge.title, knowledge.update_at, 
+                         knowledge.create_at, knowledge.thumbnail, knowledge.learning_time];
             let sql = `insert into knowledge(owner_email, title, update_at, create_at, thumbnail, learning_time) 
                         value (?, ?, ?, ?, ?, ?);`;
             let [res] = await this.conn.query(sql, value);
-            lesson.knowledge_id = res[0].insertId;
-            
-            value = [lesson.knowledge_id, lesson.content, lesson.views, lesson.visible];
-            sql = `insert into lesson value (?, ?, ?, ?);`;
-            [res] = await this.conn.query(sql, value);
+            knowledge.id = res.insertId;
 
-            return lesson;
+            return knowledge;
         } catch(e){
             console.log(e);
             return null;
@@ -35,10 +31,9 @@ class KnowledgeDAO{
 
     async getById(id, keys){
         try {
-            let sql = `select ${SQLUtils.getKeys(keys)} from lesson join knowledge on lessons.knowledge_id=knowledge.id where lesson.knowledge_id=?`;
+            let sql = `select ${SQLUtils.getKeys(keys)} from knowledge where knowledge.id=?`;
             let [res] = await this.conn.query(sql, [id]);
-            console.log(id);
-            return Transformer.getInstance().jsonToInstance(Lesson, res[0]);
+            return Transformer.getInstance().jsonToInstance(Knowledge, res[0]);
         } catch(e){
             console.log(e);
             return null;
@@ -49,24 +44,24 @@ class KnowledgeDAO{
         try{
             let {sql, values} = SQLUtils.getWheres(wheres);
 
-            sql = `select ${SQLUtils.getKeys(keys)} from lesson join knowledge on lesson.knowledge_id=knowledge.id
+            sql = `select ${SQLUtils.getKeys(keys)} from knowledge
                         ${wheres != null ? "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
             let [res] = await this.conn.query(sql, values);
-            return Transformer.getInstance().jsonToInstance(Lesson, res);     
+            return Transformer.getInstance().jsonToInstance(Knowledge, res);     
         } catch(e){
             console.log(e);
             return null;
         }
     }
 
-    async update(lesson, wheres){
+    async update(knowledge, wheres){
         try{
-            let lessonObj = SQLUtils.getSets(lesson);
+            let knowledgeObj = SQLUtils.getSets(knowledge);
             let whereObj = SQLUtils.getWheres(wheres);
 
-            sql = `update lesson join knowledge on lesson.knowledge_id=knowledge.id 
-                   set ${lessonObj.sql} where ${whereObj.sql}`;
-            let [res] = await this.conn.query(sql, [...lessonObj.values, ...whereObj.values]);
+            sql = `update knowledge 
+                   set ${knowledgeObj.sql} where ${whereObj.sql}`;
+            let [res] = await this.conn.query(sql, [...knowledgeObj.values, ...whereObj.values]);
             return res;     
         } catch(e){
             console.log(e);
@@ -77,7 +72,7 @@ class KnowledgeDAO{
     async delete(wheres){
         try {
             let whereObj = SQLUtils.getWheres(wheres);
-            sql = `delete lesson, knowledge from lesson join knowledge on lesson.knowledge_id=knowledge.id 
+            sql = `delete knowledge, knowledge from knowledge 
                    where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, whereObj.values);
             return res;  

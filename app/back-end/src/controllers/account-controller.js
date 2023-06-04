@@ -13,6 +13,7 @@ class AccountController {
 			following: followingAcc.email,
 			followed: followedAcc.email
 		});
+		if (!follows) return false;
 		return follows.length > 0;
 	}
 	

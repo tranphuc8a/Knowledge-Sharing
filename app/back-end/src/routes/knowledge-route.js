@@ -20,8 +20,8 @@ class KnowledgeRoute{
             this.authCtrl.checkToken,
             this.accCtrl.checkUser,
             this.limitCtrl.checkLimitLevelOne,
-            this.knCtrl.checkKnowledgeExisted,
-            this.knCtrl.scoreKnowledge
+            this.knCtrl.checkKnowledgeExisted.bind(this.knCtrl),
+            this.knCtrl.scoreKnowledge.bind(this.knCtrl)
             );
         
         // comment knowledge
@@ -29,8 +29,8 @@ class KnowledgeRoute{
             this.authCtrl.checkToken,
             this.accCtrl.checkUser,
             this.limitCtrl.checkLimitLevelOne,
-            this.knCtrl.checkKnowledgeExisted,
-            this.knCtrl.addComment);
+            this.knCtrl.checkKnowledgeExisted.bind(this.knCtrl),
+            this.knCtrl.addComment.bind(this.knCtrl));
 
 
         // update comment
@@ -38,36 +38,36 @@ class KnowledgeRoute{
             this.authCtrl.checkToken,
             this.accCtrl.checkUser,
             this.limitCtrl.checkLimitLevelOne,
-            this.knCtrl.checkCommentExisted,
-            this.knCtrl.updateComment);
+            this.knCtrl.checkCommentExisted.bind(this.knCtrl),
+            this.knCtrl.updateComment.bind(this.knCtrl));
 
         // delete comment
         this.app.delete(this.knUrl.updateComment,
             this.authCtrl.checkToken,
             this.accCtrl.checkUser,
             this.limitCtrl.checkLimitLevelOne,
-            this.knCtrl.checkCommentExisted,
-            this.knCtrl.deleteComment);
+            this.knCtrl.checkCommentExisted.bind(this.knCtrl),
+            this.knCtrl.deleteComment.bind(this.knCtrl));
 
         // get List Comments
         this.app.get(this.knUrl.comment,
-            this.knCtrl.checkKnowledgeExisted,
-            this.knCtrl.getListComments);
+            this.knCtrl.checkKnowledgeExisted.bind(this.knCtrl),
+            this.knCtrl.getListComments.bind(this.knCtrl));
         
         // set mark knowledge
-        this.app.post(this.knUrl.mark,
+        this.app.post(this.knUrl.setMark,
             this.authCtrl.checkToken,
             this.accCtrl.checkUser,
             this.limitCtrl.checkLimitLevelOne,
-            this.knCtrl.checkKnowledgeExisted,
-            this.knCtrl.setMark);
+            this.knCtrl.checkKnowledgeExisted.bind(this.knCtrl),
+            this.knCtrl.setMark.bind(this.knCtrl));
 
         // get List marks
         this.app.get(this.knUrl.mark,
             this.authCtrl.checkToken,
             this.accCtrl.checkUser,
             this.limitCtrl.checkLimitLevelOne,
-            this.knCtrl.getListMark
+            this.knCtrl.getListMark.bind(this.knCtrl)
             )
     }
 }
