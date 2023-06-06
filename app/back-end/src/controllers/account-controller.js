@@ -6,9 +6,9 @@ var Res = require('../utils/response');
 const BaseController = require('./base-controller');
 
 class AccountController extends BaseController {
-	constructor(){super();}
-	
-	async checkAccountFollowAccount(followingAcc, followedAcc){
+	constructor() { super(); }
+
+	async checkAccountFollowAccount(followingAcc, followedAcc) {
 		if (followingAcc == null || followedAcc == null) return false;
 		let follows = await FollowDAO.getInstance().select({
 			following: followingAcc.email,
@@ -17,8 +17,8 @@ class AccountController extends BaseController {
 		if (!follows) return false;
 		return follows.length > 0;
 	}
-	
-	async getAccountFromToken(token){
+
+	async getAccountFromToken(token) {
 		if (token == null) return null;
 		let logins = await LoginDAO.getInstance().select({
 			token: token
@@ -30,19 +30,19 @@ class AccountController extends BaseController {
 	}
 
 	// middle ware:
-	async checkUser(req, res, next){
+	async checkUser(req, res, next) {
 		this.updateMiddleWare(req, res, next);
 		let account = req.account;
 		if (account.role == 'user') return next();
 		return this.info("You are not user");
 	}
-	async checkAdmin(req, res, next){
+	async checkAdmin(req, res, next) {
 		this.updateMiddleWare(req, res, next);
 		let account = req.account;
 		if (account.role == 'admin') return next();
 		return this.info("You are not admin");
 	}
-	async checkAccountExisted(req, res, next){
+	async checkAccountExisted(req, res, next) {
 		this.updateMiddleWare(req, res, next);
 		let email = req.params.email;
 		let user = await AccountDAO.getInstance().getById(email);
