@@ -140,7 +140,6 @@ class LessonController extends BaseController{
 		next();
 	}
 	
-	
 // end-ware
 	
 	// get api/lesson/detail/:lessonid
