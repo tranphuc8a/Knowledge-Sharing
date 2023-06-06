@@ -5,7 +5,7 @@ pipeline{
         stage('Clone'){
             steps{
                 git branch: 'backend', 
-                url: 'https://github.com/USERNAME/PROJECT-NAME.git'
+                url: 'https://github.com/tranphuc8a/Knowledge-Sharing.git'
             }
         }
     }
