@@ -27,7 +27,8 @@ module.exports = {
         comment: '/api/knowledge/comment/:knid',
         updateComment: '/api/knowledge/comment/:commentid',
         setMark: '/api/knowledge/mark/:knid',
-        mark: '/api/knowledge/mark'
+        mark: '/api/knowledge/mark',
+        image: '/api/image'
     },
     course: {
         create: '/api/courses/',
