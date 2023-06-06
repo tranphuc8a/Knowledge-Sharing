@@ -93,6 +93,8 @@ class CourseRoute {
 			this.reqCtrl.getListInvite.bind(this.reqCtrl)
 			)
 		
+		// create course
+		
 	}
 }
 

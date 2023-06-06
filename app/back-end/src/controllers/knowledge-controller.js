@@ -7,6 +7,7 @@ const KnowledgeDAO = require('../services/dao/knowledge-dao');
 const LessonDAO = require('../services/dao/lesson-dao');
 const MarkDAO = require('../services/dao/mark-dao');
 const ScoreDAO = require('../services/dao/score-dao');
+const Firebase = require('../services/firebase-service');
 const DateTime = require('../utils/datetime');
 const Response = require('../utils/response');
 const BaseController = require('./base-controller');
@@ -260,6 +261,27 @@ class KnowledgeController extends BaseController{
             data: marks
         }
         return this.success("Successs", marks);
+    }
+
+    // post /api/image/
+    // header: token
+    // image: image(file)
+    async postImage(req, res, next){
+        this.updateMiddleWare(req, res, next);
+        let {account} = req;
+        let image = req.file;
+        if (image == null) return this.badRequest("Image is not null");
+        let fileName = account.email + DateTime.now();
+        let firebase = Firebase.getInstance();
+        
+        let rs = await firebase.save({
+            fileName: fileName,
+            file: image
+        });
+        if (rs == null) return this.serverError();
+        this.success("Success", {
+            url: rs
+        });
     }
 }
 

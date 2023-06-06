@@ -69,6 +69,15 @@ class KnowledgeRoute{
             this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
             this.knCtrl.getListMark.bind(this.knCtrl)
             )
+
+        const upload = require('multer')();
+        
+        // post image
+        this.app.post(this.knUrl.image, 
+            this.authCtrl.checkToken.bind(this.authCtrl),
+            this.limitCtrl.checkLimitLevelTwo.bind(this.limitCtrl),
+            upload.single('image'),
+            this.knCtrl.postImage.bind(this.knCtrl))
     }
 }
 
