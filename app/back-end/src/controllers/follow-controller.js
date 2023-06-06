@@ -1,5 +1,6 @@
 const Follow = require("../models/follow");
 const FollowDAO = require("../services/dao/follow-dao");
+const ProfileDAO = require("../services/dao/profile-dao");
 const DateTime = require("../utils/datetime");
 const Response = require("../utils/response");
 
@@ -73,61 +74,62 @@ class FollowController {
         }
         let listRes = [];
         let listEmail = [];
-        let listRelation = [];
 
         // get list email
         if (index == 0) {
             // get list follower
             listEmail = await FollowDAO.getInstance().select({ following: email }, ['followed'], pagination);
+            listEmail = listEmail.map(follow => follow.followed);
         } else {
             // get list following
             listEmail = await FollowDAO.getInstance().select({ followed: email }, ['following'], pagination);
+            listEmail = listEmail.map(follow => follow.following);
         }
 
-        // get relation
-        if (myEmail != null) {
-            listEmail.forEach(email => {
-                
-            });
+        // get other fields from email
+        for (let email of listEmail) {
+            let relation, numFollowers, profile = null;
+
+            let relationPromise = null;
+            // get relation
+            if (myEmail != null) {
+                relationPromise = FollowDAO.getInstance().getRelation(myEmail, email)
+                    .then(rel => {
+                        if (rel == null) throw new Error('Error from get relation');
+                        relation = rel;
+                    });
+            }
+
+            // get number followers
+            let numFollowersPromise = FollowDAO.getInstance().getNumFollowers(email)
+                .then(numFol => {
+                    if (numFol == null) throw new Error('Error from get number followers');
+                    numFollowers = numFol;
+                });
+            // get profile
+            let profilePromise = ProfileDAO.getInstance().select({ email: email })
+                .then(prof => {
+                    if (prof == null || prof[0] == null) throw new Error('Error from get profile');
+                    profile = prof[0];
+                });
+
+            try {
+                if (relationPromise != null)
+                    await Promise.all([relationPromise, numFollowersPromise, profilePromise]);
+                else
+                    await Promise.all([numFollowersPromise, profilePromise]);
+            } catch (error) {
+                console.log(error);
+                return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
+            }
+
+            // push to result
+            listRes.push({ email: email, name: profile.name, avatar: profile.avatar, followers: numFollowers, relation: relation });
         }
 
-        // get followers
-
-
-        // name, avatar
+        Response.response(res, Response.ResponseCode.OK, "success", listRes, "Get list follow thành công");
     }
 
-
-    // inner function
-    async getRelation(objectiveEmail, email) {
-        let relation = Follow.Type.UNKNOWN;
-        let following = false;
-        let followed = false;
-
-        // check following
-        let followingPromise = FollowDAO.getInstance().select({ following: objectiveEmail, followed: email })
-            .then(follow => {
-                if (follow != null && follow.length > 0) {
-                    following = true;
-                }
-            });
-
-        // check followed
-        let followedPromise = FollowDAO.getInstance().select({ following: email, followed: objectiveEmail })
-            .then(follow => {
-                if (follow != null && follow.length > 0) {
-                    followed = true;
-                }
-            });;
-
-        await Promise.all([followingPromise, followedPromise]);
-
-        // return
-        if (following && followed) return Follow.Type.BOTH;
-        if (following) return Follow.Type.FOLLOWING;
-        if (followed) return Follow.Type.FOLLOWED;
-        return Follow.Type.UNKNOWN;
-    }
 
 }
 

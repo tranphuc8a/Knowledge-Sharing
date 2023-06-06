@@ -52,11 +52,57 @@ class FollowDAO {
 
     async getNumFollowers(email) {
         try {
-            sql = `SELECT COUNT(followed) FROM follow WHERE following = ${email}`;
+            let sql = `SELECT COUNT(following) FROM follow WHERE followed = '${email}'`;
+            let [num] = await this.conn.query(sql);
+            return num[0]['COUNT(following)'];
         } catch (error) {
-            console.log(e);
-            return null;
+            console.log(error);
+            return 0;
         }
+    }
+
+    async getNumFollowing(email) {
+        try {
+            let sql = `SELECT COUNT(followed) FROM follow WHERE following = '${email}'`;
+            let [num] = await this.conn.query(sql);
+            return num[0]['COUNT(followed)'];
+        } catch (error) {
+            console.log(error);
+            return 0;
+        }
+    }
+
+    // get relation
+    async getRelation(objectiveEmail, email) {
+        if (objectiveEmail == email)
+            return Follow.Type.MYSELF;
+
+        let following = false;
+        let followed = false;
+
+        // check following
+        let followingPromise = this.select({ following: objectiveEmail, followed: email })
+            .then(follow => {
+                if (follow != null && follow.length > 0) {
+                    following = true;
+                }
+            });
+
+        // check followed
+        let followedPromise = this.select({ following: email, followed: objectiveEmail })
+            .then(follow => {
+                if (follow != null && follow.length > 0) {
+                    followed = true;
+                }
+            });;
+
+        await Promise.all([followingPromise, followedPromise]);
+
+        // return
+        if (following && followed) return Follow.Type.BOTH;
+        if (following) return Follow.Type.FOLLOWING;
+        if (followed) return Follow.Type.FOLLOWED;
+        return Follow.Type.UNKNOWN;
     }
 }
 

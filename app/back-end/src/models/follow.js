@@ -2,10 +2,11 @@
 
 class Follow {
     static Type = {
-        UNKNOWN: 0,
-        FOLLOWING: 1,
-        FOLLOWED: 2,
-        BOTH: 3
+        UNKNOWN: 'UNKNOWN',
+        FOLLOWING: 'FOLLOWING',
+        FOLLOWED: 'FOLLOWED',
+        BOTH: 'BOTH',
+        MYSELF: 'ME'
     }
 
     constructor(follow) {

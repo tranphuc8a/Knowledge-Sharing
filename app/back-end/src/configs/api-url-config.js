@@ -20,7 +20,8 @@ module.exports = {
         get: '/api/profile/:email'
     },
     follow: {
-        crud: '/api/follow'
+        crud: '/api/follow',
+        get: '/api/follow/:email/:index'
     },
     knowledge: {
         score: '/api/knowledge/score/:knid',

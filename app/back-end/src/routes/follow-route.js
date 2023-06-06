@@ -22,8 +22,8 @@ class FollowRoute {
             this.followController.checkUnexistedFollow.bind(this.followController),
             this.followController.deleteFollow.bind(this.followController));
         // get follow
-        this.app.get(this.followUrl.crud,
-            this.followController.getFollow);
+        this.app.get(this.followUrl.get,
+            this.followController.getFollow.bind(this.followController));
     }
 }
 

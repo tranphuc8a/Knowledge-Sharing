@@ -1,3 +1,7 @@
+const Follow = require("../models/follow");
+const CoursesDAO = require("../services/dao/courses-dao");
+const FollowDAO = require("../services/dao/follow-dao");
+const LessonDAO = require("../services/dao/lesson-dao");
 const ProfileDAO = require("../services/dao/profile-dao");
 const Response = require("../utils/response");
 
@@ -42,12 +46,12 @@ class ProfileController {
 
             // get profile for response
             let newProfile = await ProfileDAO.getInstance().select({ email: req.account.email });
-            if (newProfile == null) {
+            if (newProfile == null || newProfile.length == 0) {
                 return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
             }
 
             // response
-            Response.response(res, Response.ResponseCode.OK, "Success", newProfile, "Cập nhật profile thành công");
+            Response.response(res, Response.ResponseCode.OK, "Success", newProfile[0], "Cập nhật profile thành công");
         } catch (error) {
             console.log(error);
             return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
@@ -60,10 +64,54 @@ class ProfileController {
         let { email } = req.params;
         try {
             // get profile from email
-            
-            // check: public/follow/myself
+            let profile = await ProfileDAO.getInstance().select({ email: email });
+            if (profile == null || profile.length == 0) {
+                throw new Error('Can not get profile');
+            }
+            profile = profile[0];
 
-            Response.response(res, Response.ResponseCode.OK, "Success", null, "Get profile thành công");
+            // get number followers and following
+            let numFollowers, numFollowing = 0;
+            let numFollowersPromise = FollowDAO.getInstance().getNumFollowers(email)
+                .then(num => {
+                    numFollowers = num;
+                });
+            let numFollowingPromise = FollowDAO.getInstance().getNumFollowing(email)
+                .then(num => {
+                    numFollowing = num;
+                });
+
+            // get number Lesson and Courses
+            let numLesson, numCourses = 0;
+            let numCoursesPromise = CoursesDAO.getInstance().getNumCourses(email)
+                .then(num => {
+                    numCourses = num;
+                });
+            let numLessonPromise = LessonDAO.getInstance().getNumLesson(email)
+                .then(num => {
+                    numLesson = num;
+                });
+
+            // await for promise
+            await Promise.all([numFollowersPromise, numFollowingPromise, numCoursesPromise, numLessonPromise]);
+
+            // check: get relation and relevant profile in instance of default (public) or following or myself
+            let relation = Follow.Type.UNKNOWN;
+            if (req.account != null) {
+                relation = await FollowDAO.getInstance().getRelation(req.account.email, email);
+            }
+
+            if (relation == Follow.Type.FOLLOWING || relation == Follow.Type.BOTH) {
+                // get follow profile
+                profile = this.getFollowProfile(profile);
+            } else if (relation != Follow.Type.MYSELF) {
+                // get public profile (unknown or followed)
+                profile = this.getPublicProfile(profile);
+            } else {
+                // get my profile ==> get full info
+            }
+
+            Response.response(res, Response.ResponseCode.OK, "Success", profile, "Get profile thành công");
         } catch (error) {
             console.log(error);
             return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
@@ -106,6 +154,8 @@ class ProfileController {
                 }
             }
         }
+
+        return visibleProfile;
     }
 
     // for get default & public profile

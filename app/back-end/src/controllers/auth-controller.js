@@ -8,6 +8,7 @@ const mailer = require("../services/email-service");
 const randomGenerator = require("../utils/random-generator");
 const CodeDAO = require("../services/dao/code-dao");
 const Code = require("../models/code");
+const ProfileDAO = require("../services/dao/profile-dao");
 
 class AuthController {
     constructor() {
@@ -254,6 +255,12 @@ class AuthController {
             // add account into account table
             let account = await AccountDAO.getInstance().insert({ email: email, password: password, role: 'user', warning: '0' });
             if (account == null) {
+                return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
+            }
+
+            // add defautl profile
+            let profile = await ProfileDAO.getInstance().insert({ name: 'Default', email: email, gender: 'other', visible: '2222222222' });
+            if (profile == null) {
                 return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
             }
 

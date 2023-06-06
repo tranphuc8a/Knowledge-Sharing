@@ -13,12 +13,12 @@ class ProfileRoute {
     route() {
         // update profile
         this.app.put(this.profileUrl.update,
-            this.authController.checkToken,
+            this.authController.checkToken.bind(this.authController),
             this.profileController.updateProfile.bind(this.profileController));
         // get profile
         this.app.get(this.profileUrl.get,
-            this.authController.checkOptionalApi,
-            this.profileController.getProfile);
+            this.authController.checkOptionalApi.bind(this.authController),
+            this.profileController.getProfile.bind(this.profileController));
     }
 }
 
