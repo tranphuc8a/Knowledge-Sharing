@@ -19,6 +19,9 @@ module.exports = {
         update: '/api/profile',
         get: '/api/profile/:email'
     },
+    follow: {
+        crud: '/api/follow'
+    },
     knowledge: {
         score: '/api/knowledge/score/:knid',
         comment: '/api/knowledge/comment/:knid',

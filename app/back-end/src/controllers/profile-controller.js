@@ -60,7 +60,7 @@ class ProfileController {
         let { email } = req.params;
         try {
             // get profile from email
-
+            
             // check: public/follow/myself
 
             Response.response(res, Response.ResponseCode.OK, "Success", null, "Get profile thành công");

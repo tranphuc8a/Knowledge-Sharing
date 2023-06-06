@@ -3,6 +3,7 @@ const LessonRoute = require('./lesson-route');
 const CourseRoute = require('./course-route');
 const ProfileRoute = require('./profile-route');
 const KnowledgeRoute = require('./knowledge-route');
+const FollowRoute = require('./follow-route');
 
 class Route {
         constructor(app) {
@@ -11,6 +12,7 @@ class Route {
                 this.lessonRoute = new LessonRoute(app);
                 this.courseRoute = new CourseRoute(app);
                 this.profileRoute = new ProfileRoute(app);
+                this.followRoute = new FollowRoute(app);
                 this.knowledgeRoute = new KnowledgeRoute(app);
         }
 
@@ -19,6 +21,7 @@ class Route {
                 this.lessonRoute.route();
                 this.courseRoute.route();
                 this.profileRoute.route();
+                this.followRoute.route();
                 this.knowledgeRoute.route();
         }
 }
