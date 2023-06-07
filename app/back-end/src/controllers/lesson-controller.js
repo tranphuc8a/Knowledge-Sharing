@@ -15,6 +15,12 @@ const AccountController = require('./account-controller');
 const CourseController = require('./course-controller');
 const BaseController = require('./base-controller');
 const MarkDAO = require('../services/dao/mark-dao');
+const KnowledgeController = require('./knowledge-controller');
+const Lesson = require('../models/lesson');
+const CoursesLesson = require('../models/courses-lesson');
+const CommentDAO = require('../services/dao/comment-dao');
+const Score = require('../models/score');
+const ScoreDAO = require('../services/dao/score-dao');
 
 
 class LessonController extends BaseController{
@@ -22,34 +28,8 @@ class LessonController extends BaseController{
 		super();
 		this.crsCtrl = new CourseController();
 		this.accCtrl = new AccountController();
+		this.knCtrl = new KnowledgeController();
 	}
-	async updateInforListLesson(account, lessons){
-		if (lessons == null) return;
-		let promises = [];
-		lessons.forEach(lesson => {	
-			// calculate categories:
-			promises.push(async function(){
-				lesson.categories = await CategoriesDAO.getInstance().getCategories(lesson.knowledge_id);
-			});
-		});
-		await Promise.all(promises.map(f => f()));
-
-		// update isMark
-		if (account == null) return;
-		let marks = await MarkDAO.getInstance().select({
-			email: account.email
-		});
-		if (!marks) return;
-		lessons.forEach(lesson=>{
-			lesson.isMark = 0;
-			if (marks.find(mark => mark.knowledge_id == lesson.knowledge_id) != null)
-				lesson.isMark = 1;
-		})
-	}
-	// async updateVisibleForListLesson(account, lessons){
-	// 	promises = [];
-	// 	lessons.forEach
-	// }
 
 	async checkLessonInCourse(lesson, course){
 		if (lesson == null || course == null) return false;
@@ -88,7 +68,7 @@ class LessonController extends BaseController{
 			owner_email: account.email
 		}, null, this.pagination);
 		if (lessons == null) return this.serverError();
-		await this.updateInforListLesson(account, lessons);
+		await this.knCtrl.updateInforListKnowledge(account, lessons);
 		return this.success("Success", lessons);
 	}
 
@@ -101,7 +81,7 @@ class LessonController extends BaseController{
 		if (lessons == null) return this.serverError();
 		
 		// update infor for list Lesson:
-		await this.updateInforListLesson(account, lessons);
+		await this.knCtrl.updateInforListKnowledge(account, lessons);
 		// update visible:
 		let isFollow = await this.accCtrl.checkAccountFollowAccount(account, user);	
 		lessons = lessons.filter(lesson=>{
@@ -122,7 +102,7 @@ class LessonController extends BaseController{
 			courses_id: course.knowledge_id
 		}, ["lesson.*"], this.pagination);
 		if (lessons == null) return this.serverError();
-		await this.updateInforListLesson(account, lessons);
+		await this.knCtrl.updateInforListKnowledge(account, lessons);
 		if (account.email != course.owner_email)
 			lessons.forEach(lesson => {
 				lesson.visible = null;
@@ -146,9 +126,8 @@ class LessonController extends BaseController{
 	// headers: token*
 	async getLessonDetail(req, res, next){
 		this.updateMiddleWare(req, res, next);
-		let { lesson } = req;
+		let { account, lesson } = req;
 		let token = req.headers.authorization;
-		let account = await this.accCtrl.getAccountFromToken(token);
 
 		// check visible
 		let isVisible = await this.checkAccessible(account, lesson);
@@ -211,6 +190,142 @@ class LessonController extends BaseController{
 		}
 		return this.badRequest("Params are not invalid");
 	}
+
+	// post api/lesson
+	// header: token
+	// body: title, thumbnail*, categories, learning_time, content, visible
+	async addLesson(req, res, next){
+		this.updateMiddleWare(req, res, next);
+		let {account} = req;
+		let lesson = new Lesson(req.body);
+		// check params:
+		if (!lesson.title || !lesson.categories || !lesson.learning_time || !lesson.content || !lesson.visible)
+			return this.badRequest("Params are not invalid");
+		lesson.owner_email = account.owner_email;
+
+		// insert:
+		let rs = await LessonDAO.getInstance().insert(lesson);
+		if (!rs) return this.serverError();
+		return this.success("Success", rs);
+	}
+
+	// post api/courses/lesson/:courseid/:lessonid
+	// header: token
+	// body: offset
+	async addLessonToCourse(req, res, next){
+		this.updateMiddleWare(req, res, next);
+		let {account, course, lesson} = req;
+		let {offset} = req.body;
+		// check permission:
+		if (account.email != course.owner_email || account.email != lesson.owner_email)
+			return this.info("Not permission");
+
+		if (!(offset && offset >= 0)) return this.badRequest("Offset is invalid");
+
+		// add lesson to course:
+		let csls = {
+			offset: offset,
+			courses_id: course.knowledge_id,
+			lesson_id: lesson.knowledge_id
+		}
+		let rs = await CoursesLessonDAO.getInstance().insert(csls);
+		if (!rs) return this.serverError();
+		return this.success("Success", csls);
+	}
+
+	// delete api/courses/lesson/:courseid/:lessonid
+	// header: token
+	async deleteLessonFromCourse(req, res, next){
+		this.updateMiddleWare(req, res, next);
+		let {account, course, lesson} = req;
+
+		// check permission:
+		if (account.email != course.owner_email || account.email != lesson.owner_email)
+			return this.info("Not permission");
+
+		// delete lesson from course:
+		let rs = await CoursesLessonDAO.getInstance().delete({
+			courses_id: course.knowledge_id,
+			lesson_id: lesson.knowledge_id
+		});
+		if (!rs) return this.serverError();
+		return this.success();
+	}
+
+	// patch api/courses/lesson/:courseid/:lessonid
+	// header: token
+	// body: offset
+	async updateLessonInCourse(req, res, next){
+		this.updateMiddleWare(req, res, next);
+		let {account, course, lesson} = req;
+		let {offset} = req.body;
+		// check permission:
+		if (account.email != course.owner_email || account.email != lesson.owner_email)
+			return this.info("Not permission");
+
+		if (!(offset && offset >= 0)) return this.badRequest("Offset is invalid");
+
+		// update lesson in course:
+		let rs = await CoursesLessonDAO.getInstance().update({
+			offset: offset
+		}, {
+			courses_id: course.knowledge_id,
+			lesson_id: lesson.knowledge_id
+		});
+		if (!rs) return this.serverError();
+		return this.success();
+	}
+
+	// patch api/lesson/:lessonid
+	// header: token
+	// body: title*, thumbnail*, categories*, learning_time*, content*, visible*
+	async updateLesson(req, res, next){
+		this.updateMiddleWare(req, res, next);
+		let {account, lesson} = req;
+		let newLesson = new Lesson(req.body);
+		// check permission:
+		if (account.email != lesson.owner_email) return this.info("No permission");
+
+		// update new Info
+		lesson.title = newLesson.title ? newLesson.title : lesson.title;
+		lesson.thumbnail = newLesson.thumbnail ? newLesson.thumbnail : lesson.thumbnail;
+		lesson.categories = newLesson.categories ? newLesson.categories : lesson.categories;
+		lesson.learning_time = newLesson.learning_time ? newLesson.learning_time : lesson.learning_time;
+		lesson.content = newLesson.content ? newLesson.content : lesson.content;
+		lesson.visible = newLesson.visible ? newLesson.visible : lesson.visible;
+		
+		// fix update categories
+		let rs = await LessonDAO.getInstance().update({
+			title: lesson.title, thumbnail: lesson.thumbnail, categories: lesson.categories,
+			learning_time: lesson.learning_time, content: lesson.content, visible: lesson.visible
+		});
+
+		if (!rs) return this.serverError();
+		return this.success("Success", lesson);
+	}
+
+	// delete api/lesson/:lessonid
+	// header: token
+	async deleteLesson(req, res, next){
+		this.updateMiddleWare(req, res, next);
+		let {account, lesson} = req;
+
+		// check permission:
+		if (account.email != lesson.owner_email) return this.info("No permission");
+
+		// delete lesson: Comment, Mark, Score, CourseLesson, Lesson
+		let rs1 = CommentDAO.getInstance().delete({knowledge_id: lesson.knowledge_id});
+		let rs2 = MarkDAO.getInstance().delete({knowledge_id: lesson.knowledge_id});
+		let rs3 = ScoreDAO.getInstance().delete({knowledge_id: lesson.knowledge_id});
+		let rs4 = CoursesLessonDAO.getInstance().delete({lesson_id: lesson.knowledge_id});
+		await Promise.all([rs1, rs2, rs3, rs4]);
+		let rs = await LessonDAO.getInstance().delete({knowledge_id: lesson.knowledge_id});
+
+		if (! (rs && rs1 && rs2 && rs3 && rs4)) return this.serverError("Delete lesson failed");
+		return this.success("Success", lesson);
+	}
+
+	
 }
 
 

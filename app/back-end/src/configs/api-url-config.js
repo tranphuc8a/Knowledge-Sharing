@@ -33,11 +33,11 @@ module.exports = {
     },
     course: {
         create: '/api/courses/',
-        update: '/api/courses/:cid',
-        list: '/api/courses/list/:email',
+        update: '/api/courses/:courseid',
+        list: '/api/courses/list',
         listRegistered: 'api/courses/list-registered',
-        detail: '/api/courses/detail/:cid',
-        lesson: '/api/courses/lesson/:cid/:lessonid',
+        detail: '/api/courses/detail/:courseid',
+        lesson: '/api/courses/lesson/:courseid/:lessonid',
 
         register: '/api/courses/register/:courseid',
         pay: '/api/courses/pay/:courseid',
@@ -47,12 +47,13 @@ module.exports = {
         listInvite: '/api/courses/invite',
         invite: '/api/courses/invite/:email/:courseid',
         confirmInvite: '/api/courses/invite/:requestid',
-        member: '/api/courses/members/:cid'
+        member: '/api/courses/members/:courseid'
     },
     lesson: {
         create: '/api/lesson',
         detail: '/api/lesson/detail/:lessonid',
         list: '/api/lesson/list',
-        update: '/api/lesson/:lessonid'
+        update: '/api/lesson/:lessonid',
+        course: '/api/courses/lesson/:courseid/:lessonid'
     }
 }

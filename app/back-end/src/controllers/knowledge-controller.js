@@ -1,3 +1,4 @@
+const { knowledge } = require('../configs/api-url-config');
 const Comment = require('../models/comment');
 const Mark = require('../models/mark');
 const Score = require('../models/score');
@@ -16,14 +17,34 @@ const LessonController = require('./lesson-controller');
 class KnowledgeController extends BaseController{
     constructor(){
         super();
-        this.lsnCtrl = new LessonController();
     }
+
+    async updateInforListKnowledge(account, knowledges){
+		if (knowledges == null) return;
+        // update catergories
+		await Promise.all(knowledges.map(knowledge => {
+            knowledge.categories = CategoriesDAO.getInstance().getCategories(knowledge.knowledge_id);
+        }));
+
+		// update isMark
+		if (account == null) return;
+		let marks = await MarkDAO.getInstance().select({
+			email: account.email
+		});
+		if (!marks) return;
+		knowledges.forEach(knowledge=>{
+			knowledge.isMark = 0;
+			if (marks.find(mark => mark.knowledge_id == knowledge.knowledge_id) != null)
+				knowledge.isMark = 1;
+		})
+	}
 
     async checkAccessible(account, knowledge){
         if (knowledge == null) return false;
         let course = await CoursesDAO.getInstance().getById(knowledge.id);
         if (course) return true; // always able to access course
-        return this.lsnCtrl.checkAccessible(account, await LessonDAO.getInstance().getById(knowledge.id));
+        let lsnCtrl = new LessonController();
+        return lsnCtrl.checkAccessible(account, await LessonDAO.getInstance().getById(knowledge.id));
     }
 
 // middle ware:

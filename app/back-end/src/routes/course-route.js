@@ -94,7 +94,55 @@ class CourseRoute {
 			)
 		
 		// create course
+		this.app.post(this.courseUrl.create,
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelZero.bind(this.limitCtrl),
+			this.crsCtrl.addCourse.bind(this.crsCtrl))
+
+		// update course
+		this.app.patch(this.courseUrl.update,
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelZero.bind(this.limitCtrl),
+			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.crsCtrl.updateCourse.bind(this.crsCtrl)
+			)
 		
+
+		// delete course
+		this.app.delete(this.courseUrl.update,
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelZero.bind(this.limitCtrl),
+			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.crsCtrl.deleteCourse.bind(this.crsCtrl))
+
+		// get list course
+		this.app.get(this.courseUrl.list,
+			this.authCtrl.checkOptionalApi.bind(this.authCtrl),
+			this.crsCtrl.getPagination.bind(this.crsCtrl),
+			this.crsCtrl.getList.bind(this.courseUrl));
+		
+		// get list registered courses
+		this.app.get(this.courseUrl.listRegistered,
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
+			this.crsCtrl.getPagination.bind(this.crsCtrl),
+			this.crsCtrl.getListRegistered.bind(this.crsCtrl));
+		
+		// get courses detail
+		this.app.get(this.courseUrl.detail,
+			this.authCtrl.checkOptionalApi.bind(this.authCtrl),
+			this.crsCtrl.getDetail.bind(this.crsCtrl))
+
+		// get list member
+		this.app.get(this.courseUrl.member,
+			this.authCtrl.checkOptionalApi.bind(this.authCtrl),
+			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.crsCtrl.getPagination.bind(this.crsCtrl),
+			this.crsCtrl.getListMember.bind(this.crsCtrl))
 	}
 }
 

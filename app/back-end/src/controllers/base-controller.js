@@ -8,6 +8,14 @@ class BaseController{
         this.res = res;
         this.next = next;
     }
+    async getPagination(req, res, next){
+        let { offset, length } = req.body;
+        if (offset && length) req.pagination = {
+            offset: offset,
+            length: length
+        };
+        next();
+    }
     response(responseCode = Response.ResponseCode.SERVER_ERROR, message = null, data = null, detail = null){
         Response.response(this.res, responseCode, message, data, detail);
     }

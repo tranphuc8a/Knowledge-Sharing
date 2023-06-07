@@ -59,6 +59,101 @@ class CoursesDAO {
         }
     }
 
+    async selectDetail(wheres, keys, pagination){
+        try {
+            let { sql, values } = SQLUtils.getWheres(wheres);
+
+            sql = `select ${SQLUtils.getKeys(keys)} from 
+                    (
+                        SELECT table1.*, knowledge.*, profile.name,
+                            table2.score, table3.nummark, table4.numlesson, table5.numlearner
+                        FROM (
+                            SELECT courses.*, count(comment.id) as numcmt FROM courses
+                            left join comment on courses.knowledge_id = comment.knowledge_id
+                            group by courses.knowledge_id
+                        ) as table1 join (
+                            SELECT courses.*, avg(score.score) - 1 as score
+                            from courses 
+                            left join score on courses.knowledge_id = score.knowledge_id 
+                            GROUP by courses.knowledge_id
+                        ) as table2 on table1.knowledge_id = table2.knowledge_id join (
+                            SELECT courses.*, count(mark.email) as nummark
+                            from courses 
+                            left join mark on courses.knowledge_id = mark.knowledge_id 
+                            GROUP by courses.knowledge_id
+                        ) as table3 on table1.knowledge_id = table3.knowledge_id join (
+                            SELECT courses.*, count(courses_lesson.lesson_id) as numlesson
+                            from courses 
+                            left join courses_lesson on courses.knowledge_id = courses_lesson.courses_id 
+                            GROUP by courses.knowledge_id
+                        ) as table4 on table1.knowledge_id = table4.knowledge_id join (
+                            SELECT courses.*, count(learn.email) as numlearner
+                            from courses 
+                            left join learn on courses.knowledge_id = learn.courses_id 
+                            GROUP by courses.knowledge_id
+                        ) as table5 on table1.knowledge_id = table5.knowledge_id
+                        join knowledge on table1.knowledge_id = knowledge.id
+                        join profile on knowledge.owner_email = profile.email;
+                    ) as courses
+                        ${wheres != null ? "WHERE " + sql : ""} 
+                        ${SQLUtils.getPagination(pagination)};`;
+
+            let [res] = await this.conn.query(sql, values);
+            return res;
+        } catch (e) {
+            console.log(e);
+            return null;
+        }
+    }
+
+    async selectDetailJoinLearn(wheres, keys, pagination){
+        try {
+            let { sql, values } = SQLUtils.getWheres(wheres);
+
+            sql = `select ${SQLUtils.getKeys(keys)} from 
+                    (
+                        SELECT table1.*, knowledge.*, profile.name,
+                            table2.score, table3.nummark, table4.numlesson, table5.numlearner
+                        FROM (
+                            SELECT courses.*, count(comment.id) as numcmt FROM courses
+                            left join comment on courses.knowledge_id = comment.knowledge_id
+                            group by courses.knowledge_id
+                        ) as table1 join (
+                            SELECT courses.*, avg(score.score) - 1 as score
+                            from courses 
+                            left join score on courses.knowledge_id = score.knowledge_id 
+                            GROUP by courses.knowledge_id
+                        ) as table2 on table1.knowledge_id = table2.knowledge_id join (
+                            SELECT courses.*, count(mark.email) as nummark
+                            from courses 
+                            left join mark on courses.knowledge_id = mark.knowledge_id 
+                            GROUP by courses.knowledge_id
+                        ) as table3 on table1.knowledge_id = table3.knowledge_id join (
+                            SELECT courses.*, count(courses_lesson.lesson_id) as numlesson
+                            from courses 
+                            left join courses_lesson on courses.knowledge_id = courses_lesson.courses_id 
+                            GROUP by courses.knowledge_id
+                        ) as table4 on table1.knowledge_id = table4.knowledge_id join (
+                            SELECT courses.*, count(learn.email) as numlearner
+                            from courses 
+                            left join learn on courses.knowledge_id = learn.courses_id 
+                            GROUP by courses.knowledge_id
+                        ) as table5 on table1.knowledge_id = table5.knowledge_id
+                        join knowledge on table1.knowledge_id = knowledge.id
+                        join profile on knowledge.owner_email = profile.email;
+                    ) as courses
+                    left join learn on courses.knowledge_id = learn.courses_id
+                        ${wheres != null ? "WHERE " + sql : ""} 
+                        ${SQLUtils.getPagination(pagination)};`;
+
+            let [res] = await this.conn.query(sql, values);
+            return res;
+        } catch (e) {
+            console.log(e);
+            return null;
+        }
+    }
+
     async update(course, wheres) {
         try {
             let courseObj = SQLUtils.getSets(course);
