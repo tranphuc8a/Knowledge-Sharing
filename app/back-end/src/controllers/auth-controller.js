@@ -230,7 +230,7 @@ class AuthController {
                     if (checkCode == null || checkCode[0] == null || checkCode[0].type != Code.TypeCode.REGISTER) {
                         throw new Error('Invalid code or wrong email');
                     }
-                    // check time expired for code
+                    // check time expired for code (5 minutes)
                     let durationMinutes = DateTime.durationMinutes(DateTime.now(), checkCode[0].time);
                     if (durationMinutes > 5) {
                         throw new Error('Expired code');
