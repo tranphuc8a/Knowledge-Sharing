@@ -60,12 +60,13 @@ module.exports = {
         account: '/api/search/account/:key',
         courses: '/api/search/courses',
         lesson: '/api/search/lesson',
-        admin: {
-            limit: '/api/admin/limit',
-            listAccount: '/api/admin/list-account',
-            deleteAccount: '/api/admin/delete-account',
-            deleteCourse: '/api/admin/delete-course',
-            deleteLesson: '/api/admin/delete-lesson',
-            addAdmin: '/api/admin/add-admin'
-        }
+    },
+    admin: {
+        limit: '/api/admin/limit',
+        listAccount: '/api/admin/list-account',
+        deleteAccount: '/api/admin/delete-account',
+        deleteCourse: '/api/admin/delete-course',
+        deleteLesson: '/api/admin/delete-lesson',
+        addAdmin: '/api/admin/add-admin'
     }
+}
