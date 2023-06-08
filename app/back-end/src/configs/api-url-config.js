@@ -55,5 +55,10 @@ module.exports = {
         list: '/api/lesson/list',
         update: '/api/lesson/:lessonid',
         course: '/api/courses/lesson/:courseid/:lessonid'
+    },
+    search: {
+        account: '/api/search/account/:key',
+        courses: '/api/search/courses',
+        lesson: '/api/search/lesson'
     }
 }

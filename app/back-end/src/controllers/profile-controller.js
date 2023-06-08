@@ -111,6 +111,11 @@ class ProfileController {
                 // get my profile ==> get full info
             }
 
+            profile.numCourses = numCourses;
+            profile.numLesson = numLesson;
+            profile.numFollowers = numFollowers;
+            profile.numFollowing = numFollowing;
+
             Response.response(res, Response.ResponseCode.OK, "Success", profile, "Get profile thành công");
         } catch (error) {
             console.log(error);

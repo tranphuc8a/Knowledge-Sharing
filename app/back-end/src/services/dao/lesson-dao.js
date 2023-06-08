@@ -184,6 +184,54 @@ class LessonDAO {
             return 0;
         }
     }
+
+    // search: title
+    async search(key, categories, keys, pagination) {
+        try {
+            let sql = ` 
+                    select ${SQLUtils.getKeys(keys)} from 
+                    (SELECT table1.*, table2.score, table3.nummark, knowledge.*, profile.name FROM (
+                        SELECT lesson.*, count(comment.id) as numcmt FROM lesson
+                        left join comment on lesson.knowledge_id = comment.knowledge_id
+                        group by lesson.knowledge_id
+                    ) as table1 join (
+                        SELECT lesson.*, avg(score.score) - 1 as score
+                        from lesson 
+                        left join score on lesson.knowledge_id = score.knowledge_id 
+                        GROUP by lesson.knowledge_id
+                    ) as table2 on table1.knowledge_id = table2.knowledge_id join (
+                        SELECT lesson.*, count(mark.email) as nummark
+                        from lesson 
+                        left join mark on lesson.knowledge_id = mark.knowledge_id 
+                        GROUP by lesson.knowledge_id
+                    ) as table3 on table1.knowledge_id = table3.knowledge_id join (
+                        SELECT filterByKey.* from (
+                            SELECT * from lesson 
+                            join knowledge ON lesson.knowledge_id = knowledge.id 
+                            ${key != null ? "AND title LIKE '%" + key + "%'" : ""})
+                            as filterByKey
+                        join (
+                            SELECT * FROM 
+                            (SELECT catetb.knowledge_id, GROUP_CONCAT(catetb.categories) AS categories FROM (SELECT DISTINCT * FROM categories ORDER BY categories ASC) as catetb GROUP BY catetb.knowledge_id) 
+                            AS orderCate
+                            ${SQLUtils.getCateWheres(categories)}
+                        ) as filterByCate
+                        on filterByKey.knowledge_id = filterByCate.knowledge_id
+                    ) as table4 on table1.knowledge_id = table4.knowledge_id
+                    join knowledge on table1.knowledge_id = knowledge.id
+                    join profile on knowledge.owner_email = profile.email) as lesson
+                        ${SQLUtils.getPagination(pagination)}
+                ;`;
+
+            let [res] = await global.connection.query(sql);
+
+            return Transformer.getInstance().jsonToInstance(Lesson, res);
+
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
 }
 
 module.exports = LessonDAO;

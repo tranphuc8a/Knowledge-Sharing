@@ -489,7 +489,7 @@ class AuthController {
     async checkOptionalApi(req, res, next) {
         // if don't have token
         if (req.headers == null || req.headers.authorization == null) {
-            next();
+            return next();
         }
 
         // get from header
@@ -513,7 +513,7 @@ class AuthController {
             }
 
             // go next
-            next();
+            return next();
         } catch (error) {
             // expired time
             if (error instanceof jwt.TokenExpiredError) {
@@ -554,7 +554,7 @@ class AuthController {
             }
 
             // go next
-            next();
+            return next();
         } catch (error) {
             // expired time
             if (error instanceof jwt.TokenExpiredError) {
@@ -576,7 +576,7 @@ class AuthController {
             return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Wrong password", password, "Mật khẩu không chính xác");
         }
 
-        next();
+        return next();
     }
 
 
