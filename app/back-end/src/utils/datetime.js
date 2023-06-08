@@ -12,6 +12,12 @@ class DateTime {
         const timeString = moment.unix(timestamp).format(format);
         return timeString;
     }
+    static deltaTimestamp(time1, time2){ // seconds
+        return Math.abs(
+            this.timestringToTimestamp(time1) - 
+            this.timestringToTimestamp(time2)
+        );
+    }
     // get duration by minutes between 2 formated times
     static durationMinutes(currentTime, pastTime) {
         return moment.duration(moment(currentTime).diff(moment(pastTime))).asMinutes();
