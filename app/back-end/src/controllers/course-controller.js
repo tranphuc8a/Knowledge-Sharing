@@ -309,7 +309,8 @@ class CourseController extends BaseController{
 				await Promise.all([rs1, rs2, rs3, rs4, rs5, rs6, rs7]);
 			let rs = await CoursesDAO.getInstance().delete({knowledge_id: course.knowledge_id});
 
-			if (!rs || !rs1 || !rs2 || !rs3 || !rs4 || !rs5 || !rs6 || !rs7 || !rs8) return this.serverError();
+			if (!rs || !rs1 || !rs2 || !rs3 || !rs4 || !rs5 || !rs6 || !rs7 || !rs8) 
+				return this.serverError("Delete course falied");
 			return this.success("Xóa bài học thành công");
 		} catch (e){
 			console.log(e);

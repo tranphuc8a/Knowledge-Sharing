@@ -14,8 +14,8 @@ class AccountDAO {
 
     async insert(account) {
         try {
-            let value = [account.email, account.password, account.role, account.warning];
-            let query = `INSERT into account(email, password, role, warning) value (?, ?, ?, ?);`;
+            let value = [account.email, account.password, account.role, account.warning, account.time];
+            let query = `INSERT into account(email, password, role, warning, time) value (?, ?, ?, ?, ?);`;
             let [res] = await global.connection.query(query, value);
 
             return Transformer.getInstance().jsonToInstance(Account, account);
@@ -58,6 +58,24 @@ class AccountDAO {
             let { sql, values } = SQLUtils.getWheres(wheres);
             sql = `SELECT ${SQLUtils.getKeys(keys)} from account ${sql != null ?
                 "WHERE " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
+            let [res] = await global.connection.query(sql, values);
+
+            return Transformer.getInstance().jsonToInstance(Account, res);
+
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
+    
+    async selectDetail(wheres, keys, pagination){
+        try {
+            let { sql, values } = SQLUtils.getWheres(wheres);
+            sql = `SELECT ${SQLUtils.getKeys(keys)} from account 
+                    join profile on account.email = profile.email
+                    ${sql != null ? "WHERE " + sql : ""} 
+                    ${SQLUtils.getPagination(pagination)};`;
             let [res] = await global.connection.query(sql, values);
 
             return Transformer.getInstance().jsonToInstance(Account, res);
