@@ -44,8 +44,8 @@ class LessonRoute{
 			this.authCtrl.checkToken.bind(this.authCtrl),
 			this.accCtrl.checkUser.bind(this.accCtrl),
 			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
 			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
 			this.lsnCtrl.addLessonToCourse.bind(this.lsnCtrl))
 		
 		// delete lesson from course
@@ -53,8 +53,8 @@ class LessonRoute{
 			this.authCtrl.checkToken.bind(this.authCtrl),
 			this.accCtrl.checkUser.bind(this.accCtrl),
 			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
 			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
 			this.lsnCtrl.deleteLessonFromCourse.bind(this.lsnCtrl))
 
 		// update lesson in course
@@ -62,8 +62,8 @@ class LessonRoute{
 			this.authCtrl.checkToken.bind(this.authCtrl),
 			this.accCtrl.checkUser.bind(this.accCtrl),
 			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
 			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
 			this.lsnCtrl.updateLessonInCourse.bind(this.lsnCtrl))
 
 		// update lesson
@@ -75,7 +75,7 @@ class LessonRoute{
 			this.lsnCtrl.updateLesson.bind(this.lsnCtrl))
 		
 		// delete lesson
-		this.app.patch(this.lessonUrl.update,
+		this.app.delete(this.lessonUrl.update,
 			this.authCtrl.checkToken.bind(this.authCtrl),
 			this.accCtrl.checkUser.bind(this.accCtrl),
 			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),

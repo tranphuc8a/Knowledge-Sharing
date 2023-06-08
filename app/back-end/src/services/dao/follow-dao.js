@@ -95,7 +95,7 @@ class FollowDAO {
                     followed = true;
                 }
             });;
-
+            
         await Promise.all([followingPromise, followedPromise]);
 
         // return

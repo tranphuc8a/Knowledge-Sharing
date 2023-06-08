@@ -2,6 +2,7 @@ const { knowledge } = require('../configs/api-url-config');
 const Comment = require('../models/comment');
 const Mark = require('../models/mark');
 const Score = require('../models/score');
+const CategoriesDAO = require('../services/dao/categories-dao');
 const CommentDAO = require('../services/dao/comment-dao');
 const CoursesDAO = require('../services/dao/courses-dao');
 const KnowledgeDAO = require('../services/dao/knowledge-dao');
@@ -19,12 +20,12 @@ class KnowledgeController extends BaseController{
         super();
     }
 
-    async updateInforListKnowledge(account, knowledges){
+    async updateInforListKnowledge(account, knowledges) {
 		if (knowledges == null) return;
         // update catergories
-		await Promise.all(knowledges.map(knowledge => {
-            knowledge.categories = CategoriesDAO.getInstance().getCategories(knowledge.knowledge_id);
-        }));
+		await Promise.all(knowledges.map(knowledge => async function () {
+            knowledge.categories = await CategoriesDAO.getInstance().getCategories(knowledge.knowledge_id);
+        }).map(f => f()));
 
 		// update isMark
 		if (account == null) return;

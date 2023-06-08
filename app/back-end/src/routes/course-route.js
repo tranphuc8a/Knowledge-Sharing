@@ -122,7 +122,7 @@ class CourseRoute {
 		this.app.get(this.courseUrl.list,
 			this.authCtrl.checkOptionalApi.bind(this.authCtrl),
 			this.crsCtrl.getPagination.bind(this.crsCtrl),
-			this.crsCtrl.getList.bind(this.courseUrl));
+			this.crsCtrl.getList.bind(this.crsCtrl));
 		
 		// get list registered courses
 		this.app.get(this.courseUrl.listRegistered,

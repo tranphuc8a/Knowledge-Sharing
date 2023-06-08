@@ -20,7 +20,7 @@ class LessonDAO {
             let sql = `insert into knowledge(owner_email, title, update_at, create_at, thumbnail, learning_time) 
                         value (?, ?, ?, ?, ?, ?);`;
             let [res] = await this.conn.query(sql, value);
-            lesson.knowledge_id = res[0].insertId;
+            lesson.knowledge_id = res.insertId;
 
             value = [lesson.knowledge_id, lesson.content, lesson.views, lesson.visible];
             sql = `insert into lesson value (?, ?, ?, ?);`;
@@ -147,7 +147,7 @@ class LessonDAO {
             let lessonObj = SQLUtils.getSets(lesson);
             let whereObj = SQLUtils.getWheres(wheres);
 
-            sql = `update lesson join knowledge on lesson.knowledge_id=knowledge.id 
+            let sql = `update lesson join knowledge on lesson.knowledge_id=knowledge.id 
                    set ${lessonObj.sql} where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, [...lessonObj.values, ...whereObj.values]);
             return res;
@@ -159,11 +159,15 @@ class LessonDAO {
 
     async delete(wheres) {
         try {
-            let whereObj = SQLUtils.getWheres(wheres);
-            sql = `delete lesson, knowledge from lesson join knowledge on lesson.knowledge_id=knowledge.id 
-                   where ${whereObj.sql}`;
-            let [res] = await this.conn.query(sql, whereObj.values);
-            return res;
+            let listId = await this.select(wheres, ["lesson.knowledge_id"]);
+            listId = listId.map(e => e.knowledge_id);
+
+            let sql1 = `delete from lesson where knowledge_id in (?)`;
+            let sql2 = `delete from knowledge where id in (?)`;
+            let [res1] = await this.conn.query(sql1, listId);
+            let [res2] = await this.conn.query(sql2, listId);
+
+            return res1 && res2;
         } catch (e) {
             console.log(e);
             return null;

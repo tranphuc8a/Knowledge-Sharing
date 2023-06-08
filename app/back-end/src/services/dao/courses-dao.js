@@ -2,6 +2,7 @@ const Courses = require("../../models/courses");
 const Transformer = require("../../utils/class-transformer");
 const SQLUtils = require("../../utils/sql-utils");
 const CategoriesDAO = require("./categories-dao");
+const KnowledgeDAO = require("./knowledge-dao");
 
 class CoursesDAO {
     static instance = null;
@@ -21,7 +22,7 @@ class CoursesDAO {
             let sql = `insert into knowledge(owner_email, title, update_at, create_at, thumbnail, learning_time) 
                         value (?, ?, ?, ?, ?, ?);`;
             let [res] = await this.conn.query(sql, value);
-            course.knowledge_id = res[0].insertId;
+            course.knowledge_id = res.insertId;
 
             value = [course.knowledge_id, course.description, course.isfree, course.fee];
             sql = `insert into courses value (?, ?, ?, ?);`;
@@ -93,7 +94,7 @@ class CoursesDAO {
                             GROUP by courses.knowledge_id
                         ) as table5 on table1.knowledge_id = table5.knowledge_id
                         join knowledge on table1.knowledge_id = knowledge.id
-                        join profile on knowledge.owner_email = profile.email;
+                        join profile on knowledge.owner_email = profile.email
                     ) as courses
                         ${wheres != null ? "WHERE " + sql : ""} 
                         ${SQLUtils.getPagination(pagination)};`;
@@ -140,7 +141,7 @@ class CoursesDAO {
                             GROUP by courses.knowledge_id
                         ) as table5 on table1.knowledge_id = table5.knowledge_id
                         join knowledge on table1.knowledge_id = knowledge.id
-                        join profile on knowledge.owner_email = profile.email;
+                        join profile on knowledge.owner_email = profile.email
                     ) as courses
                     left join learn on courses.knowledge_id = learn.courses_id
                         ${wheres != null ? "WHERE " + sql : ""} 
@@ -171,11 +172,15 @@ class CoursesDAO {
 
     async delete(wheres) {
         try {
-            let whereObj = SQLUtils.getWheres(wheres);
-            let sql = `delete courses, knowledge from courses join knowledge on courses.knowledge_id=knowledge.id 
-                   where ${whereObj.sql}`;
-            let [res] = await this.conn.query(sql, whereObj.values);
-            return res;
+            let listId = await this.select(wheres, ["courses.knowledge_id"]);
+            listId = listId.map(e => e.knowledge_id);
+
+            let sql1 = `delete from courses where knowledge_id in (?)`;
+            let sql2 = `delete from knowledge where id in (?)`;
+            let [res1] = await this.conn.query(sql1, listId);
+            let [res2] = await this.conn.query(sql2, listId);
+
+            return res1 && res2;
         } catch (e) {
             console.log(e);
             return null;
