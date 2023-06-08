@@ -55,5 +55,13 @@ module.exports = {
         list: '/api/lesson/list',
         update: '/api/lesson/:lessonid',
         course: '/api/courses/lesson/:courseid/:lessonid'
+    },
+    admin: {
+        limit: '/api/admin/limit',
+        listAccount: '/api/admin/list-account',
+        deleteAccount: '/api/admin/delete-account',
+        deleteCourse: '/api/admin/delete-course',
+        deleteLesson: '/api/admin/delete-lesson',
+        addAdmin: '/api/admin/add-admin'
     }
 }

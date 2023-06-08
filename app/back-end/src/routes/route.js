@@ -4,6 +4,7 @@ const CourseRoute = require('./course-route');
 const ProfileRoute = require('./profile-route');
 const KnowledgeRoute = require('./knowledge-route');
 const FollowRoute = require('./follow-route');
+const AdminRoute = require('./admin-route');
 
 class Route {
         constructor(app) {
@@ -14,6 +15,7 @@ class Route {
                 this.profileRoute = new ProfileRoute(app);
                 this.followRoute = new FollowRoute(app);
                 this.knowledgeRoute = new KnowledgeRoute(app);
+                this.adminRoute = new AdminRoute(app);
         }
 
         route() {
@@ -23,6 +25,7 @@ class Route {
                 this.profileRoute.route();
                 this.followRoute.route();
                 this.knowledgeRoute.route();
+                this.adminRoute.route();
         }
 }
 

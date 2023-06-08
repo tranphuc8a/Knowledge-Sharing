@@ -6,6 +6,7 @@ class Account {
         this.password = account.password;
         this.role = account.role;
         this.warning = account.warning;
+        this.time = account.time;
     }
 }
 
