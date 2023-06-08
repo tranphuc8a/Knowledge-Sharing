@@ -222,12 +222,10 @@ class AdminController extends BaseController{
                 email: email, name: name,
                 gender: 'other', visible: '0'
             });
-            let [rs1, rs2] = await Promise.all([
-                AccountDAO.getInstance().insert(account),
-                ProfileDAO.getInstance().insert(profile)
-            ])
+            let rs1 = await AccountDAO.getInstance().insert(account);
+            let rs2 = await ProfileDAO.getInstance().insert(profile);
             if (! (rs1 && rs2)) return this.serverError("Create account failed");
-            rs1 = {rs1, ...rs2};
+            rs1 = {...rs1, ...rs2};
             return this.success("Success", rs1);
         } catch (e){
             console.log(e);
