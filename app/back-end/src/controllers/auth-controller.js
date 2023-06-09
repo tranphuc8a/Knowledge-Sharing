@@ -50,6 +50,12 @@ class AuthController {
                 return;
             }
 
+            // check warning level 3
+            if (account.warning == '3') {
+                Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", req.body, "You are limited to this function");
+                return;
+            }
+
             // create token & refresh token
             let accessToken = this.createAccessToken(email);
             let refreshToken = this.createRefreshToken(email);

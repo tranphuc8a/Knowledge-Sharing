@@ -1,10 +1,12 @@
 const apiUrlConfig = require('../configs/api-url-config')
-const AuthController = require('../controllers/auth-controller')
+const AuthController = require('../controllers/auth-controller');
+const LimitionController = require('../controllers/limition-controller');
 
 class AuthRoute {
     constructor(app) {
         this.app = app;
         this.authcontroller = new AuthController();
+        this.limitcontroller = new LimitionController();
     }
 
     route() {
@@ -14,7 +16,7 @@ class AuthRoute {
         });
         // login
         this.app.post(apiUrlConfig.auth.login, (req, res, next) => {
-            this.authcontroller.login(req, res, next);
+            this.authcontroller.login(req, res, next).bind(this.authcontroller);
         });
         // validate
         this.app.post(apiUrlConfig.auth.validateToken,
@@ -34,7 +36,8 @@ class AuthRoute {
             this.authcontroller.register);
         // changePassword
         this.app.post(apiUrlConfig.auth.changePassword,
-            this.authcontroller.checkToken,
+            this.authcontroller.checkToken.bind(this.authcontroller),
+            this.limitcontroller.checkLimitLevelOne.bind(this.limitController),
             this.authcontroller.changePassword.bind(this.authcontroller));
         // getForgotPassword code
         this.app.post(apiUrlConfig.auth.getForgotPasswordCode,
