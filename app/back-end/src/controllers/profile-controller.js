@@ -21,7 +21,7 @@ class ProfileController {
         gender*
         address*
         job*
-        socialLink*
+        social_link*
         description*
         visible* (visible: 0-private, 1-default, 2-public)
     */

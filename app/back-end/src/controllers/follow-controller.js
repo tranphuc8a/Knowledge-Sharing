@@ -29,7 +29,7 @@ class FollowController {
         try {
             let exist = await FollowDAO.getInstance().select({ following: req.account.email, followed: req.body.followedEmail });
             if (exist == null || exist.length == 0) {
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Existed follow");
+                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Unexisted follow");
             }
             req.follow = exist[0];
             return next();
@@ -84,7 +84,7 @@ class FollowController {
 
     }
 
-    // Get api/follow/:email/:index?offset*=,length*=
+    // Get api/follow/:email/:index?myEmail=,offset*=,length*=
     // note: index = 0: get followers, = 1: get following
     async getFollow(req, res, next) {
         try {
