@@ -72,7 +72,7 @@ class AuthController {
             account.token = accessToken;
             account.refresh_token = refreshToken;
 
-            Response.response(res, Response.ResponseCode.OK, "Success", account, "Thành công");
+            Response.response(res, Response.ResponseCode.OK, "Success", account, "Đăng nhập thành công");
         } catch (error) {
             console.log(error);
             Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
@@ -97,7 +97,6 @@ class AuthController {
 
     // Post api/auth/refreshToken
     // headers.authorization: refreshtoken
-    // body: email
     async refreshToken(req, res, next) {
         let refreshToken = req.headers.authorization;
 
@@ -113,12 +112,12 @@ class AuthController {
             // check alive refreshToken but canceled => check login table
             let login = await LoginDAO.getInstance().select({ refresh_token: refreshToken });
 
-            if (login == null || login[0] == null || login[0].email != req.body.email) {
+            if (login == null || login[0] == null || login[0].email != decoded.email) {
                 return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Invalid Refreshtoken");
             }
 
             // create token
-            let token = this.createAccessToken(req.body.email);
+            let token = this.createAccessToken(login[0].email);
 
             // update token to db
             let update = await LoginDAO.getInstance().update({ token: token }, { refresh_token: refreshToken });

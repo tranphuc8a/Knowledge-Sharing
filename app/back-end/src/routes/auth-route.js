@@ -6,7 +6,7 @@ class AuthRoute {
     constructor(app) {
         this.app = app;
         this.authcontroller = new AuthController();
-        this.limitcontroller = new LimitionController();
+        this.limitController = new LimitionController();
     }
 
     route() {
@@ -15,13 +15,15 @@ class AuthRoute {
             this.authcontroller.test(req, res, next);
         });
         // login
-        this.app.post(apiUrlConfig.auth.login, (req, res, next) => {
-            this.authcontroller.login(req, res, next).bind(this.authcontroller);
-        });
+        this.app.post(apiUrlConfig.auth.login,
+            this.authcontroller.login.bind(this.authcontroller));
         // validate
         this.app.post(apiUrlConfig.auth.validateToken,
-            this.authcontroller.checkToken,
-            this.authcontroller.validateToken);
+            this.authcontroller.checkToken.bind(this.authcontroller),
+            this.authcontroller.validateToken.bind(this.authcontroller));
+        // refresh token
+        this.app.post(apiUrlConfig.auth.refreshToken,
+            this.authcontroller.refreshToken.bind(this.authcontroller))
         // logout
         this.app.post(apiUrlConfig.auth.logout,
             this.authcontroller.logout);
@@ -37,7 +39,7 @@ class AuthRoute {
         // changePassword
         this.app.post(apiUrlConfig.auth.changePassword,
             this.authcontroller.checkToken.bind(this.authcontroller),
-            this.limitcontroller.checkLimitLevelOne.bind(this.limitController),
+            this.limitController.checkLimitLevelOne.bind(this.limitController),
             this.authcontroller.changePassword.bind(this.authcontroller));
         // getForgotPassword code
         this.app.post(apiUrlConfig.auth.getForgotPasswordCode,
