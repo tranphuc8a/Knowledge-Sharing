@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "firebase-admin": "^11.9.0",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "vite": "^4.3.9"
   }
 }
