@@ -34,6 +34,7 @@ class Firebase {
                     .setFile(fileConfig.file);
             } 
             // console.log(fileConfig);
+            // create file with nothing in bucket
             let fileUpload = this.bucket.file(this.fileName);
 
             // Tải lên tệp lên Firebase Storage

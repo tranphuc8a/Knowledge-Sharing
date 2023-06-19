@@ -21,7 +21,7 @@ class ProfileController {
         gender*
         address*
         job*
-        socialLink*
+        social_link*
         description*
         visible* (visible: 0-private, 1-default, 2-public)
     */
@@ -110,6 +110,11 @@ class ProfileController {
             } else {
                 // get my profile ==> get full info
             }
+
+            profile.numCourses = numCourses;
+            profile.numLesson = numLesson;
+            profile.numFollowers = numFollowers;
+            profile.numFollowing = numFollowing;
 
             Response.response(res, Response.ResponseCode.OK, "Success", profile, "Get profile thành công");
         } catch (error) {

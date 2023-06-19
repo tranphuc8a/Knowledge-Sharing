@@ -32,55 +32,71 @@ class AuthController {
     async login(req, res, next) {
         const { email, password } = req.body;
 
-        // check payload
-        if (email == undefined || password == undefined) {
-            Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", req.body, "Payload không hợp lệ");
-            return;
+        try {
+            // check payload
+            if (email == undefined || password == undefined) {
+                Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", req.body, "Payload không hợp lệ");
+                return;
+            }
+
+            // check having account
+            let account = await AccountDAO.getInstance().getById(email);
+            if (account == null) {
+                Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", req.body, "Tài khoản không chính xác");
+                return;
+            }
+            if (account.password != password) {
+                Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", req.body, "Tài khoản hoặc mật khẩu không chính xác");
+                return;
+            }
+
+            // check warning level 3
+            if (account.warning == '3') {
+                Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", req.body, "You are limited to this function");
+                return;
+            }
+
+            // create token & refresh token
+            let accessToken = this.createAccessToken(email);
+            let refreshToken = this.createRefreshToken(email);
+
+            // save token & refresh token to login table
+            let mLogin = await LoginDAO.getInstance().insert({ email: email, token: accessToken, refresh_token: refreshToken, time: DateTime.now() });
+            if (mLogin == null) {
+                Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error", req.body, "Lỗi khi lưu accessToken & refreshToken");
+                return;
+            }
+
+            // remove password and add token & refresh token to the response for user
+            delete account.password;
+            account.token = accessToken;
+            account.refresh_token = refreshToken;
+
+            Response.response(res, Response.ResponseCode.OK, "Success", account, "Đăng nhập thành công");
+        } catch (error) {
+            console.log(error);
+            Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
         }
 
-        // check having account
-        let account = await AccountDAO.getInstance().getById(email);
-        if (account == null) {
-            Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", req.body, "Tài khoản không chính xác");
-            return;
-        }
-        if (account.password != password) {
-            Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", req.body, "Tài khoản hoặc mật khẩu không chính xác");
-            return;
-        }
-
-        // create token & refresh token
-        let accessToken = this.createAccessToken(email);
-        let refreshToken = this.createRefreshToken(email);
-
-        // save token & refresh token to login table
-        let mLogin = await LoginDAO.getInstance().insert({ email: email, token: accessToken, refresh_token: refreshToken, time: DateTime.now() });
-        if (mLogin == null) {
-            Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error", req.body, "Lỗi khi lưu accessToken & refreshToken");
-            return;
-        }
-
-        // remove password and add token & refresh token to the response for user
-        delete account.password;
-        account.token = accessToken;
-        account.refresh_token = refreshToken;
-
-        Response.response(res, Response.ResponseCode.OK, "Success", account, "Thành công");
     }
 
     // Post api/auth/validateToken
     // headers.authorization: token
     // body: email
     async validateToken(req, res, next) {
-        if (req.account.email != req.body.email) {
-            return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Wrong email");
+        try {
+            if (req.account.email != req.body.email) {
+                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Wrong email");
+            }
+            Response.response(res, Response.ResponseCode.OK, "Success", req.decoded, "Token hợp lệ");
+        } catch (error) {
+            console.log(error);
+            Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
         }
-        Response.response(res, Response.ResponseCode.OK, "Success", req.decoded, "Token hợp lệ");
     }
 
     // Post api/auth/refreshToken
     // headers.authorization: refreshtoken
-    // body: email
     async refreshToken(req, res, next) {
         let refreshToken = req.headers.authorization;
 
@@ -96,12 +112,12 @@ class AuthController {
             // check alive refreshToken but canceled => check login table
             let login = await LoginDAO.getInstance().select({ refresh_token: refreshToken });
 
-            if (login == null || login[0] == null || login[0].email != req.body.email) {
+            if (login == null || login[0] == null || login[0].email != decoded.email) {
                 return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Invalid Refreshtoken");
             }
 
             // create token
-            let token = this.createAccessToken(req.body.email);
+            let token = this.createAccessToken(login[0].email);
 
             // update token to db
             let update = await LoginDAO.getInstance().update({ token: token }, { refresh_token: refreshToken });
@@ -253,7 +269,7 @@ class AuthController {
             }
 
             // add account into account table
-            let account = await AccountDAO.getInstance().insert({ email: email, password: password, role: 'user', warning: '0' });
+            let account = await AccountDAO.getInstance().insert({ email: email, password: password, role: 'user', warning: '0', time: DateTime.now() });
             if (account == null) {
                 return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
             }
@@ -489,7 +505,7 @@ class AuthController {
     async checkOptionalApi(req, res, next) {
         // if don't have token
         if (req.headers == null || req.headers.authorization == null) {
-            next();
+            return next();
         }
 
         // get from header
@@ -513,7 +529,7 @@ class AuthController {
             }
 
             // go next
-            next();
+            return next();
         } catch (error) {
             // expired time
             if (error instanceof jwt.TokenExpiredError) {
@@ -554,7 +570,7 @@ class AuthController {
             }
 
             // go next
-            next();
+            return next();
         } catch (error) {
             // expired time
             if (error instanceof jwt.TokenExpiredError) {
@@ -570,13 +586,18 @@ class AuthController {
     async checkPassword(req, res, next) {
         let { email, password } = req.body;
 
-        let account = await AccountDAO.getInstance().select({ email: email, password: password });
+        try {
+            let account = await AccountDAO.getInstance().select({ email: email, password: password });
 
-        if (account == null || account[0].email == null || account[0].password == null) {
-            return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Wrong password", password, "Mật khẩu không chính xác");
+            if (account == null || account[0].email == null || account[0].password == null) {
+                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Wrong password", password, "Mật khẩu không chính xác");
+            }
+
+            return next();
+        } catch (error) {
+            console.log(error);
+            return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
         }
-
-        next();
     }
 
 

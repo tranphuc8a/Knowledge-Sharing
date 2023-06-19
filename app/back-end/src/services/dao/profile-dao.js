@@ -100,6 +100,21 @@ class ProfileDAO {
             return null;
         }
     }
+
+    // search
+    async search(key, keys, pagination) {
+        try {
+            let sql = `SELECT ${SQLUtils.getKeys(keys)} from profile ${key != null ?
+                "WHERE email LIKE '%" + key + "%' OR name LIKE '%" + key + "%'" : ""} ${SQLUtils.getPagination(pagination)};`;
+            let [res] = await global.connection.query(sql);
+
+            return Transformer.getInstance().jsonToInstance(Profile, res);
+
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
 }
 
 module.exports = ProfileDAO; 

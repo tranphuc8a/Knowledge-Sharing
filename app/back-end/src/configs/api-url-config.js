@@ -56,6 +56,11 @@ module.exports = {
         update: '/api/lesson/:lessonid',
         course: '/api/courses/lesson/:courseid/:lessonid'
     },
+    search: {
+        account: '/api/search/account/:key',
+        courses: '/api/search/courses',
+        lesson: '/api/search/lesson',
+    },
     admin: {
         limit: '/api/admin/limit',
         listAccount: '/api/admin/list-account',
