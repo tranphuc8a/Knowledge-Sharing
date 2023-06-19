@@ -17,35 +17,35 @@ class KnowledgeRoute{
     route(){
         // score knowledge
         this.app.put(this.knUrl.score,
-            this.authCtrl.checkToken,
-            this.accCtrl.checkUser,
-            this.limitCtrl.checkLimitLevelOne,
+            this.authCtrl.checkToken.bind(this.authCtrl),
+            this.accCtrl.checkUser.bind(this.accCtrl),
+            this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
             this.knCtrl.checkKnowledgeExisted.bind(this.knCtrl),
             this.knCtrl.scoreKnowledge.bind(this.knCtrl)
             );
         
         // comment knowledge
         this.app.post(this.knUrl.comment,
-            this.authCtrl.checkToken,
-            this.accCtrl.checkUser,
-            this.limitCtrl.checkLimitLevelOne,
+            this.authCtrl.checkToken.bind(this.authCtrl),
+            this.accCtrl.checkUser.bind(this.accCtrl),
+            this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
             this.knCtrl.checkKnowledgeExisted.bind(this.knCtrl),
             this.knCtrl.addComment.bind(this.knCtrl));
 
 
         // update comment
         this.app.patch(this.knUrl.updateComment,
-            this.authCtrl.checkToken,
-            this.accCtrl.checkUser,
-            this.limitCtrl.checkLimitLevelOne,
+            this.authCtrl.checkToken.bind(this.authCtrl),
+            this.accCtrl.checkUser.bind(this.accCtrl),
+            this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
             this.knCtrl.checkCommentExisted.bind(this.knCtrl),
             this.knCtrl.updateComment.bind(this.knCtrl));
 
         // delete comment
         this.app.delete(this.knUrl.updateComment,
-            this.authCtrl.checkToken,
-            this.accCtrl.checkUser,
-            this.limitCtrl.checkLimitLevelOne,
+            this.authCtrl.checkToken.bind(this.authCtrl),
+            this.accCtrl.checkUser.bind(this.accCtrl),
+            this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
             this.knCtrl.checkCommentExisted.bind(this.knCtrl),
             this.knCtrl.deleteComment.bind(this.knCtrl));
 
@@ -56,19 +56,28 @@ class KnowledgeRoute{
         
         // set mark knowledge
         this.app.post(this.knUrl.setMark,
-            this.authCtrl.checkToken,
-            this.accCtrl.checkUser,
-            this.limitCtrl.checkLimitLevelOne,
+            this.authCtrl.checkToken.bind(this.authCtrl),
+            this.accCtrl.checkUser.bind(this.accCtrl),
+            this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
             this.knCtrl.checkKnowledgeExisted.bind(this.knCtrl),
             this.knCtrl.setMark.bind(this.knCtrl));
 
-        // get List marks
+        // get List markss
         this.app.get(this.knUrl.mark,
-            this.authCtrl.checkToken,
-            this.accCtrl.checkUser,
-            this.limitCtrl.checkLimitLevelOne,
+            this.authCtrl.checkToken.bind(this.authCtrl),
+            this.accCtrl.checkUser.bind(this.accCtrl),
+            this.limitCtrl.checkLimitLevelOne.bind(this.limitCtrl),
             this.knCtrl.getListMark.bind(this.knCtrl)
             )
+
+        const upload = require('multer')();
+        
+        // post image
+        this.app.post(this.knUrl.image, 
+            this.authCtrl.checkToken.bind(this.authCtrl),
+            this.limitCtrl.checkLimitLevelTwo.bind(this.limitCtrl),
+            upload.single('image'),
+            this.knCtrl.postImage.bind(this.knCtrl))
     }
 }
 

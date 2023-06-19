@@ -25,9 +25,10 @@ class CategoriesDAO{
 
     async insert(knowledge){
         try {
+            if (!(knowledge.categories && knowledge.categories.length > 0)) return 1;
             let values = knowledge.categories.map(category => [knowledge.id, category]);
             let sql = `insert into categories(knowledge_id, categories) values ?`;
-            let [res] = await this.conn.query(sql, values);
+            let [res] = await this.conn.query(sql, [values]);
             return res;
         } catch(e){
             console.log(e);

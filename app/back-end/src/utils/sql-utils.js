@@ -41,6 +41,12 @@ class SQLUtils {
         sql = sql.join(', ');
         return { sql, values };
     }
+
+    static getCateWheres(categories) {
+        if (categories == null || categories.length == 0) return "";
+        let sql = "WHERE " + categories.map(cate => `FIND_IN_SET('${cate}', orderCate.categories) > 0`).join(' AND ');
+        return sql;
+    }
 }
 
 module.exports = SQLUtils;

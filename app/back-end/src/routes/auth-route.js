@@ -1,10 +1,12 @@
 const apiUrlConfig = require('../configs/api-url-config')
-const AuthController = require('../controllers/auth-controller')
+const AuthController = require('../controllers/auth-controller');
+const LimitionController = require('../controllers/limition-controller');
 
 class AuthRoute {
     constructor(app) {
         this.app = app;
         this.authcontroller = new AuthController();
+        this.limitController = new LimitionController();
     }
 
     route() {
@@ -13,13 +15,15 @@ class AuthRoute {
             this.authcontroller.test(req, res, next);
         });
         // login
-        this.app.post(apiUrlConfig.auth.login, (req, res, next) => {
-            this.authcontroller.login(req, res, next);
-        });
+        this.app.post(apiUrlConfig.auth.login,
+            this.authcontroller.login.bind(this.authcontroller));
         // validate
         this.app.post(apiUrlConfig.auth.validateToken,
-            this.authcontroller.checkToken,
-            this.authcontroller.validateToken);
+            this.authcontroller.checkToken.bind(this.authcontroller),
+            this.authcontroller.validateToken.bind(this.authcontroller));
+        // refresh token
+        this.app.post(apiUrlConfig.auth.refreshToken,
+            this.authcontroller.refreshToken.bind(this.authcontroller))
         // logout
         this.app.post(apiUrlConfig.auth.logout,
             this.authcontroller.logout);
@@ -34,7 +38,8 @@ class AuthRoute {
             this.authcontroller.register);
         // changePassword
         this.app.post(apiUrlConfig.auth.changePassword,
-            this.authcontroller.checkToken,
+            this.authcontroller.checkToken.bind(this.authcontroller),
+            this.limitController.checkLimitLevelOne.bind(this.limitController),
             this.authcontroller.changePassword.bind(this.authcontroller));
         // getForgotPassword code
         this.app.post(apiUrlConfig.auth.getForgotPasswordCode,

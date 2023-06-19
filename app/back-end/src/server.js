@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 const route = new Route(app);
 route.route();
 
+
 //connect db
 global.connection
 var connectDB = async () => {

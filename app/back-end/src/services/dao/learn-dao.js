@@ -43,6 +43,23 @@ class LearnDAO{
         }
     }
 
+    async selectDetail(wheres, keys, pagination){
+        try{
+            let {sql, values} = SQLUtils.getWheres(wheres);
+            sql = `select ${SQLUtils.getKeys(keys)} from learn
+                    join courses on learn.courses_id=courses.knowledge_id
+                    join knowledge on learn.courses_id=knowledge.id
+                    join profile on learn.email=profile.email    
+                    ${wheres != null ? "WHERE " + sql : ""} 
+                    ${SQLUtils.getPagination(pagination)};`;
+            let [res] = await this.conn.query(sql, values);
+            return res;  
+        } catch(e){
+            console.log(e);
+            return null;
+        }
+    }
+
     async update(learn, wheres){
         try{
             let learnObj = SQLUtils.getSets(learn);

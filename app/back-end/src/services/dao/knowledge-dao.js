@@ -59,7 +59,7 @@ class KnowledgeDAO{
             let knowledgeObj = SQLUtils.getSets(knowledge);
             let whereObj = SQLUtils.getWheres(wheres);
 
-            sql = `update knowledge 
+            let sql = `update knowledge 
                    set ${knowledgeObj.sql} where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, [...knowledgeObj.values, ...whereObj.values]);
             return res;     
@@ -72,8 +72,7 @@ class KnowledgeDAO{
     async delete(wheres){
         try {
             let whereObj = SQLUtils.getWheres(wheres);
-            sql = `delete knowledge, knowledge from knowledge 
-                   where ${whereObj.sql}`;
+            let sql = `delete from knowledge where ${whereObj.sql}`;
             let [res] = await this.conn.query(sql, whereObj.values);
             return res;  
         } catch(e){
