@@ -5,9 +5,14 @@ const Route = require('./routes/route')
 const mysql = require('mysql2/promise')
 const dbConfig = require('./configs/db-config')
 const bodyParser = require('body-parser');
+const cors = require('cors')
+
 
 //create express app
 const app = express()
+
+// cors policy
+app.use(cors())
 
 //body parser
 app.use(bodyParser.urlencoded({ extended: true }));
