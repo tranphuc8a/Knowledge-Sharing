@@ -1,0 +1,12 @@
+
+
+.item{
+    width: 100px;
+    padding: 0px 24px;
+}
+
+.item:hover {
+    background-color: gray;
+    cursor: pointer;
+}
+

@@ -1,0 +1,40 @@
+
+
+.footer-parent {
+    flex-direction: column;
+}
+
+.footer-introduce{
+    width: 80%;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 24px 0px;
+}
+
+.fi-introduce {
+    width: min(100%, 400px);
+    text-align:justify;
+    font-weight: 450;
+    margin: 6px 0px;
+}
+
+.fi-list-icons{
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 6px 0px;
+}
+
+.fi-list-icons * {
+    width: 30px;
+    height: auto;
+    border-radius: 20%;
+    cursor: pointer;
+    margin-right: 12px;
+}
+
+.footer-producer * {
+    padding: 6px;
+    background-color: #1c1d31;
+    color: lemonchiffon;
+    font-weight: 450;
+}
