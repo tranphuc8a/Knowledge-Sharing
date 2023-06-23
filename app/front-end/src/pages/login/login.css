@@ -1,18 +1,10 @@
-/* .divider:after,
-.divider:before {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: #eee;
-} */
-
-
 .App {
     background-color: white;
 }
 
 .Auth-form-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100vw;
@@ -29,6 +21,7 @@
 }
 
 .Auth-form-content {
+    flex-direction: column;
     padding-left: 12%;
     padding-right: 12%;
 }
@@ -41,8 +34,29 @@
     font-weight: 800;
 }
 
-label {
+.label {
+    justify-content: start;
     font-size: 14px;
     font-weight: 600;
     color: rgb(34, 34, 34);
+}
+
+.form-group {
+    flex-direction: column;
+}
+
+.btn-primary {
+    justify-content: start;
+}
+
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #dedddd;
+}
+
+.or-text {
+    width: auto;
 }
