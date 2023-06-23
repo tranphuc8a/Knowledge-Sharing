@@ -17,12 +17,12 @@ let callAPI = async () => {
     let res = await PostAPI.getInstance()
       .setURL(url).setData(data).execute();
     console.log(res);
-  } catch (e){
+  } catch (e) {
     console.log(e);
   }
 }
 
-callAPI();
+// callAPI();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
