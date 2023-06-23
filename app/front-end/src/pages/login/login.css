@@ -60,3 +60,28 @@
 .or-text {
     width: auto;
 }
+
+.eye-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-size: cover;
+    transition: background-color 0.3s;
+}
+
+.eye-icon.show {
+    background-color: #eee;
+}
+
+.span-icon {
+    width: auto;
+}
+
+.btn-outline-secondary {
+    padding: 0;
+    /* Loại bỏ padding */
+    border: none;
+    /* Loại bỏ đường viền */
+    background-color: transparent;
+    /* Đặt nền trong suốt */
+}
