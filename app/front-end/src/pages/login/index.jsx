@@ -40,6 +40,11 @@ export default function (props) {
         .execute()
         .then(res => {
           if (res.code == 200) { // success
+            // Save user data to session storage
+            sessionStorage.setItem('email', res.data.email);
+            sessionStorage.setItem('token', res.data.token);
+            sessionStorage.setItem('refresh_token', res.data.refresh_token);
+
             // navigate to home
             navigate('/home');
           } else if (res.code == 400) { // bad request
