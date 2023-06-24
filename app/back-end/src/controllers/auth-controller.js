@@ -144,9 +144,14 @@ class AuthController {
         } catch (error) {
             // expired time
             if (error instanceof jwt.TokenExpiredError) {
-                // delete expired refreshToken
-                let res = await LoginDAO.getInstance().delete({ refresh_token: refreshToken });
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Expired token", refreshToken, "RefreshToken đã hết hạn");
+                try {
+                    // delete expired refreshToken
+                    let result = await LoginDAO.getInstance().delete({ refresh_token: refreshToken });
+                    return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Expired token", refreshToken, "RefreshToken đã hết hạn");
+                } catch (error) {
+                    console.log(error);
+                    return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
+                }
             }
             // other case of getting token failed
             console.log(error);
