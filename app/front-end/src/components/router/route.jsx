@@ -3,9 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import App from "../../App";
 import Login from "../../pages/login";
 // import './root-style.css';
-import CourseDetail from "../../pages/course-detail";
 import Home from "../../pages/home";
 import Register from "../../pages/register";
+import CourseDetail from "../../pages/course/course-detail";
+import Home from "../../pages/home/home";
 
 class MyRoute extends React.Component {
 
@@ -26,7 +27,7 @@ class MyRoute extends React.Component {
 
             // CourseDetail
             <Route
-                path="/course-detail"
+                path="/course-detail/:courseid"
                 element={<CourseDetail />}
             />
 

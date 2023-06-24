@@ -26,3 +26,9 @@ nav, nav * {
     border-top: solid rgba(0, 0, 0, 0) 2px; 
 }
 
+.header .active {
+    color: violet;
+    border-bottom: solid violet 2px;
+    border-top: solid rgba(0, 0, 0, 0) 2px; 
+}
+

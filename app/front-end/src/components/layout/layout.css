@@ -11,7 +11,7 @@
     background-color: white;
     justify-content: flex-start;
     box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    /* z-index: 1000; */
 }
 
 .header * {
@@ -27,6 +27,7 @@
     margin-top: 75px;
     flex-direction: column;
     background-color: white;
+    justify-content: flex-start;
     flex: 1;
 }
 
