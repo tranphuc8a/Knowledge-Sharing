@@ -5,6 +5,7 @@ import Login from "../../pages/login";
 // import './root-style.css';
 import CourseDetail from "../../pages/course-detail";
 import Home from "../../pages/home";
+import Register from "../../pages/register";
 
 class MyRoute extends React.Component {
 
@@ -32,6 +33,11 @@ class MyRoute extends React.Component {
             <Route
                 path="/login"
                 element={<Login />}
+            />
+
+            <Route
+                path="/register"
+                element={<Register />}
             />
 
         </Routes> </Router>);

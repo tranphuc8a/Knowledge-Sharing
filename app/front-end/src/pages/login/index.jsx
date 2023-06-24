@@ -41,9 +41,9 @@ export default function (props) {
         .then(res => {
           if (res.code == 200) { // success
             // Save user data to session storage
-            sessionStorage.setItem('email', res.data.email);
-            sessionStorage.setItem('token', res.data.token);
-            sessionStorage.setItem('refresh_token', res.data.refresh_token);
+            localStorage.setItem('email', res.data.email);
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('refreshToken', res.data.refresh_token);
 
             // navigate to home
             navigate('/home');
@@ -77,7 +77,7 @@ export default function (props) {
               <label className={`${styles['label']} label`}>Địa chỉ email</label>
               <input
                 type="email"
-                className={`${styles['form-control']} form-control mt-1`}
+                className={`form-control mt-1`}
                 placeholder="Nhập email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -85,7 +85,7 @@ export default function (props) {
             </div>
             <div className={`${styles['form-group']} form-group mt-3`}>
               <label className={`${styles['label']} label`}>Mật khẩu</label>
-              <div className={styles['input-group'] + ' input-group flex-row'}>
+              <div className={' input-group flex-row'}>
                 <div className="position-relative">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -124,11 +124,11 @@ export default function (props) {
               <a href="#" className={`text-primary justify-content-start small`}>Quên mật khẩu?</a>
             </p>
             <div className={`${styles['divider']} divider my-4`}>
-              <p className={`or-text text-center fw-bold mx-3 mb-0 text-muted w-30`}>OR</p>
+              <p className={`or-text text-center fw-bold mx-3 mb-0 text-muted w-auto`}>OR</p>
             </div>
             <a
               className={`text-primary text-center`}
-              href="#!"
+              href="/register"
               role="button"
             >
               Đăng ký
