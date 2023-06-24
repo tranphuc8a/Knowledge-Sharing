@@ -5,6 +5,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
 import styles from './register.module.scss';
 import ValidateCode from './validateCode';
+import Toast from '../../utils/toast';
 
 export default function (props) {
     // email and password state
@@ -47,6 +48,7 @@ export default function (props) {
                 .execute()
                 .then(res => {
                     if (res.code == 200) { // success
+                        Toast.getInstance().success("Đã thêm đánh giá", 3000);
                         setSentCode(true);
                     } else if (res.code == 400) { // bad request
                         if (res.detail || res.detail.length <= 0)

@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PostAPI from '../../services/api/post-api';
 import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
+import Toast from '../../utils/toast';
 
 export default function (props) {
     const [code, setCode] = useState('');
@@ -16,6 +17,7 @@ export default function (props) {
 
     // for counting
     useEffect(() => {
+        Toast.getInstance().success("Đã thêm đánh giá", 3000);
         const timerId = setInterval(() => {
             setCountDown(preState => {
                 if (preState > 0)
@@ -49,7 +51,7 @@ export default function (props) {
                 .then(res => {
                     if (res.code == 200) { // success
                         // toast success
-
+                        Toast.getInstance().success("Đã thêm đánh giá", 3000);
                         // navigate to fill form for profile
                         navigate('/login');
                     } else if (res.code == 400 || res.code == 404) { // bad request
