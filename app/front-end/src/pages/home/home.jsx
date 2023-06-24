@@ -1,7 +1,7 @@
 
 // Layout.js
 import React from 'react';
-import Layout from '../components/layout/layout';
+import Layout from '../../components/layout/layout';
 
 
 class Home extends React.Component{

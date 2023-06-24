@@ -7,10 +7,7 @@ import './layout.css';
 
 class Layout extends React.Component{
     constructor(props){
-        super(props); 
-        this.header     = props.header     || <Header />;
-        this.content    = props.content    || props.children;
-        this.footer     = props.footer     || <Footer />;  
+        super(props);   
         this.state = {
             header: {
                 style: {}
@@ -28,13 +25,24 @@ class Layout extends React.Component{
        window.removeEventListener('scroll', this.handleScroll);
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        return true;
+    }
+
+    prepareRender(){
+        this.header     = this.props.header     || <Header />;
+        this.content    = this.props.content    || this.props.children;
+        this.footer     = this.props.footer     || <Footer />;
+    }
+
     render(){
+        this.prepareRender();
         return (
             <div className="app">
                 <header 
                     onMouseLeave={this.hideHeader}
                     onMouseEnter={this.showHeader}
-                    style={{ height: '75px', position: 'fixed', top: 0, left: 0 }}
+                    style={{ height: '75px', position: 'fixed', top: 0, left: 0, zIndex: 100, backgroundColor: 'rgba(0, 0, 0, 0)' }}
                 >
                     <div className="header" style={this.state.header.style} >
                         { this.header }

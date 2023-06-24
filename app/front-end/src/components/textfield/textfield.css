@@ -1,0 +1,14 @@
+
+.textfield {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid violet;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 500;
+    min-height: 100px;
+    font-family: Arial, Helvetica, sans-serif
+}
+

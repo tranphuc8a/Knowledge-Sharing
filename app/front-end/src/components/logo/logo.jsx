@@ -2,6 +2,8 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import withRouter from "../router/withRouter";
+import MyRoute from "../router/route";
+import DomainConfig from "../../config/domain-config";
 
 class Logo extends React.Component{
     constructor(props){
@@ -22,7 +24,7 @@ class Logo extends React.Component{
         return (
             <div onClick={this.clickLogo} style={this.props.style}>
                 <img 
-                    src="./src/assets/logo.png" 
+                    src={ DomainConfig.domain + "/src/assets/logo.png" }
                     alt="logo" 
                     style={{
                         width: width,

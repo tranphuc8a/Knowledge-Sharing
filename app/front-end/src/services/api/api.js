@@ -1,4 +1,8 @@
 import axios from "axios";
+import ExpiredToken from "../../common/exception/expired-token";
+import ExpiredRefreshToken from "../../common/exception/expired-refresh-token";
+import Session from "../../session/session";
+import DomainConfig from "../../config/domain-config";
 
 class API{
     constructor(){
@@ -98,8 +102,43 @@ class API{
         try {
             this.prepareData();
             this.updateMethod();
+            console.log("Calling API... " + this.method + " " + this.config.url);
             let res = await this.getResult();
+            console.log("Result of " + this.method + " " + this.config.url + ":");
+            console.log(res.data);
             return res.data;
+        } catch (e){
+            if (e instanceof ExpiredToken){
+                try {
+                    console.log("Calling RefreshToken... ");
+                    let rs2 = await this.refreshToken();
+                    console.log("Result of refreshToken:");
+                    console.log(rs2.data);
+                    if (res.data.code != 200)
+                        throw new ExpiredRefreshToken("Refresh token hết hạn hoặc không có");
+                    let token = res.data.data.token;
+                    Session.getInstance().saveToken(token);
+                    this.setToken(token);
+                    return await this.execute();
+                } catch (err){
+                    throw err; 
+                }
+            }
+            throw e;
+        }
+    }
+
+    async refreshToken(){
+        try {
+            return await axios.post(
+                DomainConfig.domainAPI + "/api/auth/refreshToken", // url 
+                null, // data
+                { // config
+                    headers: {
+                        authorization: Session.getInstance().refreshToken
+                    }
+                }
+            );
         } catch (e){
             throw e;
         }

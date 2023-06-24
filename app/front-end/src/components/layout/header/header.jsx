@@ -23,7 +23,8 @@ class Header extends React.Component{
                     }}
                 />
                 <div style={{ justifyContent: 'space-between'}}>
-                    <NavBar 
+                    <NavBar
+                        active = {this.props.active}
                         links = {[{
                             url: '/home',
                             title: 'Trang chủ'

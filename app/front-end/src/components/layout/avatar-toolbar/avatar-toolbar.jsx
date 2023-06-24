@@ -1,12 +1,17 @@
 
 import React from "react";
+import MyRoute from "../../router/route";
+import Session from "../../../session/session";
+import DomainConfig from "../../../config/domain-config";
 
 class AvatarToolbar extends React.Component{
     constructor(props){
         super(props);
-        let { announce, user } = props;
+        Session.getInstance().attach(this);
         this.state = {
-            avatar: "./src/assets/null_user.png"
+            user:  {
+                avatar: DomainConfig.domain + "/src/assets/null_user.png"
+            }
         };
     }
 
@@ -16,19 +21,25 @@ class AvatarToolbar extends React.Component{
                 <div className="announce" style={{ padding: '0px 12px' }}>
                     <div onClick={this.clickBell}
                         style={{ cursor: 'pointer', borderRadius: '50%', width: '30px', height: '30px', overflow: 'hidden'}}>
-                        <img src="./src/assets/bell_icon.png" alt="Announce"
+                        <img src= {DomainConfig.domain + "/src/assets/bell_icon.png"} alt="Announce"
                             style={{height: '30px', width: 'auto'}} />
                     </div>
                 </div>
                 <div className="avatar" style={{padding: '0px 12px'}}>
                     <div onClick={this.clickAvatar}
                         style={{ cursor: 'pointer', borderRadius: '50%', width: '45px', height: '45px', overflow: 'hidden', border: 'solid violet 1px'}}>
-                        <img src={this.state.avatar} alt="Avatar"
+                        <img src={this.state.user.avatar} alt="Avatar"
                                 style={{height: '30px', width: 'auto'}} />
                     </div>
                 </div>
             </div>
         );
+    }
+
+    updateSession = () => {
+        this.setState({
+            user: Session.getInstance().mainUser
+        });
     }
 
     clickAvatar = (event) => {
