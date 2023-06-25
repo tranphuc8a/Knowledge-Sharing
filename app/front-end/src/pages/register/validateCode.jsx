@@ -122,6 +122,10 @@ export default function (props) {
 
             {error && <p className={`error-message text-danger mt-4`}>{error}</p>}
 
+            <span className={`text-primary text-center ${styles['text-hover-gray']} w-auto mt-2 rounded px-2`} onClick={() => { props.setPeriod(1) }}>
+                &#60; Quay lại
+            </span>
+
         </div>
     );
 }
