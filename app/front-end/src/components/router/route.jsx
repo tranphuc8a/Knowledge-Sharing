@@ -7,6 +7,7 @@ import Register from "../../pages/register";
 import CourseDetail from "../../pages/course/course-detail";
 import Home from "../../pages/home/home";
 import Toast from "../../utils/toast";
+import LessonDetail from "../../pages/lesson/lesson-detail";
 
 class MyRoute extends React.Component {
 
@@ -33,6 +34,12 @@ class MyRoute extends React.Component {
             <Route
                 path="/course-detail/:courseid"
                 element={<CourseDetail />}
+            />
+
+            // LessonDetail
+            <Route
+                path="/lesson-detail/:lessonid"
+                element={<LessonDetail />}
             />
 
             <Route

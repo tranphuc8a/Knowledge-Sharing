@@ -95,7 +95,7 @@ class ListComment extends React.Component{
         try{
             let rs = await GetAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/knowledge/comment/" + knowledge.id)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (rs.code != 200) throw new Error(rs.message);
             this.state.listComment = rs.data.data;
@@ -126,7 +126,7 @@ class ListComment extends React.Component{
             try {
                 let rs = await PostAPI.getInstance()
                     .setURL(DomainConfig.domainAPI + "/api/knowledge/comment/" + this.knowledge.id)
-                    .setToken(Session.getInstance().fixedToken)
+                    .setToken(Session.getInstance().token)
                     .setBody({content: comment})
                     .execute();
                 if (rs.code == 200){

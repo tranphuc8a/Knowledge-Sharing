@@ -152,7 +152,7 @@ class ScoreBanner extends React.Component{
                 let res = await PutAPI.getInstance()
                     .setURL(DomainConfig.domainAPI + "/api/knowledge/score/" + this.knowledge.id)
                     .setData({score: score})
-                    .setToken(Session.getInstance().fixedToken)
+                    .setToken(Session.getInstance().token)
                     .execute();
                 if (res.code != 200) throw new Error(res.message);
                 Toast.getInstance().success("Đã thêm đánh giá");

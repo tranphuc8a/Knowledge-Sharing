@@ -103,7 +103,7 @@ class CourseRegisterButton extends React.Component{
         try {
             let res = await PostAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/register/" + course.knowledge_id)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             Toast.getInstance().success("Đã đăng ký khóa học thành công");
@@ -124,7 +124,7 @@ class CourseRegisterButton extends React.Component{
         try {
             let res = await PostAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/register/" + course.knowledge_id)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             Toast.getInstance().success("Đã đăng ký khóa học thành công");
@@ -146,7 +146,7 @@ class CourseRegisterButton extends React.Component{
         try {
             let res = await DeleteAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/invite/" + course.requestid)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .setBody({type: okay})
                 .execute();
             if (res.code != 200) throw new Error(res.message);
@@ -169,7 +169,7 @@ class CourseRegisterButton extends React.Component{
         try {
             let res = await DeleteAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/register/" + course.knowledge_id)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             Toast.getInstance().success("Đã rời khóa học");

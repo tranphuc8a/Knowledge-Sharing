@@ -12,13 +12,14 @@ class NavBar extends React.Component{
         }
     }
 
-    componentDidMount(){
-        this.setState({
-            active: this.props.active
-        })
-    }
+    // componentDidMount(){
+    //     this.setState({
+    //         active: this.props.active
+    //     })
+    // }
 
     render(){
+        this.state.active = this.props.active;
         let links = this.props.links;
         return (
             <nav style={this.props.style}>

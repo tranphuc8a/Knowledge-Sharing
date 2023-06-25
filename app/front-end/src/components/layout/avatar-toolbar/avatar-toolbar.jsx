@@ -16,6 +16,7 @@ class AvatarToolbar extends React.Component{
     }
 
     render(){
+        this.formatUser(this.state.user);
         return(
             <div style={{...this.props.style, padding: '0px 18px'}}>
                 <div className="announce" style={{ padding: '0px 12px' }}>
@@ -48,6 +49,12 @@ class AvatarToolbar extends React.Component{
 
     clickBell = (event) => {
         
+    }
+
+    formatUser = (user) => {
+        user.avatar = user.avatar || DomainConfig.domain + "/src/assets/null_user.png";
+
+        return user;
     }
 }
 

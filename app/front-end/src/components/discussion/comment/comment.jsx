@@ -20,7 +20,8 @@ class Comment extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            showTool: false
+            showTool: false,
+            isFull: false
         }
     }
 
@@ -28,8 +29,8 @@ class Comment extends React.Component{
         this.comment = this.props.comment;
         this.comment = this.formatComment(this.comment);
         this.mainUser = Session.getInstance().mainUser;
-        // this.isOwner = (this.mainUser && this.mainUser.email == this.comment.email);
-        this.isOwner = true; // temporal
+        this.isOwner = (this.mainUser && this.mainUser.email == this.comment.email);
+        // this.isOwner = true; // temporal
     }
 
     render(){     
@@ -67,19 +68,52 @@ class Comment extends React.Component{
 
     getComment = () => {
         let comment = this.comment;
-        return <div style={{width: '100%', flexDirection: 'column', borderRadius: '6px', padding: '8px', boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.5)', justifyContent: 'flex-start'}}>
+        return <div style={{width: '100%', flexDirection: 'column', borderRadius: '6px', padding: '16px 24px', boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.5)', justifyContent: 'flex-start'}}>
             <div className="comment-name" 
                 onClick={this.clickUser}
-                style={{ cursor: 'pointer', justifyContent: 'flex-start', fontWeight: '700', lineHeight: '18px', padding: '0px 16px 0px 8px'}}>
+                style={{ cursor: 'pointer', justifyContent: 'flex-start', fontWeight: '700', lineHeight: '18px', textAlign: 'start'}}>
                 {comment.name}
             </div>
-            <div style={{ justifyContent: 'flex-start', alignItems: 'flex-start', textAlign: 'start', fontSize: '10px', padding: '0px 16px 0px 8px'}}>
+            <div style={{ justifyContent: 'flex-start', alignItems: 'flex-start', textAlign: 'start', fontSize: '10px'}}>
                 {comment.time}
             </div>
-            <div style={{ justifyContent: 'flex-start', alignItems: 'flex-start', textAlign: 'justify', padding: '4px 8px 0px 8px' }}>
-                {comment.content}
+            <div style={{ justifyContent: 'flex-start', alignItems: 'flex-start', textAlign: 'justify' }}>
+                {/* {comment.content} */}
+                { this.getContent() }
             </div>
         </div>
+    }
+
+    showMore = (event) => {
+        this.state.isFull = true;
+        this.setState(this.state);
+    }
+    hideText = (event) => {
+        this.state.isFull = false;
+        this.setState(this.state);
+    }
+
+    getContent = () => {
+        let text = this.comment.content;
+        let maxLength = 200;
+        let isOverflow = (text.length > maxLength);
+        
+        if (isOverflow)
+            this.state.tempText = this.state.isFull ? text + " " : text.substring(0, maxLength) + "... ";
+        else this.state.tempText = text;
+
+        return <span className="comment-text" style={{ display: 'inline-block', justifyContent: 'flex-start', alignItems: 'flex-start', textAlign: 'justify' }}>
+            {this.state.tempText}
+            {
+                isOverflow ? (
+                    !this.state.isFull ? (
+                        <span className="comment-show" style={{display: 'inline-block', width: 'auto', cursor: 'pointer', fontWeight: '700'}} onClick={this.showMore} > Xem thêm </span> 
+                    ) : (
+                        <span className="comment-hide" style={{display: 'inline-block', width: 'auto', cursor: 'pointer', fontWeight: '700'}} onClick={this.hideText} > Ẩn bớt </span>
+                    )
+                ) : null
+            }
+        </span>
     }
 
     getTool = () => {
@@ -208,7 +242,7 @@ class Comment extends React.Component{
             try {
                 let res = await PatchAPI.getInstance()
                     .setURL(DomainConfig.domainAPI + "/api/knowledge/comment/" + comment.id)
-                    .setToken(Session.getInstance().fixedToken)
+                    .setToken(Session.getInstance().token)
                     .setBody({newContent: text})
                     .execute();
                 if (res.code != 200) throw new Error(res.message);
@@ -231,7 +265,7 @@ class Comment extends React.Component{
             try {
                 let res = await DeleteAPI.getInstance()
                     .setURL(DomainConfig.domainAPI + "/api/knowledge/comment/" + comment.id)
-                    .setToken(Session.getInstance().fixedToken)
+                    .setToken(Session.getInstance().token)
                     .execute();
                 if (res.code != 200) throw new Error(res.message);
                 Toast.getInstance().success("Đã xóa bình luận");

@@ -44,6 +44,7 @@ export default function (props) {
             localStorage.setItem('email', res.data.email);
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('refreshToken', res.data.refresh_token);
+            localStorage.setItem('mainUser', JSON.stringify(res.data));
 
             // navigate to home
             navigate('/home');

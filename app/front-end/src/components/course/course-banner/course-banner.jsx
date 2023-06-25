@@ -7,6 +7,7 @@ import CourseRegisterButton from '../course-register-button';
 import MyRoute from "../../router/route";
 import DomainConfig from "../../../config/domain-config";
 import CourseContext from "../../../pages/course/course-context";
+import Mark from "../../discussion/mark/mark";
 
 
 class CourseBanner extends React.Component{
@@ -106,10 +107,13 @@ class CourseBanner extends React.Component{
                 width: '100%'
             }} ></div>
             
-            <NavBar style = {{}}
-                active = {this.context.state.navbarIndex}
-                links = {this.links}
-            />
+            <div style={{ justifyContent: 'space-between' }}>
+                <NavBar style = {{}}
+                    active = {this.context.state.navbarIndex}
+                    links = {this.links}
+                />
+                <Mark knowledge={this.course} style={{width: '40px'}} />
+            </div>
 
         </div>;
     }

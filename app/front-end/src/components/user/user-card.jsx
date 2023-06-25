@@ -50,7 +50,7 @@ class UserCard extends React.Component{
                     <div className="user-name" style={{height: '50%', justifyContent: 'flex-start', alignItems: 'flex-start', padding: '4px 8px', lineHeight: '16px'
                         }}
                     >
-                        <p style={{fontSize: '16px', fontWeight: '700', justifyContent: 'flex-start', alignItems: 'flex-start', }}>{user.name}</p>
+                        <p style={{width: 'auto', fontSize: '16px', fontWeight: '700', justifyContent: 'flex-start', alignItems: 'flex-start', }}>{user.name}</p>
                     </div>
                     <div className="user-button" style={{height: '50%', padding: '4px 8px'}}>
                         {this.getButton()}
@@ -65,9 +65,9 @@ class UserCard extends React.Component{
         if (user.relation == null) return null;
         if (user.relation == "MYSELF" || user.relation == "ME") return null;
         if (user.relation == "FOLLOWING" || user.relation == "BOTH") {
-            return <Button text="Hủy theo dõi" onclick={this.unfollow} style={{backgroundColor: 'red', width: '100%'}} />
+            return <Button className="unfollow" text="Hủy theo dõi" onclick={this.unfollow} style={{width: '100%'}} />
         }
-        return <Button text="Theo dõi" onclick={this.follow}  style={{backgroundColor: 'green', width: '100%'}}/>
+        return <Button className="follow" text="Theo dõi" onclick={this.follow}  style={{width: '100%'}}/>
         // Others: FOLLOWED, UNKNOWN, ...
     }
 
@@ -79,7 +79,7 @@ class UserCard extends React.Component{
             let res = await DeleteAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/follow")
                 .setBody({followedEmail: user.email})
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             Toast.getInstance().success("Unfollowed", 1000);
@@ -99,7 +99,7 @@ class UserCard extends React.Component{
             let res = await PostAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/follow")
                 .setBody({followedEmail: user.email})
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             Toast.getInstance().success("Followed user", 1000);
@@ -116,7 +116,7 @@ class UserCard extends React.Component{
         try {
             let res = await GetAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/profile/" + user.email)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             this.state.user = res.data;

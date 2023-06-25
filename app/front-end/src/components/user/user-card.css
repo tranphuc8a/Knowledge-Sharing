@@ -6,6 +6,18 @@
     background-color: rgba(230, 230, 230, 1);
 }
 
+.user-card .user-info .user-button .button:hover {
+    background-color: gray;
+}
+
+.user-card .user-info .user-button .follow {
+    background-color: green;
+}
+
+.user-card .user-info .user-button .unfollow {
+    background-color: red;
+}
+
 .user-card .user-info .user-name p:hover {
     text-decoration: underline;
 }
