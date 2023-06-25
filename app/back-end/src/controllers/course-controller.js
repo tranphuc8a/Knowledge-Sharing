@@ -466,6 +466,14 @@ class CourseController extends BaseController{
 			]);
 
 			let course = courses[0];
+			if (account && (course.relevant == 1 || course.relevant == 2)){
+				let request = await RequestDAO.getInstance().select({
+					"learner_email" : account.email,
+					"courses_id": course.knowledge_id,
+					"type": course.relevant == 1 ? "request" : "invite"
+				});
+				if (request && request.length > 0) course.requestid = request[0].id;
+			}
 			// get list lesson:
 			let lessons = await LessonDAO.getInstance().selectDetailJoinCourses({
 				"courses_lesson.courses_id": course.knowledge_id

@@ -82,16 +82,29 @@ class AuthController {
 
     // Post api/auth/validateToken
     // headers.authorization: token
-    // body: email
     async validateToken(req, res, next) {
         try {
-            if (req.account.email != req.body.email) {
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Wrong email");
-            }
-            Response.response(res, Response.ResponseCode.OK, "Success", req.decoded, "Token hợp lệ");
+            let result = {};
+            let accountPromise = AccountDAO.getInstance().select({ email: req.account.email })
+                .then(account => {
+                    if (account.length > 0) {
+                        result.role = account[0].role;
+                        result.warning = account[0].warning;
+                        result.time = account[0].time;
+                    }
+                });
+            let profilePromise = ProfileDAO.getInstance().select({ email: req.account.email })
+                .then(profile => {
+                    if (profile.length > 0)
+                        result = { ...result, ...profile[0] };
+                });
+
+            await Promise.all([accountPromise, profilePromise]);
+
+            return Response.response(res, Response.ResponseCode.OK, "Success", result, "Token hợp lệ");
         } catch (error) {
             console.log(error);
-            Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
+            return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
         }
     }
 
@@ -131,9 +144,14 @@ class AuthController {
         } catch (error) {
             // expired time
             if (error instanceof jwt.TokenExpiredError) {
-                // delete expired refreshToken
-                let res = await LoginDAO.getInstance().delete({ refresh_token: refreshToken });
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Expired token", refreshToken, "RefreshToken đã hết hạn");
+                try {
+                    // delete expired refreshToken
+                    let result = await LoginDAO.getInstance().delete({ refresh_token: refreshToken });
+                    return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Expired token", refreshToken, "RefreshToken đã hết hạn");
+                } catch (error) {
+                    console.log(error);
+                    return Response.response(res, Response.ResponseCode.SERVER_ERROR, "Server error");
+                }
             }
             // other case of getting token failed
             console.log(error);

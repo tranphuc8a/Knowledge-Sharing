@@ -115,6 +115,7 @@ class ProfileController {
             profile.numLesson = numLesson;
             profile.numFollowers = numFollowers;
             profile.numFollowing = numFollowing;
+            profile.relation = relation;
 
             Response.response(res, Response.ResponseCode.OK, "Success", profile, "Get profile thành công");
         } catch (error) {
