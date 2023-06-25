@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import App from "../../App";
 import Login from "../../pages/login";
 // import './root-style.css';
+import Register from "../../pages/register";
 import CourseDetail from "../../pages/course/course-detail";
 import Home from "../../pages/home/home";
 import Toast from "../../utils/toast";
@@ -30,8 +31,8 @@ class MyRoute extends React.Component {
 
             // CourseDetail
             <Route
-                path = "/course-detail/:courseid"
-                element = { <CourseDetail />}
+                path="/course-detail/:courseid"
+                element={<CourseDetail />}
             />
 
             <Route
@@ -39,7 +40,12 @@ class MyRoute extends React.Component {
                 element={<Login />}
             />
 
-        </Routes> </Router>); 
+            <Route
+                path="/register"
+                element={<Register />}
+            />
+
+        </Routes> </Router>);
     }
 }
 
