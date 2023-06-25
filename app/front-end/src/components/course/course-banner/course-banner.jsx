@@ -30,38 +30,47 @@ class CourseBanner extends React.Component{
     }
 
     preRender(){
-        this.links = [{
-            title: 'Bài học',
-            onClick: () => {
-                this.context.updateNavbarIndex(0)
-            }
+        let [lesson, discussion, member, request, invite] = [{
+                title: 'Bài học',
+                onClick: () => { this.context.updateNavbarIndex(0) }
             }, {
                 title: 'Thảo luận',
-                onClick: () => {
-                    this.context.updateNavbarIndex(1)
-                }
+                onClick: () => { this.context.updateNavbarIndex(1) }
             }, {
                 title: 'Thành viên',
-                onClick: () => {
-                    this.context.updateNavbarIndex(2)
-                }
+                onClick: () => { this.context.updateNavbarIndex(2) }
             }, {
                 title: 'Yêu cầu',
-                onClick: () => {
-                    this.context.updateNavbarIndex(3)
-                }
+                onClick: () => { this.context.updateNavbarIndex(3) }
             }, {
                 title: 'Lời mời',
-                onClick: () => {
-                    this.context.updateNavbarIndex(4)
-                }
+                onClick: () => { this.context.updateNavbarIndex(4) }
             }
         ];
+        switch (this.course.relevant){
+            case 0:
+                this.links = [lesson, discussion];
+                break;
+            case 1:
+                this.links = [lesson, discussion];
+                break;
+            case 2:
+                this.links = [lesson, discussion, member];
+                break;
+            case 3:
+                this.links = [lesson, discussion, member];
+                break;
+            case 4:
+                this.links = [lesson, discussion, member, request, invite];
+                break;
+            default:
+                this.links = [];
+        }
     }
 
     render(){
-        this.preRender();
         this.course = this.context.state.course;
+        this.preRender();
         if (this.course == null) this.course = this.courseDefault;
         return this.courseHeader();
     }
@@ -138,13 +147,13 @@ class CourseBanner extends React.Component{
                 {"Số bài học: " + this.course.numlesson}
             </p>
             {this.courseCost()}
-            <CourseRegisterButton course = {this.course} style ={{margin: '12px'}} />
+            <CourseRegisterButton updateCourse={this.context.getCourse} course = {this.course} style ={{margin: '12px'}} />
     
         </div>
     }
 
     courseCost(){
-        if (this.course.isfee){
+        if (this.course.isfree == 1){
             return <div>
                 {"Khóa học miễn phí"}
             </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import Header from './header/header';
 import Footer from './footer/footer';
 import './layout.css';
+import Toast from '../../utils/toast';
 
 
 class Layout extends React.Component{
@@ -56,6 +57,7 @@ class Layout extends React.Component{
                 <footer className="footer">
                     { this.footer }
                 </footer>
+                {Toast.container}
             </div>
         );
     }

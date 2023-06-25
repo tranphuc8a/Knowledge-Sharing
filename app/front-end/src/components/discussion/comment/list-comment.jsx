@@ -12,6 +12,7 @@ import PostAPI from "../../../services/api/post-api";
 import DomainConfig from "../../../config/domain-config";
 import Session from "../../../session/session";
 import GetAPI from "../../../services/api/get-api";
+import Separate from "../../separate/separate";
 
 
 class ListComment extends React.Component{
@@ -35,6 +36,7 @@ class ListComment extends React.Component{
         
         return (
             <div style={{...style, flexDirection: 'column'}}>
+                <Separate />
                 <div style={{justifyContent: 'space-between', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
                     {"Danh sách bình luận"}
                     <Button text="Thêm bình luận" onclick={this.addComment} />
@@ -48,7 +50,7 @@ class ListComment extends React.Component{
                             </div>
                         ) : (
                             listComment.map((comment, index) => {
-                                return <Comment style = {{margin: '16px 0px'}} comment={comment} key={index}/>
+                                return <Comment updateListComment={this.updateListComment} style = {{margin: '16px 0px'}} comment={comment} key={index}/>
                             })
                         )
                     }
@@ -75,12 +77,12 @@ class ListComment extends React.Component{
                     />
 
                 </div>
-                <div>
+                <div style={{width: '50%'}}>
                     <div>
-                        <Button text="Thêm bình luận" onclick={this.submitComment} style={{width: '150px'}}/>
+                        <Button text="Thêm bình luận" onclick={this.submitComment} style={{width: '150px', margin: '0px 6px'}}/>
                     </div>
                     <div>
-                        <Button text="Hủy bỏ" onclick={this.cancelComment} style={{width: '150px'}} />
+                        <Button text="Hủy bỏ" onclick={this.cancelComment} style={{width: '150px', margin: '0px 6px'}} />
                     </div>
                 </div>
             </div>
@@ -99,7 +101,7 @@ class ListComment extends React.Component{
             this.state.listComment = rs.data.data;
             this.setState(this.state);
         } catch (e){
-            Toast.getInstance().error(e);
+            Toast.getInstance().error(e.message);
         }
     }
 
@@ -133,7 +135,7 @@ class ListComment extends React.Component{
                     Toast.getInstance().success("Đã thêm bình luận");
                 } else throw new Error(rs.message);
             } catch (e) {
-                Toast.getInstance().error(e);
+                Toast.getInstance().error(e.message);
             }
         }
         callApi();

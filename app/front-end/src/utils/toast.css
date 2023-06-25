@@ -2,11 +2,13 @@
 .toast-container{
     /* position: fixed; */
     background-color: rgba(50, 0, 50, 0);
-    /* width: 600px;
+    width: auto;
     height: auto;
+    max-height: 200px;
+    min-width: 200px;
     padding: 16px 32px;
     font-size: 18px;
-    font-weight: 500; */
+    font-weight: 500;
 }
 
 

@@ -11,7 +11,7 @@ class Popup extends React.Component{
     render(){
         let {children, style} = this.props;
         return (
-            <div style={{ ...style, position: 'fixed', width: '100vw', height: '100vh', top: 0, left: 0, zIndex: 10000, backgroundColor: 'rgb(99, 0, 99, 0.75)'}}>
+            <div className="popup" style={{ ...style, position: 'fixed', width: '100vw', height: '100vh', top: 0, left: 0, zIndex: 10000, backgroundColor: 'rgb(99, 0, 99, 0.75)'}}>
                 {children}
             </div>
         );

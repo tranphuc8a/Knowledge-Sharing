@@ -12,6 +12,8 @@ import DomainConfig from '../../config/domain-config';
 import Session from '../../session/session';
 import CourseContext from './course-context';
 import Discussion from '../../components/discussion/discussion';
+import { Toast } from 'bootstrap';
+import ListMember from '../../components/course/list-member/list-member';
 
 class CourseDetail extends React.Component{
     constructor(props){
@@ -20,7 +22,7 @@ class CourseDetail extends React.Component{
         this.course = null;
         this.state = {
             course: null,
-            navbarIndex: 1
+            navbarIndex: 0
         }
         this.count = 0;
     }
@@ -36,11 +38,11 @@ class CourseDetail extends React.Component{
                 throw Error(futureCourse.message);
             futureCourse = futureCourse.data;
             this.formatCourse(futureCourse);
-            this.setState({
-                course: futureCourse
-            })
+            this.state.course = futureCourse;
+            this.state.navbarIndex = 0;
+            this.setState(this.state);
         } catch (e){
-            console.log(e);
+            Toast.getInstance().error(e.message);
         }
     }
 
@@ -56,7 +58,7 @@ class CourseDetail extends React.Component{
         if (this.state.course == null){
             return this.nullCourse();
         }
-        return <Layout header={<Header active={2}/>} >
+        return <Layout header={<Header active={1}/>} >
             <CourseContext.Provider value={this} >
                 <div style={{width: '100%', flexDirection: 'column'}}>
                     <CourseBanner />
@@ -71,7 +73,7 @@ class CourseDetail extends React.Component{
     }
 
     nullCourse(){
-        return <Layout  header={<Header active={2}/>}>
+        return <Layout  header={<Header active={1}/>}>
             <div 
                 style={{
                     justifyContent:'center',
@@ -80,7 +82,8 @@ class CourseDetail extends React.Component{
                     fontSize: '26px',
                     fontWeight: '500',
                     color: 'violet',
-                    fontFamily: 'revert-layer'
+                    fontFamily: 'revert-layer',
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)'
                 }}
             > Không tìm thấy khóa học rùi!!! </div>
         </Layout>
@@ -99,14 +102,18 @@ class CourseDetail extends React.Component{
     }
 
     getContent(navbarIndex){
+        let course = this.state.course;
         switch (navbarIndex){
             case 0: // list lesson
-                return <ListLesson listLesson={this.state.course.listLesson}/>;
+                return <ListLesson 
+                    updateListLesson={(listLesson)=>{course.listLesson = listLesson}} 
+                    listLesson={this.state.course.listLesson}
+                />;
             case 1: // list discussion
                 this.state.course.id = this.state.course.knowledge_id;
                 return <Discussion knowledge = {this.state.course } updateKnowledge={this.getCourse}/>;
             case 2: // list member
-
+                return <ListMember course={course} />;
             case 3: // list request
 
             case 4: // list invite

@@ -50,7 +50,7 @@
     width: 100%;
 }
 
-.ci-info-info *, .ci-cost * {
+.ci-info-info > *, .ci-cost > * {
     width: 100%;
     text-align: start;
     justify-content: flex-start;
@@ -81,7 +81,7 @@
     line-height: 18px;
 }
 
-.course-banner * {
+.course-banner *:not(.popup, .button, .popup *) {
     background-color:rgba(80, 0, 100, 1);
     color: white;
     /* border-radius: 4px; */

@@ -9,6 +9,7 @@ import DomainConfig from "../../../config/domain-config";
 import PutAPI from "../../../services/api/put-api";
 import Toast from "../../../utils/toast";
 import 'react-toastify/dist/ReactToastify.css';
+import Separate from "../../separate/separate";
 
 
 class ScoreBanner extends React.Component{
@@ -26,6 +27,7 @@ class ScoreBanner extends React.Component{
         this.knowledge = knowledge;
         return (
             <div style={{...style, flexDirection: 'column', margin: '0px 0px 36px 0px'}}>  
+                <Separate />
                 <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500'}}>
                     {"Đánh giá bài học"}
                 </div>
@@ -83,11 +85,11 @@ class ScoreBanner extends React.Component{
                         {this.listStar()}
                     </div>
                 </div>
-                <div>
-                    <div>
+                <div style={{width: '80%'}}>
+                    <div style={{margin: '0px 6px'}}>
                         <Button text="Thêm đánh giá" onclick={this.submitScore}/>
                     </div>
-                    <div>
+                    <div style={{margin: '0px 6px'}}>
                         <Button text="Hủy bỏ" onclick={this.cancelScore} />
                     </div>
                 </div>
@@ -152,16 +154,11 @@ class ScoreBanner extends React.Component{
                     .setData({score: score})
                     .setToken(Session.getInstance().fixedToken)
                     .execute();
-                if (res.code != 200){
-                    // show popup faild with code.message
-                    Toast.getInstance().error(res.message, 3000);
-                } else {
-                    // update knowledge info, show popup success
-                    Toast.getInstance().success("Đã thêm đánh giá", 3000);
-                    updateKnowledge();
-                }
+                if (res.code != 200) throw new Error(res.message);
+                Toast.getInstance().success("Đã thêm đánh giá");
+                updateKnowledge();
             } catch (e){
-                console.log(e);
+                Toast.getInstance().error(e.message);
             }
         }
         callApi();

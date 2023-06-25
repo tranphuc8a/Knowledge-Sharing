@@ -5,6 +5,10 @@
     padding: 0px 24px;
 }
 
+.item *{
+    text-decoration: none;
+}
+
 .item:hover {
     background-color: gray;
     cursor: pointer;
