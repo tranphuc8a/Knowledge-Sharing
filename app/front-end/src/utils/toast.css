@@ -1,0 +1,42 @@
+
+.toast-container{
+    /* position: fixed; */
+    background-color: rgba(50, 0, 50, 0);
+    width: auto;
+    height: auto;
+    max-height: 200px;
+    min-width: 200px;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+
+
+/* .toast{
+    width: 10000px;
+    background-color: violet;
+}
+
+.toast-success{
+    width: 10000px;
+    background-color: violet;
+}
+
+.toast-info{
+    width: 10000px;
+    background-color: violet;
+}
+
+.toast-warning{
+    width: 10000px;
+    background-color: violet;
+}
+
+.toast-error{
+    width: 10000px;
+    background-color: violet;
+} */
+
+
+  

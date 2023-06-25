@@ -1,0 +1,14 @@
+body * {
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	background-color: white;
+	color: rgba(0, 0, 0, 0.6);
+	font-weight: 400;
+}

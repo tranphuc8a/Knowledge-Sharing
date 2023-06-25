@@ -1,0 +1,98 @@
+.App {
+    background-color: white;
+}
+
+.Auth-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.Auth-form {
+    width: 420px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.Auth-form-content {
+    flex-direction: column;
+    padding-left: 12%;
+    padding-right: 12%;
+}
+
+.Auth-form-title {
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 24px;
+    color: rgb(34, 34, 34);
+    font-weight: 800;
+}
+
+.label {
+    justify-content: start;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(34, 34, 34);
+}
+
+.form-group {
+    flex-direction: column;
+}
+
+.btn-primary {
+    justify-content: start;
+}
+
+.btn-gray {
+    background-color: #f1f1f1;
+    color: #333;
+
+    &:hover {
+        background-color: #adadad;
+        color: #fff;
+    }
+}
+
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #dedddd;
+}
+
+.or-text {
+    width: auto;
+}
+
+.eye-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-size: cover;
+    transition: background-color 0.3s;
+}
+
+.eye-icon.show {
+    background-color: #eee;
+}
+
+.span-icon {
+    width: auto;
+}
+
+.btn-outline-secondary {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.text-hover-gray:hover {
+    background-color: #e7e7e7;
+}

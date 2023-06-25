@@ -1,0 +1,19 @@
+
+.user-card .user-info, 
+.user-card .user-info .user-name, 
+.user-card .user-info .user-name *,
+.user-card .user-info .user-button {
+    background-color: rgba(230, 230, 230, 1);
+}
+
+.user-card .user-info .user-name p:hover {
+    text-decoration: underline;
+}
+
+.user-card .user-info .user-name p {
+    white-space: break-spaces;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+

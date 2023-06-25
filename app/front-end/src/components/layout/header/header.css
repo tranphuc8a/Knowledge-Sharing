@@ -1,0 +1,34 @@
+
+/* css for header */
+
+nav, nav * {
+    height: 100%;
+    width: auto !important;
+}
+
+.item{
+    margin-right: 4px;
+    padding: 0px 12px;
+}
+
+.item:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.item a {
+    height: 90%;
+    /* font-weight: 400; */
+}
+
+.item:hover a{
+    color: violet;
+    border-bottom: solid violet 2px;
+    border-top: solid rgba(0, 0, 0, 0) 2px; 
+}
+
+.header .active {
+    color: violet;
+    border-bottom: solid violet 2px;
+    border-top: solid rgba(0, 0, 0, 0) 2px; 
+}
+

@@ -1,0 +1,19 @@
+
+.button{
+    background-color: violet;
+    width: auto;
+    border-radius: 4px;
+    justify-content:center;
+    align-items: center; 
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 6px 18px;
+    text-align: center;
+}
+
+.button:hover{
+    background-color: gray;
+}
+
