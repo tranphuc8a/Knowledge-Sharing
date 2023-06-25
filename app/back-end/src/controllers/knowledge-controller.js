@@ -44,8 +44,34 @@ class KnowledgeController extends BaseController{
         if (knowledge == null) return false;
         let course = await CoursesDAO.getInstance().getById(knowledge.id);
         if (course) return true; // always able to access course
-        let lsnCtrl = new LessonController();
-        return lsnCtrl.checkAccessible(account, await LessonDAO.getInstance().getById(knowledge.id));
+        return this.checkAccessibleLesson(account, await LessonDAO.getInstance().getById(knowledge.id));
+    }
+
+    async checkAccessibleLesson(account, lesson){
+        try {
+            if (lesson == null) return false;
+            if (lesson.visible == 2) return true;  // public
+            if (account == null) return false;
+            if (lesson.owner_email == account.email) return true; // owner of lesson
+            let owner = await AccountDAO.getInstance().getById(lesson.owner_email);
+            if (lesson.visible == 1){ // default
+                // check follow:
+                let isFollowing = await this.accCtrl.checkAccountFollowAccount(account, owner);
+                if (isFollowing) return true;
+
+                // check register in same courses
+                let csls = await CoursesLessonDAO.getInstance().getByAccountLesson(account.email, lesson.knowledge_id);
+                return csls && (csls.length > 0);
+            }
+            if (lesson.visible == 0){ // private
+                // check register in same courses
+                let csls = await CoursesLessonDAO.getInstance().getByAccountLesson(account.email, lesson.knowledge_id);
+                return csls && (csls.length > 0);
+            }
+            return false;
+        } catch (e) {
+            throw e;
+        }
     }
 
 // middle ware:

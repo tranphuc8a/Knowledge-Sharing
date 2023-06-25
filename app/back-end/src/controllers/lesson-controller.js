@@ -25,6 +25,12 @@ const DateTime = require('../utils/datetime');
 
 
 class LessonController extends BaseController{
+	static instance = null;
+	static getInstance(){
+		if (this.instance == null) this.instance = new LessonController();
+		return this.instance;
+	}
+
 	constructor(){
 		super();
 		this.crsCtrl = new CourseController();
