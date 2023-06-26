@@ -46,7 +46,9 @@ class LessonCard extends React.Component{
                     {lesson.title}
                 </div>
                 <div className="lesson-author" 
-                    style={{justifyContent: 'flex-start', cursor: 'pointer', width: 'auto'}} >
+                    style={{justifyContent: 'flex-start', cursor: 'pointer', width: 'auto'}} 
+                    onClick={this.clickName}
+                >
                     {lesson.name}
                 </div>
             </div>
@@ -65,6 +67,12 @@ class LessonCard extends React.Component{
 
     clickLesson = (event) => {
         // navigate to lesson detail
+        this.props.router.navigate('/lesson-detail/' + this.props.lesson.knowledge_id);
+    }
+
+    clickName = (event) => {
+        event.stopPropagation();
+        // navigate to profile page
     }
 
 }

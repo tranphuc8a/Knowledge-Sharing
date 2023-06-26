@@ -63,7 +63,7 @@ class ListComment extends React.Component{
     commentPopup = () => {
         return <Popup> 
             <div style={{width: '60%', height: 'auto', borderRadius: '6px', flexDirection:'column', padding: '48px 24px'}}>
-                <div style={{flexDirection: 'column'}}>
+                <div style={{flexDirection: 'column', width: '90%'}}>
                     <div style={{fontSize: '24px', fontWeight: '500'}}>
                         {"Thêm bình luận"}
                         <AiOutlineReload style={{fill:"violet", width: '40px', margin: '0 12px', cursor:'pointer'}} 
@@ -71,7 +71,7 @@ class ListComment extends React.Component{
                         />
                     </div>
                     <TextField 
-                        style={{ margin: '32px', padding: '0px 48px' }} 
+                        style={{ margin: '32px', padding: '0px 24px' }} 
                         onchange={(text) => {this.state.comment = text; this.setState(this.state)}} 
                         value={this.state.comment} 
                     />
@@ -79,10 +79,10 @@ class ListComment extends React.Component{
                 </div>
                 <div style={{width: '50%'}}>
                     <div>
-                        <Button text="Thêm bình luận" onclick={this.submitComment} style={{width: '150px', margin: '0px 6px'}}/>
+                        <Button text="Thêm bình luận" onclick={this.submitComment} style={{width: '150px', fontSize: '14px', margin: '0px 6px'}}/>
                     </div>
                     <div>
-                        <Button text="Hủy bỏ" onclick={this.cancelComment} style={{width: '150px', margin: '0px 6px'}} />
+                        <Button text="Hủy bỏ" onclick={this.cancelComment} style={{width: '150px', fontSize: '14px', margin: '0px 6px'}} />
                     </div>
                 </div>
             </div>

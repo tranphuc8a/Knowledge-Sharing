@@ -32,10 +32,12 @@ class Mark extends React.Component{
     }
 
     unsave = async (event) => {
+        event.stopPropagation();
         await this.markKnowledge(0);
     }
 
     save = async (event) => {
+        event.stopPropagation();
         await this.markKnowledge(1);
     }
 

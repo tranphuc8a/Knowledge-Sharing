@@ -38,6 +38,18 @@ class ScoreBanner extends React.Component{
                         Chưa có đánh giá nào cho bài học
                     </div>
                 }
+                <div>
+                    <Button text="Thêm đánh giá" onclick={this.addScore} 
+                        style={{
+                            margin: '16px',
+                            padding: '12px 32px',
+                            fontSize: '22px'
+                        }}
+                    />
+                </div>
+                { Toast.container }
+                { this.state.isShowPopup ? this.getScorePopup() : null}
+
             </div>
         );
     }
@@ -51,17 +63,6 @@ class ScoreBanner extends React.Component{
                 {"/5"}
                 <AiFillStar style={{fill: 'orange',  width: '36px'}}/>
             </div>
-            <div>
-                <Button text="Thêm đánh giá" onclick={this.addScore} 
-                    style={{
-                        margin: '16px',
-                        padding: '12px 32px',
-                        fontSize: '22px'
-                    }}
-                />
-            </div>
-            { Toast.container }
-            { this.state.isShowPopup ? this.getScorePopup() : null}
         </div>
     }
 
@@ -140,6 +141,7 @@ class ScoreBanner extends React.Component{
     submitScore = (event) => {
         this.state.isShowPopup = false;
         let score = this.state.chooseIndex + 1;
+        // console.log(score);
         this.setState(this.state);
         // call api update:
         // if (Session.getInstance().isAnonymous()){

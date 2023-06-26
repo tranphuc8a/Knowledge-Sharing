@@ -15,6 +15,9 @@ import Toast from '../../utils/toast';
 import PostAPI from '../../services/api/post-api';
 import Session from '../../session/session';
 import DomainConfig from '../../config/domain-config';
+import './lesson-create.css';
+import AutoHeightIframe from '../../components/iframe/auto-height-iframe';
+import FullheightIframe from '../../components/iframe/full-height-iframe';
 
 
 class LessonCreate extends React.Component{
@@ -23,11 +26,12 @@ class LessonCreate extends React.Component{
         this.state = {
             lesson: {
                 title: '',
-                description: '',
                 learning_time: '',
+                content: '',
                 stringCategories: '',
-                fee: '',
-                isfree: 1
+                visible: 0,
+                thumbnail: null,
+                image: null
             },
         }
     }
@@ -37,15 +41,15 @@ class LessonCreate extends React.Component{
         return <Layout header={<Header active={1}/>} >
             <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
                 <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
-                    {"Tạo khóa học mới cho bản thân"}
+                    {"Tạo một bài học mới"}
                 </div>
                 <Separate style={{margin: '0 0 72px 0'}} />
-                { this.inputlessonTitle() }
-                { this.inputlessonThumbnail() }
-                { this.inputlessonDescription() }
-                { this.inputlessonLearningTime() }
-                { this.inputlessonCategories() }
-                { this.inputlessonFee() }
+                { this.inputLessonTitle() }
+                { this.inputLessonThumbnail() }
+                { this.inputLessonLearningTime() }
+                { this.inputLessonCategories() }
+                { this.inputLessonContent() }
+                { this.inputVisible() }
                 { this.submitButton() }
             </div>
         </Layout>;
@@ -63,14 +67,14 @@ class LessonCreate extends React.Component{
         </div>
     }
 
-    inputlessonTitle = () => {
+    inputLessonTitle = () => {
         let inputTitle = <TextInput 
                 onchange={this.onChangeTitle} 
                 value={this.state.lesson.title} 
-                placeholder={"Tiêu đề cho khóa học"}
+                placeholder={"Tiêu đề cho bài học"}
             />
         return <div>
-            { this.leftTitle("Tiêu đề khóa học:") }
+            { this.leftTitle("Tiêu đề bài học:") }
             { this.rightFrame(inputTitle) }
         </div>
     }
@@ -80,7 +84,7 @@ class LessonCreate extends React.Component{
         this.setState(this.state);
     }
 
-    inputlessonThumbnail = () => {
+    inputLessonThumbnail = () => {
         let element = <div style={{width: 'auto', flexDirection: 'column'}}>
             <div>
                 <ImageInput 
@@ -102,24 +106,7 @@ class LessonCreate extends React.Component{
         this.state.lesson.image = image;
     }
 
-    inputlessonDescription = () => {
-        let inputDescription = <TextField 
-            style={{fontSize: '14px'}}
-            onchange={this.onChangeDescription} value={this.state.lesson.description} 
-            placeholder={"Nhập mô tả cho khóa học của bạn"}    
-        />
-        return <div>
-            { this.leftTitle("Mô tả khóa học:") }
-            { this.rightFrame(inputDescription) }
-        </div>
-    }
-
-    onChangeDescription = (text) => {
-        this.state.lesson.description = text;
-        this.setState(this.state);
-    }
-
-    inputlessonLearningTime = () => {
+    inputLessonLearningTime = () => {
         let inputTime = <TextInput 
             style={{width: '50%', fontSize: '16px'}}
             type="number"
@@ -138,14 +125,14 @@ class LessonCreate extends React.Component{
         this.setState(this.state);
     }
 
-    inputlessonCategories = () => {
+    inputLessonCategories = () => {
         let inputDescription = <TextField 
             style={{fontSize: '14px', minHeight: '50px'}}
             onchange={this.onChangeCategories} value={this.state.lesson.stringCategories} 
             placeholder={"Nhập danh sách các categories ngăn cách nhau bởi dấu phẩy\nVí dụ: Math, Physic"}    
         />
         return <div>
-            { this.leftTitle("Categories") }
+            { this.leftTitle("Categories:") }
             { this.rightFrame(inputDescription) }
         </div>
     }
@@ -168,66 +155,79 @@ class LessonCreate extends React.Component{
         }
     }
 
-    inputlessonFee = () => {
+    inputLessonContent = () => {
+        return <div className='edit-lesson-content' style={{flexDirection: 'column'}}>
+            <div>
+                { this.leftTitle("Soạn thảo nội dung bài học:") }
+                { this.rightFrame(null) }
+            </div>
+            <div className='two-frame' style={{alignItems: 'flex-start'}}>
+                <div style={{width: '100%', margin: '4px'}}>
+                    <TextField style={{width: '100%', fontSize: '14px', fontFamily: 'consolas', height: 'auto', minHeight: '200px', margin: '4px'}} 
+                        placeholder={"Hãy trổ tài code html của bạn vào đây nào"}
+                        value={this.state.lesson.content}
+                        onchange={this.changeContent}
+                    />
+                </div>
+                <div style={{width: '100%', margin: '4px', minHeight: '200px', alignItems: 'flex-start'}}>
+                    <FullheightIframe srcDoc={this.state.lesson.content} 
+                        style={{border: 'solid violet 2px', borderRadius: '4px' , margin: '4px', padding: '4px 8px', fontSize: '8px', minHeight: '200px'}} 
+                    />
+                </div>
+            </div>
+        </div>
+    }
+
+    changeContent = (text) => {
+        this.state.lesson.content = text;
+        this.setState(this.state);
+    }
+
+    inputVisible = () => {
         let listOptions = [
             {
-                title: 'Miễn phí',
+                title: 'Private',
+                value: 0
+            }, {
+                title: 'Default',
                 value: 1
             }, {
-                title: 'Có tính phí',
-                value: 0
+                title: 'Public',
+                value: 2
             }
         ];
         let menuOption = <DropdownMenu 
                 style={{width: '50%'}}
                 listOptions = {listOptions}
-                value = {this.state.lesson.isfree}
-                onchange = {this.onChangeFeeFlag}
-            />
-        let inputMoney = <TextInput 
-            style={{width: '50%', fontSize: '16px'}}
-            type="number"
-            onchange={this.onChangeFee} 
-            value={this.state.lesson.fee} 
-            placeholder={"Đơn vị VNĐ"}
-        />
+                value = {this.state.lesson.visible}
+                onchange = {this.onChangeVisible}
+            />;
         return <div style={{flexDirection: 'column'}}>
             <div>
-                { this.leftTitle("Chọn hình thức khóa học") }
+                { this.leftTitle("Chọn loại khóa học:") }
                 { this.rightFrame(menuOption) }
-            </div>
-            <div>
-                { (this.state.lesson.isfree == 0) && (
-                    <div> 
-                        { this.leftTitle("Nhập số tiền") }
-                        { this.rightFrame(inputMoney) }
-                    </div>
-                )}
             </div>
         </div>
     }
 
-    onChangeFeeFlag = (value) => {
-        this.state.lesson.isfree = value;
+    onChangeVisible = (value) => {
+        console.log(value);
+        this.state.lesson.visible = value;
         this.setState(this.state);
     }
-
-    onChangeFee = (value) => {
-        this.state.lesson.fee = value;
-        this.setState(value);
-    }
+   
 
     submitButton = () => {
         return <Button text="Tạo khóa học" 
             style={{fontSize: '20px', margin: '36px'}}
-            onclick={this.creatlesson}
+            onclick={this.createLesson}
              />;
     }
 
-    creatlesson = async (event) => {
+    createLesson = async (event) => {
         try {
-            let res = this.validatelesson();
-            if (!res) throw new Error("Khóa học không hợp lệ");
+            let res = this.validateLesson();
+            if (!res) throw new Error("Bài học không hợp lệ");
             let lesson = this.state.lesson;
             try {
                 // post image to get thumbnail url
@@ -241,19 +241,18 @@ class LessonCreate extends React.Component{
                 // post create data
                 let rs = await PostAPI.getInstance()
                     .setToken(Session.getInstance().token)
-                    .setURL(DomainConfig.domainAPI + "/api/lessons")
+                    .setURL(DomainConfig.domainAPI + "/api/lesson/")
                     .setBody({
                         title: lesson.title,
                         learning_time: lesson.learning_time,
-                        description: lesson.description,
-                        isfree: lesson.isfree,
-                        fee: lesson.fee,
+                        content: lesson.content,
+                        visible: lesson.visible,
                         categories: lesson.categories,
                         thumbnail: lesson.thumbnail
                     }).execute();
                 if (rs.code != 200) throw new Error(rs.message);
                 // success navigate to lesson details
-                Toast.getInstance().success("Tạo khóa học thành công");
+                Toast.getInstance().success("Tạo bài học thành công");
                 let lesson_id = rs.data.knowledge_id;
                 this.props.router.navigate('/lesson-detail/' + lesson_id);
             }
@@ -262,19 +261,13 @@ class LessonCreate extends React.Component{
         }
     }
 
-    validatelesson = () => {
+    validateLesson = () => {
         try {
             let lesson = this.state.lesson;
             // check Title
-
             if (!(lesson.title && lesson.title.trim().length > 0))
                 throw new Error("Tiêu đề không được rỗng");
             lesson.title = lesson.title.trim();
-
-            // check description
-            if (!(lesson.description && lesson.description.trim().length > 0))
-                throw new Error("Mô tả không được rỗng");
-            lesson.description = lesson.description.trim();
                 
             // check learning_time
             if (!(lesson.learning_time && lesson.learning_time >= 0))
@@ -285,11 +278,16 @@ class LessonCreate extends React.Component{
             if (!(lesson.categories && lesson.categories.length > 0))
                 throw new Error("Categories không hợp lệ");
             
-            // check fee:
-            if (!lesson.isfree) {
-                if (!(lesson.fee && lesson.fee >= 0))
-                    throw new Error("Thời gian học không hợp lệ");
-            }
+            // check content:
+            if (!(lesson.content && lesson.content.trim().length > 0))
+                throw new Error("Nội dung không được rỗng");
+            lesson.content = lesson.content.trim();
+
+            // check visible
+            let v = lesson.visible;
+            if (!(v != null && (v == 0 || v == 1 || v == 2)))
+                throw new Error("Visible is invalid")
+
             return true;
         } catch (e) {
             Toast.getInstance().error(e.message)

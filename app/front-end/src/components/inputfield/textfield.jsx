@@ -2,6 +2,7 @@
 
 import React from "react";
 import './textfield.css';
+import autosize from "autosize";
 
 class TextField extends React.Component{
     constructor(props){
@@ -11,6 +12,10 @@ class TextField extends React.Component{
         }
     }
 
+    componentDidUpdate() {
+        // this.textarea.focus();
+        autosize(this.textarea);
+    }
 
     shouldComponentUpdate(nextProps, nextState){
         if (nextState != this.state) return true;
@@ -23,7 +28,7 @@ class TextField extends React.Component{
         let { style, onchange, value, placeholder } = this.props;
         this.state.value = value;
 
-        return <textarea style={{...style}} placeholder={placeholder} type="text" className="textfield" onChange={this.onChange} value={this.state.text}/>
+        return <textarea ref={c=>this.textarea=c} style={{...style}} placeholder={placeholder} type="text" className="textfield" onChange={this.onChange} value={this.state.text}/>
     }
 
     onChange = (event) => {
