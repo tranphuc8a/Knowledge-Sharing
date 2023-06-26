@@ -7,6 +7,7 @@ import Register from "../../pages/register";
 import CourseDetail from "../../pages/course/course-detail";
 import Home from "../../pages/home/home";
 import Toast from "../../utils/toast";
+import Profile from "../../pages/profile";
 
 class MyRoute extends React.Component {
 
@@ -43,6 +44,11 @@ class MyRoute extends React.Component {
             <Route
                 path="/register"
                 element={<Register />}
+            />
+
+            <Route
+                path="/profile"
+                element={<Profile />}
             />
 
         </Routes> </Router>);

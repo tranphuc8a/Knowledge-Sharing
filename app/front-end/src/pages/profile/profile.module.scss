@@ -1,0 +1,32 @@
+// .follow-icon:hover {
+//     filter: brightness(0) invert(1);
+//     color: white;
+// }
+
+.btn:hover {
+    color: white !important;
+    background-color: black
+}
+
+.btn:hover .follow-icon {
+    filter: brightness(0) invert(1);
+}
+
+.nav-pills {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --bs-nav-pills-border-radius: var(--bs-border-radius);
+    --bs-nav-pills-link-active-color: #fff;
+    --bs-nav-pills-link-active-bg: #1a1b1c;
+    // --bs-nav-pills-link-active-bg: violet;
+}
+
+.nav-link {
+    color: rgb(104, 104, 104);
+    transition: background-color 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: #d6d6d6;
+    color: violet;
+    /* Màu xám nhạt khi hover vào */
+}
