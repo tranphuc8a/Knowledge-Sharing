@@ -26,7 +26,6 @@ class TextInput extends React.Component{
         try {
             if (this.props.onchange){
                 this.props.onchange(text);
-                // console.log(text);
             }
         } catch (e) {
             throw e;

@@ -32,7 +32,6 @@ class LessonDetail extends React.Component{
                 .setURL(DomainConfig.domainAPI + '/api/lesson/detail/' + this.lessonid)
                 .setToken(Session.getInstance().token)
                 .execute();
-            // console.log(futureLesson);
             if (futureLesson.code >= 300 || futureLesson.code < 200)
                 throw Error(futureLesson.message);
             futureLesson = futureLesson.data;
@@ -108,9 +107,6 @@ class LessonDetail extends React.Component{
     }
 
     updateNavbarIndex(index){
-        // this.state.navbarIndex = 0;
-        // this.setState(this.state);
-        console.log("index");
         this.props.router.setSearchParams({index: index});
         this.state.navbarIndex = index;
         this.setState(this.state);

@@ -34,7 +34,6 @@ class DropdownMenu extends React.Component{
         try {
             if (this.props.onchange){
                 this.props.onchange(value);
-                // console.log(value);
             }
         } catch (e) {
             throw e;

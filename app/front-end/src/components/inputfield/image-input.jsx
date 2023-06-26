@@ -80,13 +80,11 @@ class ImageInput extends React.Component{
 
     onChange = (event) => {
         let image = event.target.files[0];
-        // console.log(image);
         this.setSelectedImage(image);
 
         try {
             if (this.props.onchange){
                 this.props.onchange(image);
-                // console.log(text);
             }
         } catch (e) {
             throw e;

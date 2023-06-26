@@ -38,7 +38,6 @@ class CourseDetail extends React.Component{
                 .setURL(DomainConfig.domainAPI + '/api/courses/detail/' + this.courseid)
                 .setToken(Session.getInstance().token)
                 .execute();
-            // console.log(futureCourse);
             if (futureCourse.code >= 300 || futureCourse.code < 200)
                 throw Error(futureCourse.message);
             futureCourse = futureCourse.data;
@@ -98,9 +97,7 @@ class CourseDetail extends React.Component{
         try {
             if (course == null) return;
             course.thumbnail = course.thumbnail || DomainConfig.domain + "/src/assets/knowledge-icon.jpg";
-            console.log(course.thumbnail);
-            course.thumbnail = decodeURI(course.thumbnail);
-            console.log(course.thumbnail);
+            // course.thumbnail = decodeURI(course.thumbnail);
             course.score = course.score ? Number(course.score).toFixed(1) : "Chưa có đánh giá";
             course.relevant = course.relevant || 0;
             course.isMark = course.isMark || 0;

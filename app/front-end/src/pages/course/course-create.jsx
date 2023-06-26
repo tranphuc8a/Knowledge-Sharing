@@ -101,7 +101,6 @@ class CourseCreate extends React.Component{
 
     onChangeThumbnail = (image) => {
         this.state.course.image = image;
-        console.log("Readed image");
     }
 
     inputCourseDescription = () => {
