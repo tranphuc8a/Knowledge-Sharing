@@ -7,8 +7,15 @@ class DropdownMenu extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            value: null
+            value: props.value
         }
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        if (nextState != this.state) return true;
+        let curProps = {...this.props};
+        curProps.value = this.state.value;
+        return nextProps != curProps;
     }
 
     render(){

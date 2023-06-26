@@ -9,6 +9,7 @@ import Toast from "../../utils/toast";
 import MyMutex from "../../utils/mutex";
 import DeleteAPI from "../../services/api/delete-api";
 import Popup from "../popup/popup";
+import withRouter from "../router/withRouter";
 
 class CourseRegisterButton extends React.Component{
     constructor(props){
@@ -183,9 +184,10 @@ class CourseRegisterButton extends React.Component{
 
     updateCourse = (event) => {
         // navigate to update course page
+        this.props.router.navigate('/course-update/' + this.props.course.knowledge_id);
     }
 
 }
 
-export default CourseRegisterButton;
+export default withRouter(CourseRegisterButton);
 

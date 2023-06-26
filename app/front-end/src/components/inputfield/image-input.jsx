@@ -38,19 +38,23 @@ class ImageInput extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            selectedImage: props.src
+            src: props.src,
+            selectedImage: null
         }
     }
 
     shouldComponentUpdate(nextProps, nextState){
-        return nextState != this.state;
+        if (nextState != this.state) return true;
+        let curProps = {...this.props};
+        curProps.src = this.state.src;
+        return nextProps != curProps;
     }
 
     render(){
         let { style, onchange } = this.props;
         
-        let { selectedImage } = this.state;
-        let src = selectedImage ? URL.createObjectURL(selectedImage) : DomainConfig.domain + "/src/assets/knowledge-icon.jpg";
+        let src = this.state.src;
+        src = src || (DomainConfig.domain + "/src/assets/knowledge-icon.jpg");
 
         return (
             <div style={{ width: '150px', height: '150px', borderRadius: '50%', overflow: 'hidden', border: '1px violet solid', ...style}}>  
@@ -75,6 +79,7 @@ class ImageInput extends React.Component{
 
     setSelectedImage = (image) => {
         this.state.selectedImage = image;
+        this.state.src = URL.createObjectURL(image);
         this.setState(this.state);
     }
 
@@ -84,7 +89,7 @@ class ImageInput extends React.Component{
 
         try {
             if (this.props.onchange){
-                this.props.onchange(image);
+                this.props.onchange(image, this.state.src);
             }
         } catch (e) {
             throw e;

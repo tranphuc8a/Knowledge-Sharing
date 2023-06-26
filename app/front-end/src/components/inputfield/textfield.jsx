@@ -7,13 +7,21 @@ class TextField extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            text: ""
+            text: props.value
         }
+    }
+
+
+    shouldComponentUpdate(nextProps, nextState){
+        if (nextState != this.state) return true;
+        let curProps = {...this.props};
+        curProps.value = this.state.text;
+        return nextProps != curProps;
     }
 
     render(){
         let { style, onchange, value, placeholder } = this.props;
-        this.state.text = value;
+        this.state.value = value;
 
         return <textarea style={{...style}} placeholder={placeholder} type="text" className="textfield" onChange={this.onChange} value={this.state.text}/>
     }
