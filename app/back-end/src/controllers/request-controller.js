@@ -219,7 +219,7 @@ class RequestController extends BaseController{
 			if (courseid == null){ // get list requesting
 				let requests = await RequestDAO.getInstance().selectDetailRequest({
 					learner_email: account.email
-				}, ["request.id as id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "request.time as time"], 
+				}, ["request.id as id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "type", "request.time as time"], 
 				pagination);
 				return this.success("Success", requests);
 			} else { // get list requested of course
@@ -231,7 +231,7 @@ class RequestController extends BaseController{
 
 				let requests = await RequestDAO.getInstance().selectDetailRequest({
 					courses_id: courseid
-				}, ["request.id as id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "request.time as time"], 
+				}, ["request.id as id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "type", "request.time as time"], 
 				pagination);
 
 				if (requests == null) return this.serverError();
@@ -262,7 +262,7 @@ class RequestController extends BaseController{
 			if (courseid == null){ // get list invited
 				let requests = await RequestDAO.getInstance().selectDetailInvite({
 					learner_email: account.email
-				}, ["request.id as id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "request.time as time"], 
+				}, ["request.id as id", "email", "name", "avatar", "courses_id", "thumbnail", "type", "title", "request.time as time"], 
 				pagination);
 				return this.success("Success", requests);
 			} else { // get list inviting of a course
@@ -274,7 +274,7 @@ class RequestController extends BaseController{
 					
 				let requests = await RequestDAO.getInstance().selectDetailInvite({
 					courses_id: courseid
-				}, ["request.id as id", "email", "name", "avatar", "courses_id", "thumbnail", "title", "request.time as time"], 
+				}, ["request.id as id", "email", "name", "avatar", "courses_id", "thumbnail", "type", "title", "request.time as time"], 
 				pagination);
 				if (requests == null) return this.serverError();
 				return this.success("Success", requests);

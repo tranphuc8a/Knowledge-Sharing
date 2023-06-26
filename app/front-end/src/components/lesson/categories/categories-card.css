@@ -1,0 +1,18 @@
+
+.category-card{
+    width: auto;
+    background-color: rgba(0, 0, 0, 0.2);
+    margin: 4px 4px;
+    padding: 0px 4px;
+    font-size: 14px;
+    border-radius: 2px;
+    color: black;
+    cursor: pointer;
+    flex-flow: wrap;
+}
+
+.category-card:hover{
+    margin: 0px 2px;
+    padding: 4px 6px;
+    text-decoration: underline;
+}

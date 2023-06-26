@@ -1,0 +1,31 @@
+
+.request-card .request-info, 
+.request-card .request-info .request-name, 
+.request-card .request-info .request-name *,
+.request-card .request-info .request-button{
+    background-color: rgba(230, 230, 230, 1);
+}
+
+.request-card .request-info .request-button .button:hover {
+    background-color: gray;
+}
+
+.request-card .request-info .request-button .follow {
+    background-color: green;
+}
+
+.request-card .request-info .request-button .unfollow {
+    background-color: red;
+}
+
+.request-card .request-info .request-name p:hover {
+    text-decoration: underline;
+}
+
+.request-card .request-info .request-name p {
+    white-space: break-spaces;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+

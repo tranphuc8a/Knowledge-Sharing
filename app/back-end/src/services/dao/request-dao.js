@@ -61,8 +61,7 @@ class RequestDAO{
                     join profile on request.learner_email = profile.email
                     join knowledge on request.courses_id = knowledge.id
                     where type = 'request'
-                        ${wheres != null ? "AND " + sql : ""} ${SQLUtils.getPagination(pagination)};`;
-                        
+                        ${wheres != null ? "AND " + sql : ""} ${SQLUtils.getPagination(pagination)};`; 
             let [res] = await this.conn.query(sql, values);
             return res;     
         } catch(e){

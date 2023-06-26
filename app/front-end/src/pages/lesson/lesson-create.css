@@ -1,0 +1,15 @@
+
+
+@media (max-width: 2000px) {
+    .edit-lesson-content .two-frame{
+        flex-direction: row;
+    }
+}
+
+@media (max-width: 1100px) {
+    .edit-lesson-content .two-frame{
+        flex-direction: column;
+    }
+}
+
+

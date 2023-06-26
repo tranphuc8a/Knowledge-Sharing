@@ -13,12 +13,15 @@ class Session{
         this.observers = [];
         try {
             this.fixedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRyYW5waHVjOGFAZ21haWwuY29tIiwiaWF0IjoxNjg3NTc5NDg5LCJleHAiOjE2ODg0NDM0ODl9.FmPplgbPmt8PPNCTk5q3Ok2MaQz5WBlNnMhsk0MECZA"
-            this.mainUser = null;
+            this.mainUser = JSON.parse(localStorage.getItem("mainUser"));
             this.token = localStorage.getItem("token");
             this.refreshToken = localStorage.getItem("refreshToken");
             // to set data to storage: localStorage.setItem("key", "value")
             if (this.token != null)
                 this.validateToken();
+            else {
+                this.mainUser = null;
+            }
         } catch (e){
             throw e;
         }
@@ -32,6 +35,7 @@ class Session{
                 .execute();
             if (res.data == null) return;
             this.mainUser = res.data;
+            localStorage.setItem('mainUser', JSON.stringify(this.mainUser));
             this.notify();
         } catch (e){
             throw e;
