@@ -8,6 +8,7 @@ import NavBar from "../../navbar/navbar";
 import Mark from "../../discussion/mark/mark";
 import Session from "../../../session/session";
 import Button from "../../button/button";
+import withRouter from "../../router/withRouter";
 
 
 
@@ -144,9 +145,9 @@ class LessonBanner extends React.Component{
     }
 
     clickUpdateButton = (event) => {
-
+        this.props.router.navigate('/lesson-update/' + this.context.state.lesson.knowledge_id);
     }
 }
 
 
-export default LessonBanner;
+export default withRouter(LessonBanner);
