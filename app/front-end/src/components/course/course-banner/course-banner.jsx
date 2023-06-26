@@ -22,7 +22,7 @@ class CourseBanner extends React.Component{
             description: 'Bài học rất hay Bài học rất hay Bài học rất hay Bài học rất hay Bài học rất hay Bài học rất hayBài học rất hay Bài học rất hayBài học rất hay Bài học rất hay Bài học rất hayBài học rất hayBài học rất hayBài học rất hayBài học rất hayBài học rất hayBài học rất hayBài học rất hayBài học rất hayBài học rất hayBài học rất hayBài học rất hayBài học rất hay',
             score: 3.5,
             relative: 1,
-            isfee: 0,
+            isfree: 0,
             fee: 1000000,
             numlesson: 10,
             learning_time: 100,

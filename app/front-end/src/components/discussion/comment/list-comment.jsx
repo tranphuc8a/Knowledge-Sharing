@@ -6,7 +6,7 @@ import Comment from "./comment";
 import Button from "../../button/button";
 import Popup from "../../popup/popup";
 import { AiOutlineReload } from "react-icons/ai";
-import TextField from "../../textfield/textfield";
+import TextField from "../../inputfield/textfield";
 import Toast from "../../../utils/toast";
 import PostAPI from "../../../services/api/post-api";
 import DomainConfig from "../../../config/domain-config";

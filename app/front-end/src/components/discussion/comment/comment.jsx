@@ -7,7 +7,7 @@ import {BiSolidWrench as Wrench, BiSolidTrash as Trash} from 'react-icons/bi';
 import {AiOutlineReload} from 'react-icons/ai';
 import './comment.css';
 import Popup from "../../popup/popup";
-import TextField from "../../textfield/textfield";
+import TextField from "../../inputfield/textfield";
 import Button from "../../button/button";
 import Toast from "../../../utils/toast";
 import PatchAPI from "../../../services/api/patch-api";

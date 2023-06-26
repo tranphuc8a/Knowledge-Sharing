@@ -1,9 +1,9 @@
 
 
 import React from "react";
-import './textfield.css';
+import './text-input.css';
 
-class TextField extends React.Component{
+class TextInput extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -12,12 +12,10 @@ class TextField extends React.Component{
     }
 
     render(){
-        let { style, onchange, value } = this.props;
+        let { style, onchange, value, placeholder, type } = this.props;
         this.state.text = value;
 
-        return <div style={{...style}}>
-            <textarea type="text" className="textfield" onChange={this.onChange} value={this.state.text}/>
-        </div>
+        return <input style={style} placeholder={placeholder} type={ type || "text"} className="text-input" onChange={this.onChange} value={this.state.text}/>;
     }
 
     onChange = (event) => {
@@ -36,4 +34,4 @@ class TextField extends React.Component{
     }
 }
 
-export default TextField;
+export default TextInput;

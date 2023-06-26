@@ -1,0 +1,37 @@
+
+.dropdownMenu {
+    width: 100%;
+    padding: 12px 12px;
+    margin: 8px 0px;
+    box-sizing: border-box;
+    border: 2px solid;
+    border-radius: 4px;
+    font-weight: 500;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    outline: none;
+}
+
+.dropdownMenu:focus{
+    border: 2px solid violet;
+}
+
+.dropdownOption {
+    width: 100%;
+    padding: 12px 12px;
+    margin: 8px 0px;
+    box-sizing: border-box;
+    border: 2px solid;
+    border-radius: 4px;
+    font-weight: 500;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    outline: none;
+}
+
+
+
+
+
