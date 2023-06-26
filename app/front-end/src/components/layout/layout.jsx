@@ -4,11 +4,13 @@ import Header from './header/header';
 import Footer from './footer/footer';
 import './layout.css';
 import Toast from '../../utils/toast';
+import Session from '../../session/session';
 
 
 class Layout extends React.Component{
     constructor(props){
-        super(props);   
+        super(props); 
+        Session.getInstance();
         this.state = {
             header: {
                 style: {}

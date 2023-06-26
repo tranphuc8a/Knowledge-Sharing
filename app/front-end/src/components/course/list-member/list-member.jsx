@@ -48,7 +48,7 @@ class ListMember extends React.Component{
         try {
             let res = await GetAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/members/" + course.knowledge_id)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             this.state.listMember = res.data.data;

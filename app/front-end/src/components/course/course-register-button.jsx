@@ -9,6 +9,7 @@ import Toast from "../../utils/toast";
 import MyMutex from "../../utils/mutex";
 import DeleteAPI from "../../services/api/delete-api";
 import Popup from "../popup/popup";
+import withRouter from "../router/withRouter";
 
 class CourseRegisterButton extends React.Component{
     constructor(props){
@@ -103,7 +104,7 @@ class CourseRegisterButton extends React.Component{
         try {
             let res = await PostAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/register/" + course.knowledge_id)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             Toast.getInstance().success("Đã đăng ký khóa học thành công");
@@ -124,7 +125,7 @@ class CourseRegisterButton extends React.Component{
         try {
             let res = await PostAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/register/" + course.knowledge_id)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             Toast.getInstance().success("Đã đăng ký khóa học thành công");
@@ -146,7 +147,7 @@ class CourseRegisterButton extends React.Component{
         try {
             let res = await DeleteAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/invite/" + course.requestid)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .setBody({type: okay})
                 .execute();
             if (res.code != 200) throw new Error(res.message);
@@ -169,7 +170,7 @@ class CourseRegisterButton extends React.Component{
         try {
             let res = await DeleteAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/register/" + course.knowledge_id)
-                .setToken(Session.getInstance().fixedToken)
+                .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
             Toast.getInstance().success("Đã rời khóa học");
@@ -183,9 +184,10 @@ class CourseRegisterButton extends React.Component{
 
     updateCourse = (event) => {
         // navigate to update course page
+        this.props.router.navigate('/course-update/' + this.props.course.knowledge_id);
     }
 
 }
 
-export default CourseRegisterButton;
+export default withRouter(CourseRegisterButton);
 

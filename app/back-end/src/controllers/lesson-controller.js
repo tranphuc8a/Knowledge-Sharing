@@ -25,6 +25,12 @@ const DateTime = require('../utils/datetime');
 
 
 class LessonController extends BaseController{
+	static instance = null;
+	static getInstance(){
+		if (this.instance == null) this.instance = new LessonController();
+		return this.instance;
+	}
+
 	constructor(){
 		super();
 		this.crsCtrl = new CourseController();
@@ -235,7 +241,7 @@ class LessonController extends BaseController{
 			let {account} = req;
 			let lesson = new Lesson(req.body);
 			// check params:
-			if (!lesson.title || !lesson.categories || !lesson.learning_time || !lesson.content || !lesson.visible)
+			if (!lesson.title || !lesson.categories || !lesson.learning_time || !lesson.content || lesson.visible == null)
 				return this.badRequest("Params are not invalid");
 			if (lesson.visible != 0 && lesson.visible != 1 && lesson.visible != 2)
 				return this.badRequest("Visible is not invalid");
@@ -244,9 +250,15 @@ class LessonController extends BaseController{
 			lesson.views = 0;
 
 			// insert:
-			let rs = await LessonDAO.getInstance().insert(lesson);
-			if (!rs) return this.serverError();
-			return this.success("Success", rs);
+			let rs1 = await LessonDAO.getInstance().insert(lesson);
+			lesson.id = lesson.knowledge_id = rs1.knowledge_id;
+			let rs2 = await CategoriesDAO.getInstance().insert(lesson);
+
+			
+			if (!rs1 || !rs2) return this.serverError();
+			return this.success("Success", lesson);
+			// if (!rs) return this.serverError();
+			// return this.success("Success", rs);
 		} catch(e){
 			console.log(e);
 			this.serverError(e);

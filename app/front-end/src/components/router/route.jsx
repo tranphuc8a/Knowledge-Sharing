@@ -7,6 +7,10 @@ import Register from "../../pages/register";
 import CourseDetail from "../../pages/course/course-detail";
 import Home from "../../pages/home/home";
 import Toast from "../../utils/toast";
+import LessonDetail from "../../pages/lesson/lesson-detail";
+import CourseCreate from "../../pages/course/course-create";
+import CourseUpdate from "../../pages/course/course-update";
+import LessonCreate from "../../pages/lesson/lesson-create";
 
 class MyRoute extends React.Component {
 
@@ -33,6 +37,30 @@ class MyRoute extends React.Component {
             <Route
                 path="/course-detail/:courseid"
                 element={<CourseDetail />}
+            />
+
+            // LessonDetail
+            <Route
+                path="/lesson-detail/:lessonid"
+                element={<LessonDetail />}
+            />
+
+            // Course create
+            <Route
+                path="/course-create/"
+                element={<CourseCreate />}
+            />
+
+            // Course update
+            <Route
+                path="/course-update/:courseid"
+                element={<CourseUpdate />}
+            />
+
+            // Lesson Create
+            <Route
+                path="/lesson-create/"
+                element={<LessonCreate />}
             />
 
             <Route

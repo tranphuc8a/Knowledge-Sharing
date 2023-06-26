@@ -4,3 +4,8 @@
     text-decoration: underline;
 }
 
+.comment-text .comment-hide:hover, 
+.comment-text .comment-show:hover {
+    text-decoration: underline;
+}
+
