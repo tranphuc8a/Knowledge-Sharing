@@ -6,6 +6,8 @@ import LessonContext from "../../../pages/lesson/lesson-context";
 import DomainConfig from "../../../config/domain-config";
 import NavBar from "../../navbar/navbar";
 import Mark from "../../discussion/mark/mark";
+import Session from "../../../session/session";
+import Button from "../../button/button";
 
 
 
@@ -102,26 +104,48 @@ class LessonBanner extends React.Component{
                         {this.lesson.name} </p>
                 </div>
                 <p className="ci-description">{this.lesson.description}</p>
-                <div className="ci-name" style={{justifyContent: 'flex-start', fontSize: '14px', marginTop: '12px'}}>
+                {/* <div className="ci-name" style={{justifyContent: 'flex-start', fontSize: '14px', marginTop: '12px'}}>
                     <span style={{width: 'auto', marginRight: '4px'}}> Score: </span>
                     <p 
                         style={{width: 'auto'}} > 
                         {this.lesson.score} </p>
-                </div>
+                </div> */}
             </div>
         </div>;
     }
 
 
     CICost(){
-        return <div className="ci-cost">
-            <p> {"Thời gian: " + (this.lesson.learning_time ? (this.lesson.learning_time + " phút") : "Chưa có")} </p>
+        return <div className="ci-cost" style={{paddingRight: '24px'}}>
+            <div style={{justifyContent: 'space-between'}}>
+                <p style={{width: 'auto'}}> Thời gian học: </p>
+                <p style={{width: 'auto'}}> {this.lesson.learning_time ? (this.lesson.learning_time + " phút") : "Chưa có"}</p>
+            </div>
+            <div style={{justifyContent: 'space-between'}}>
+                <p style={{width: 'auto'}}> Thảo luận: </p>
+                <p style={{width: 'auto'}}> {this.lesson.numcmt ? this.lesson.numcmt : "0"}</p>
+            </div>
+            <div style={{justifyContent: 'space-between'}}>
+                <p style={{width: 'auto'}}> Đánh giá: </p>
+                <p style={{width: 'auto'}}> {this.lesson.score}</p>
+            </div>
             {/* Nút chỉnh sửa bài học cho chủ bài học */}
-            {/* <lessonRegisterButton updatelesson={this.context.getlesson} lesson = {this.lesson} style ={{margin: '12px'}} /> */}
-    
+            { this.getUpdateButton() }
         </div>
     }
 
+    getUpdateButton = () => {
+        let lesson = this.lesson;
+        let mainUser = Session.getInstance().mainUser;
+        if (mainUser.email == lesson.owner_email){
+            return <Button text="Chỉnh sửa bài học" onclick={this.clickUpdateButton} style={{width: 'auto', margin: '12px 0px'}} />
+        } 
+        return null;
+    }
+
+    clickUpdateButton = (event) => {
+
+    }
 }
 
 

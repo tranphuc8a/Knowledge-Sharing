@@ -11,4 +11,5 @@ body * {
 	background-color: white;
 	color: rgba(0, 0, 0, 0.6);
 	font-weight: 400;
+	text-align: justify;
 }

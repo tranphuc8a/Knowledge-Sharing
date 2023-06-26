@@ -13,7 +13,7 @@ export default class FullheightIframe extends Component {
     render() {
         return (
             <iframe 
-                style={{maxWidth:640, width:'100%', height:this.state.iFrameHeight, overflow:'visible', ...this.props.style}}
+                style={{width:'100%', height:this.state.iFrameHeight, overflow:'visible', ...this.props.style}}
                 onLoad={() => {
                     const obj = ReactDOM.findDOMNode(this);
                     this.setState({
