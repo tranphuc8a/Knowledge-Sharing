@@ -4,20 +4,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PostAPI from '../../services/api/post-api';
 import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
-import Toast from '../../utils/toast';
 
 export default function (props) {
     const [code, setCode] = useState('');
     const [loading, setLoading] = useState(false); // loading
     const [error, setError] = useState('Hãy check email để nhận mã code'); // errors come
-    const [countDown, setCountDown] = useState(5); // count down for re sending code
+    const [countDown, setCountDown] = useState(60); // count down for re sending code
     const [isCounting, setIsCounting] = useState(true);
 
     const navigate = useNavigate();
 
     // for counting
     useEffect(() => {
-        Toast.getInstance().success("Đã thêm đánh giá", 3000);
         const timerId = setInterval(() => {
             setCountDown(preState => {
                 if (preState > 0)
@@ -51,7 +49,7 @@ export default function (props) {
                 .then(res => {
                     if (res.code == 200) { // success
                         // toast success
-                        Toast.getInstance().success("Đã thêm đánh giá", 3000);
+
                         // navigate to fill form for profile
                         navigate('/login');
                     } else if (res.code == 400 || res.code == 404) { // bad request
@@ -77,7 +75,7 @@ export default function (props) {
             .execute()
             .then(res => {
                 if (res.code == 200) { // success
-                    setCountDown(5);
+                    setCountDown(60);
                     setIsCounting(true);
                 } else if (res.code == 400 || res.code == 404) { // bad request
                     setError(res.message);
