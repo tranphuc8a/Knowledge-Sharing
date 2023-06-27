@@ -95,7 +95,8 @@ class CourseRegisterButton extends React.Component{
         let course = this.course;
         if (course.isfree == 0) { // Khóa học có tính phí
             // CHuyển màn thanh toán
-            // return;
+            this.props.router.navigate('/course-payment/' + course.knowledge_id);
+            return;
         }
         if (this.lockButton.isLocked()) return;
         await this.lockButton.lock();

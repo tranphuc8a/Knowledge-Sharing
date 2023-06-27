@@ -12,6 +12,7 @@ import CourseCreate from "../../pages/course/course-create";
 import CourseUpdate from "../../pages/course/course-update";
 import LessonCreate from "../../pages/lesson/lesson-create";
 import LessonUpdate from "../../pages/lesson/lesson-update";
+import CoursePayment from "../../pages/course/course-payment";
 
 class MyRoute extends React.Component {
 
@@ -56,6 +57,12 @@ class MyRoute extends React.Component {
             <Route
                 path="/course-update/:courseid"
                 element={<CourseUpdate />}
+            />
+
+            // Course payment
+            <Route
+                path="/course-payment/:courseid"
+                element={<CoursePayment />}
             />
 
             // Lesson Create

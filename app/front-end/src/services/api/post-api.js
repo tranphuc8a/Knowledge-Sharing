@@ -19,7 +19,7 @@ class PostAPI extends API{
         catch (e) { throw e }
     }
 
-    async getResult(config){
+    async getResult(){
         try {
             if (this.data == null) this.setData({});
             return await axios.post(this.url, this.data, this.config);

@@ -17,7 +17,7 @@ class PutAPI extends API{
         catch (e) { throw e }
     }
 
-    async getResult(config){
+    async getResult(){
         try {
             return await axios.put(this.url, this.data, this.config);
         } catch (e){
