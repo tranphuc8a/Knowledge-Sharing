@@ -17,6 +17,7 @@ import ListMember from '../../components/course/list-member/list-member';
 import ListRequestCourse from '../../components/request/list-request-course';
 import ListRequestCourseConcrete from '../../components/request/list-request-course-concrete';
 import ListInviteCourseConcrete from '../../components/request/list-invite-course-concrete';
+import Banner from '../../components/layout/banner/banner';
 
 class CourseDetail extends React.Component{
     constructor(props){

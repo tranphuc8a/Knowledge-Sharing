@@ -8,6 +8,7 @@ import MyRoute from "../../router/route";
 import DomainConfig from "../../../config/domain-config";
 import CourseContext from "../../../pages/course/course-context";
 import Mark from "../../discussion/mark/mark";
+import Banner from "../../layout/banner/banner";
 
 
 class CourseBanner extends React.Component{
@@ -79,14 +80,7 @@ class CourseBanner extends React.Component{
     courseHeader(){
         return (
             <div className="course-header">
-                <div className="course-bg" 
-                    style={{
-                        background: "url('" + DomainConfig.domain + "/src/assets/course-bg.png') center center/cover",
-                        height: '33vw'
-                }} >
-                    <div style={{ backgroundColor: 'rgba(50, 0, 50, 0.75)', height: '100%' }}>
-                    </div>
-                </div>
+                <Banner />
 
                 { this.courseBanner() }
             </div>

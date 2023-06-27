@@ -9,6 +9,7 @@ import Mark from "../../discussion/mark/mark";
 import Session from "../../../session/session";
 import Button from "../../button/button";
 import withRouter from "../../router/withRouter";
+import Banner from "../../layout/banner/banner";
 
 
 
@@ -51,14 +52,7 @@ class LessonBanner extends React.Component{
     lessonHeader(){
         return (
             <div className="lesson-header">
-                <div className="lesson-bg" 
-                    style={{
-                        background: "url('" + DomainConfig.domain + "/src/assets/course-bg.png') center center/cover",
-                        height: '33vw'
-                }} >
-                    <div style={{ backgroundColor: 'rgba(50, 0, 50, 0.75)', height: '100%' }}>
-                    </div>
-                </div>
+                <Banner />
 
                 { this.lessonBanner() }
             </div>

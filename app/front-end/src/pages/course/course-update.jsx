@@ -72,6 +72,7 @@ class CourseUpdate extends React.Component{
         let course = this.course;
         course.stringCategories = course.categories.join(', ');
         return <Layout header={<Header active={1}/>} >
+            <Banner />
             <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
                 <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
                     {"Chỉnh sửa khóa học của bạn"}

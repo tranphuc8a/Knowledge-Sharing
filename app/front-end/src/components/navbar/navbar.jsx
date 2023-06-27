@@ -22,7 +22,7 @@ class NavBar extends React.Component{
         this.state.active = this.props.active;
         let links = this.props.links;
         return (
-            <nav style={this.props.style}>
+            <nav className={this.props.className} style={{ flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'flex-start', ...this.props.style}}>
                 {
                     links.map((link, index) => (
                         <li key={index} className={'item'}>

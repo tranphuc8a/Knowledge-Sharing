@@ -12,6 +12,8 @@ import Toast from '../../utils/toast';
 import Separate from '../../components/separate/separate';
 import Button from '../../components/button/button';
 import TextInput from '../../components/inputfield/text-input';
+import Banner from '../../components/layout/banner/banner';
+import PostAPI from '../../services/api/post-api';
 
 
 
@@ -106,6 +108,7 @@ class CoursePayment extends React.Component{
             return this.nullPayment("Không thể tự đăng ký khóa học của mình")
 
         return <Layout header={<Header active={1}/>} >
+            <Banner />
             <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
                 <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
                     {"Thông tin hóa đơn thanh toán khóa học"}
@@ -124,6 +127,7 @@ class CoursePayment extends React.Component{
                 </div>
                 <Separate style={{margin: '36px 0 0 0'}} />
                 { this.courseInfo() }
+                <Separate style={{margin: '0 0 36px 0'}} />
                 { this.verification() }
             </div>
         </Layout>;
@@ -210,7 +214,7 @@ class CoursePayment extends React.Component{
     courseInfo = () => {
         let course = this.state.course;
 
-        return <div style={{flexDirection: 'column', width: '70%', margin: '12px 0px '}}>
+        return <div style={{flexDirection: 'column', width: '70%', margin: '48px 0 24px 0px '}}>
             <div style={{justifyContent: 'flex-start', fontSize: '18px', fontWeight: '700', margin: '0px 0px 12px 0px'}}>
                 {"Thông tin khóa học"}
             </div>
@@ -252,7 +256,7 @@ class CoursePayment extends React.Component{
                     <div style={{width: 'auto', fontWeight: 'bold'}}>
                         {"Giá tiền:"}
                     </div>
-                    <div style={{width: 'auto'}}>
+                    <div style={{width: 'auto', fontWeight: 'bold'}}>
                         {course.fee + " VNĐ"}
                     </div>
                 </div>
@@ -267,34 +271,36 @@ class CoursePayment extends React.Component{
     }
     
     verification = () => {
-        return <div style={{ flexDirection: 'column' }}>
+        return <div style={{ flexDirection: 'column', fontSize: '15px', width: 'auto', minWidth: '500px' }}>
             <div>
-                <div style={{ width: '25%' }}>
-                    {"Nhập số tiền muốn thanh toán"}
+                <div style={{ width: '25%', justifyContent: 'flex-end' }}>
+                    {"Nhập số tiền:"}
                 </div>
-                <div style={{ width: '75%' }}> 
+                <div style={{width: '12px'}}></div>
+                <div style={{ width: '75%', justifyContent:'flex-start' }}> 
                     <TextInput type="number" 
                         value={ this.state.money } 
                         onchange={this.onChangeMoney} 
-                        style={{}}
+                        style={{ fontSize: '15px', width: '100%'}}
                         placeholder="Nhập lại số tiền thanh toán"
                         />
                 </div>
             </div>
             <div style={{ width: '100%' }}>
-                <div style={{ width: '25%' }}>
+                <div style={{ width: '25%', justifyContent: 'flex-end'  }}>
                     {"Nhập mật khẩu: "}
                 </div>
-                <div style={{ width: '75%' }}>
+                <div style={{width: '12px'}}></div>
+                <div style={{ width: '75%', justifyContent:'flex-start' }}>
                     <TextInput type="password" 
                         value={ this.state.password } 
                         onchange={this.onChangePassword} 
-                        style={{}}
+                        style={{ fontSize: '15px', width: '100%' }}
                         placeholder="Nhập mật khẩu xác thực"
                         />
                 </div>
             </div>
-            <div>
+            <div style={{margin: '36px'}}>
                 <Button text="Thanh toán khóa học" onclick={this.payCourse} ></Button>
             </div>
         </div>
@@ -317,12 +323,37 @@ class CoursePayment extends React.Component{
              />;
     }
 
-    payCourse = () => {
+    payCourse = async () => {
+        try {
+            if (! this.validatePayment() ) return;
+            let { learner, course, owner, money, password} =  this.state;
+
+            let res = await PostAPI.getInstance()
+                .setURL(DomainConfig.domainAPI + "/api/courses/pay/" + course.knowledge_id)
+                .setToken(Session.getInstance().token)
+                .setData({
+                    money: money,
+                    password: password
+                })
+                .execute();
+            if (res.code != 200) throw new Error(res.message);
+            Toast.getInstance().success("Thanh toán khóa học thành công");
+            this.props.router.navigate('/course-detail/' + course.knowledge_id);
+        } catch (e) {
+            Toast.getInstance().error(e.message);
+        }
 
     }
 
     validatePayment = () => {
         try {
+            let {money, password} = this.state;
+            
+            if (!(money && money > 0))
+                throw new Error("Số tiền không hợp lệ");
+
+            if (!(password && password.length > 0))
+                throw new Error("Mật khẩu không hợp lệ");
 
             return true;
         } catch (e) {
