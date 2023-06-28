@@ -36,6 +36,7 @@ class CourseCreate extends React.Component{
     render(){
         let { style } = this.props;
         return <Layout header={<Header active={1}/>} >
+            <Banner />
             <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
                 <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
                     {"Tạo khóa học mới cho bản thân"}

@@ -17,7 +17,7 @@ class GetAPI extends API{
         catch (e) { throw e }
     }
 
-    async getResult(config){
+    async getResult(){
         try {
             return await axios.get(this.url, this.config);
         } catch (e){

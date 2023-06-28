@@ -54,7 +54,8 @@ module.exports = {
         detail: '/api/lesson/detail/:lessonid',
         list: '/api/lesson/list',
         update: '/api/lesson/:lessonid',
-        course: '/api/courses/lesson/:courseid/:lessonid'
+        course: '/api/courses/lesson/:courseid/:lessonid',
+        courseList: '/api/courses/listLesson/:courseid',
     },
     search: {
         account: '/api/search/account/:key',

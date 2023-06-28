@@ -327,7 +327,7 @@ class KnowledgeController extends BaseController{
             file: image
         });
         if (rs == null) return this.serverError();
-        this.success("Success", {
+            return this.success("Success", {
             url: rs
         });
     }

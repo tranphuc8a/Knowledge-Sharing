@@ -24,7 +24,7 @@ class RequestController extends BaseController{
 			next();
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
     }
 
@@ -72,7 +72,7 @@ class RequestController extends BaseController{
 			}
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -110,7 +110,7 @@ class RequestController extends BaseController{
 			return this.serverError("Pass if else");
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
     }
 
@@ -157,7 +157,7 @@ class RequestController extends BaseController{
 			}
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -194,7 +194,7 @@ class RequestController extends BaseController{
 			return this.badRequest("type is not valid");
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
     }
 
@@ -239,7 +239,7 @@ class RequestController extends BaseController{
 			}
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -281,7 +281,7 @@ class RequestController extends BaseController{
 			}
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 }

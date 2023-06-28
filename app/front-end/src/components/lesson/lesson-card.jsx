@@ -53,7 +53,7 @@ class LessonCard extends React.Component{
                 </div>
             </div>
             <div className="li-mark" style={{width: 'auto', height: '100%'}}>
-                <Mark knowledge={lesson} style={{width: '45px'}} />
+                <Mark knowledge={lesson} style={{width: '100%'}} />
             </div>
         </div>
     }

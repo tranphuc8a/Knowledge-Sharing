@@ -32,3 +32,14 @@ nav, nav * {
     border-top: solid rgba(0, 0, 0, 0) 2px; 
 }
 
+@media (max-width: 2000px) {
+    .header .header-navbar {
+        visibility: visible;
+    }
+}
+
+@media (max-width: 760px) {
+    .header .header-navbar {
+        visibility: hidden;
+    }
+}

@@ -13,7 +13,7 @@ class Header extends React.Component{
 
     render(){
         return (
-            <>
+            <div className="header">
                 <Logo 
                     height = {'90%'}
                     style = {{
@@ -24,6 +24,7 @@ class Header extends React.Component{
                 />
                 <div style={{ justifyContent: 'space-between'}}>
                     <NavBar
+                        className={"header-navbar"}
                         active = {this.props.active}
                         links = {[{
                             url: '/home',
@@ -44,7 +45,7 @@ class Header extends React.Component{
                         padding: '0px 12px'
                     }} />
                 </div>
-            </>
+            </div>
         );
     }
 }

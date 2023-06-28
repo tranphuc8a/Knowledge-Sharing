@@ -17,7 +17,7 @@ class DeleteAPI extends API{
         catch (e) { throw e }
     }
 
-    async getResult(config){
+    async getResult(){
         try {
             return await axios.delete(this.url, this.config);
         } catch (e){

@@ -1,29 +1,15 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import PostAPI from '../../services/api/post-api';
-import Spinner from 'react-bootstrap/Spinner';
-import { useNavigate } from 'react-router-dom';
 import styles from './register.module.scss';
 import ValidateCode from './validateCode';
 import Account from './account';
-import Toast from '../../utils/toast';
 
 export default function (props) {
     // email and password state
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
-    const [loading, setLoading] = useState(false); // loading
-    const [error, setError] = useState(''); // errors come
-    const [showPassword, setShowPassword] = useState(false); // show/hide password
-    const [period, setPeriod] = useState(2);
-
-    console.log(period);
-
-    // for navigating screen
-    const navigate = useNavigate();
-
-
+    const [period, setPeriod] = useState(1);
 
     return (
         <div className={styles['Auth-form-container']}>
@@ -35,9 +21,12 @@ export default function (props) {
                 <form className={styles['Auth-form']}>
                     {
                         (period == 2) ? (
-                            <ValidateCode email={email} password={password} setPeriod={setPeriod}>
+                            <div>
+                                <ValidateCode email={email} password={password} setPeriod={setPeriod}>
+                                </ValidateCode>
+                            </div>
 
-                            </ValidateCode>
+
                         ) : period == 1 ? (
                             <Account email={email} password={password} rePassword={rePassword}
                                 setEmail={setEmail} setPassword={setPassword} setRePassword={setRePassword}
@@ -45,7 +34,7 @@ export default function (props) {
 
                             </Account>
                         ) : (
-                            <h1>còn lại</h1>
+                            <h1>Empty screen</h1>
                         )
                     }
 

@@ -17,7 +17,7 @@ class PatchAPI extends API{
         catch (e) { throw e }
     }
 
-    async getResult(config){
+    async getResult(){
         try {
             return await axios.patch(this.url, this.data, this.config);
         } catch (e){

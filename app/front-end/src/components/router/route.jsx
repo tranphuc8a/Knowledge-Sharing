@@ -7,10 +7,14 @@ import Register from "../../pages/register";
 import CourseDetail from "../../pages/course/course-detail";
 import Home from "../../pages/home/home";
 import Toast from "../../utils/toast";
+import Profile from "../../pages/profile";
 import LessonDetail from "../../pages/lesson/lesson-detail";
 import CourseCreate from "../../pages/course/course-create";
 import CourseUpdate from "../../pages/course/course-update";
 import LessonCreate from "../../pages/lesson/lesson-create";
+import LessonUpdate from "../../pages/lesson/lesson-update";
+import CoursePayment from "../../pages/course/course-payment";
+import CourseManage from "../../pages/course/course-manage";
 
 class MyRoute extends React.Component {
 
@@ -57,10 +61,28 @@ class MyRoute extends React.Component {
                 element={<CourseUpdate />}
             />
 
+            // Course payment
+            <Route
+                path="/course-payment/:courseid"
+                element={<CoursePayment />}
+            />
+
+            // Course manage
+            <Route
+                path="/course-manage/:courseid"
+                element={<CourseManage />}
+            />
+
             // Lesson Create
             <Route
                 path="/lesson-create/"
                 element={<LessonCreate />}
+            />
+
+            // Lesson Update
+            <Route
+                path="/lesson-update/:lessonid"
+                element={<LessonUpdate />}
             />
 
             <Route
@@ -71,6 +93,11 @@ class MyRoute extends React.Component {
             <Route
                 path="/register"
                 element={<Register />}
+            />
+
+            <Route
+                path="/profile"
+                element={<Profile />}
             />
 
         </Routes> </Router>);

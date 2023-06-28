@@ -10,7 +10,7 @@ class API{
             this.methods = ["GET", "POST", "DELETE", "PUT", "PATCH"];
             this.setURL('');
             this.setMethod('GET');
-            this.setData(null);
+            this.setData({});
             this.setHeaders({
                 'Content-Type' : 'application/json;charset=utf-8'
             });
@@ -98,6 +98,19 @@ class API{
         throw new Error("Abstract methods");
     }
 
+    resetData(){
+        try {
+            this.setURL('');
+            this.setMethod('GET');
+            this.setData({});
+            this.setHeaders({});
+            this.setContentType('application/json;charset=utf-8');
+            this.setParams({});
+        } catch (e) {
+            throw e;
+        }
+    }
+
     async execute(config){ // template method
         try {
             this.prepareData();
@@ -106,6 +119,8 @@ class API{
             let res = await this.getResult();
             console.log("Result of " + this.method + " " + this.config.url + ":");
             console.log(res.data);
+            if (res.data.message == "Expired token") throw new ExpiredToken();
+            this.resetData();
             return res.data;
         } catch (e){
             if (e instanceof ExpiredToken){
@@ -132,7 +147,7 @@ class API{
         try {
             return await axios.post(
                 DomainConfig.domainAPI + "/api/auth/refreshToken", // url 
-                null, // data
+                {}, // data
                 { // config
                     headers: {
                         authorization: Session.getInstance().refreshToken
@@ -157,7 +172,7 @@ export default API;
  *      - data: same above  (setData, setBody)
  *      - headers: json object of request header:  (setHeader)
  *          + authorization  (setToken)
- *          + 'Content-Type': 'application/json', 'form-data', ...
+ *          + 'Content-Type': 'application/json', 'form-data', ... (setContentType)
  *      - params: object of params (setParams)
  *      - timeout: ms
  */

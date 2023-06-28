@@ -147,7 +147,7 @@ class LessonController extends BaseController{
 			next();
 		} catch (e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 	
@@ -192,7 +192,7 @@ class LessonController extends BaseController{
 			return this.success("Success", lesson);
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -228,7 +228,7 @@ class LessonController extends BaseController{
 			return this.badRequest("Params are not invalid");
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -261,7 +261,7 @@ class LessonController extends BaseController{
 			// return this.success("Success", rs);
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -277,7 +277,7 @@ class LessonController extends BaseController{
 			if (account.email != course.owner_email || account.email != lesson.owner_email)
 				return this.info("Not permission");
 
-			if (!(offset && offset >= 0)) return this.badRequest("Offset is invalid");
+			if (!(offset != null && offset >= 0)) return this.badRequest("Offset is invalid");
 
 			// check lesson is in course:
 			let csls = await CoursesLessonDAO.getInstance().select({
@@ -297,7 +297,7 @@ class LessonController extends BaseController{
 			return this.success("Success", csls);
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -328,7 +328,7 @@ class LessonController extends BaseController{
 			return this.success();
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -344,7 +344,7 @@ class LessonController extends BaseController{
 			if (account.email != course.owner_email || account.email != lesson.owner_email)
 				return this.info("Not permission");
 
-			if (!(offset && offset >= 0)) return this.badRequest("Offset is invalid");
+			if (!(offset != null && offset >= 0)) return this.badRequest("Offset is invalid");
 
 			// check lesson is in course:
 			let csls = await CoursesLessonDAO.getInstance().select({
@@ -364,7 +364,53 @@ class LessonController extends BaseController{
 			return this.success();
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
+		}
+	}
+
+	// patch api/courses/list-lesson/:courseid
+	// header: token
+	// body: listLesson: [{lessonid, offset}]
+	async updateListLessonInCourse(req, res, next){
+		try {
+			this.updateMiddleWare(req, res, next);
+			let { account, course } = req;
+			let { listLesson } = req.body;
+			// check permission:
+			if (account.email != course.owner_email)
+				return this.info("Not permission");
+
+			for (let index = 0; index < listLesson.length; index++){
+				let lesson = listLesson[index];
+				if (!(lesson.offset != null && lesson.offset >= 0)) return this.badRequest("Offset is invalid");
+				// if (account.email != lesson.owner_email) return this.info("Not permission");
+			}
+
+			// check lesson is in course:
+			let csls = await CoursesLessonDAO.getInstance().select({
+				courses_id: course.knowledge_id
+			});
+			let listLessonId = csls.map(cl => cl.lessonid);
+			listLesson.forEach((lesson, index) => {
+				if (!listLessonId.includes(lesson.id))
+					return this.info("lesson is not in course");
+			});
+
+			// update lesson in course:
+			let rs = await Promise.all(listLesson.map((lesson, index) => {
+				CoursesLessonDAO.getInstance().update({
+					offset: lesson.offset
+				}, {
+					courses_id: course.knowledge_id,
+					lesson_id: lesson.knowledge_id
+				});
+			}));
+
+			if (!rs) return this.serverError();
+			return this.success();
+		} catch(e){
+			console.log(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -408,7 +454,7 @@ class LessonController extends BaseController{
 			return this.success("Success", lesson);
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -435,7 +481,7 @@ class LessonController extends BaseController{
 			return this.success("Success", lesson);
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 

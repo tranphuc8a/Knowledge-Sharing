@@ -46,7 +46,7 @@ class AccountController extends BaseController {
 			return this.info("You are not user");
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e.message);
 		}
 	}
 	async checkAdmin(req, res, next) {
@@ -57,7 +57,7 @@ class AccountController extends BaseController {
 			return this.info("You are not admin");
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e.message);
 		}
 	}
 	async checkAccountExisted(req, res, next) {
@@ -70,7 +70,7 @@ class AccountController extends BaseController {
 			next();
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e.message);
 		}
 	}
 }

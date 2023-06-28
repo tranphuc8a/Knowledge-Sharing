@@ -18,6 +18,7 @@ import DomainConfig from '../../config/domain-config';
 import './lesson-create.css';
 import AutoHeightIframe from '../../components/iframe/auto-height-iframe';
 import FullheightIframe from '../../components/iframe/full-height-iframe';
+import Banner from '../../components/layout/banner/banner';
 
 
 class LessonCreate extends React.Component{
@@ -39,6 +40,7 @@ class LessonCreate extends React.Component{
     render(){
         let { style } = this.props;
         return <Layout header={<Header active={1}/>} >
+            <Banner />
             <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
                 <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
                     {"Tạo một bài học mới"}
