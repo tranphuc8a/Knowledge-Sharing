@@ -1,15 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './profile.module.scss';
 import Intro from './intro';
+import GetAPI from '../../services/api/get-api';
 
 
 export default function (props) {
 
+    const [profile, setProfile] = useState({});
+
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem('token');
+            async function fetchAPI() {
+
+                // temporily wait 2 seconds for developing
+                // await new Promise((resolve) => setTimeout(resolve, 2000));
+
+                // call get profile api
+                await GetAPI.getInstance().setURL("http://localhost:3000/api/profile/" + "manacoto123@gmail.com")
+                    .setToken(token)
+                    .execute()
+                    .then(res => {
+                        console.log(res);
+                        setProfile(res.data);
+                    });
+            }
+            fetchAPI();
+        } catch (error) {
+
+        } finally {
+
+        }
+    }, [])
 
     return (
         <div className="justify-content-center align-items-center h-100">
             <div className="flex-column">
+                {/* header */}
                 <div
                     className="rounded-top text-white d-flex flex-row justify-content-start"
                     style={{ backgroundColor: "violet", height: 250 }}
@@ -19,7 +47,7 @@ export default function (props) {
                         className="ms-4 flex-column bg-transparent w-auto"
                     >
                         <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                            src={(profile.avatar) ? profile.avatar : "/src/assets/null_user.png"}
                             alt="Generic placeholder image"
                             className="img-fluid img-thumbnail m-0 rounded-circle border border-dark"
                             style={{ width: 150, zIndex: 1 }}
@@ -31,25 +59,38 @@ export default function (props) {
                             style={{ zIndex: 1, fontFamily: 'Montserrat', fontSize: '18px', fontWeight: 'bold' }}
                         >
                             <img
-                                src="/src/assets/ic_add_follow.png"
+                                src={profile.relation == 'ME' ? "/src/assets/ic_update.png" :
+                                    profile.relation == 'FOLLOWING' ? "/src/assets/ic_following.png" :
+                                        profile.relation == 'FOLLOWED' ? "/src/assets/ic_followed.png" :
+                                            profile.relation == 'BOTH' ? "/src/assets/ic_follow_each_other.png" :
+                                                "/src/assets/ic_add_follow.png"} //"/src/assets/ic_add_follow.png"
                                 className={`me-1 bg-transparent ${styles['follow-icon']}`}
                                 alt="Follow Icon"
                                 style={{ width: '18px', height: '18px' }}
                             />
-                            Theo dõi&nbsp;
+                            {profile.relation == 'ME' ? "Thay avatar " :
+                                profile.relation == 'FOLLOWING' ? "Đang theo dõi " :
+                                    profile.relation == 'FOLLOWED' ? "Người theo dõi " :
+                                        profile.relation == 'BOTH' ? "Theo dõi nhau " :
+                                            "Theo dõi&nbsp;"}
                         </button>
                     </div>
 
                     {/* name and email */}
                     <div className="ms-4 flex-column w-auto bg-transparent">
-                        <h5 className="bg-transparent text-white fw-bold justify-content-start" style={{ fontSize: '32px', fontFamily: 'Roboto' }}>Họ và tên</h5>
-                        <p className="bg-transparent text-white fw-bold justify-content-start" style={{ fontSize: '24px', fontFamily: 'Roboto' }}>defaultemail@gmail.com</p>
+                        <h5 className="bg-transparent text-white fw-bold justify-content-start" style={{ fontSize: '32px', fontFamily: 'Roboto' }}>
+                            {profile.name}
+                        </h5>
+                        <p className="bg-transparent text-white fw-bold justify-content-start" style={{ fontSize: '24px', fontFamily: 'Roboto' }}>
+                            {profile.email}
+                        </p>
                     </div>
 
                 </div>
 
                 {/* body */}
                 <div className='flex-column mx-2 mt-1'>
+                    {/* navbar */}
                     <ul className={`d-flex flex-row justify-content-start nav nav-pills mb-3 w-100 ${styles['nav-pills']}`} id="pills-tab" role="tablist">
                         <li className="nav-item w-auto" role="presentation">
                             <button
@@ -143,7 +184,7 @@ export default function (props) {
                     </ul>
 
                     {/* content */}
-                    <div className="tab-content" id="pills-tabContent">
+                    <div className={`tab-content ${styles['tab-content']}`} id="pills-tabContent">
                         <div
                             className="tab-pane fade show active"
                             id="pills-intro"
@@ -152,7 +193,7 @@ export default function (props) {
                             tabIndex={0}
                         >
                             {/* Intro tab */}
-                            <Intro>
+                            <Intro profile={profile}>
 
                             </Intro>
                         </div>
@@ -203,8 +244,6 @@ export default function (props) {
                         </div>
                     </div>
                 </div>
-
-
 
             </div>
         </div >
