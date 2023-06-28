@@ -61,7 +61,7 @@ class CourseController extends BaseController{
 			next();
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 	async checkCourseNotExisted(req, res, next){
@@ -74,7 +74,7 @@ class CourseController extends BaseController{
 			next();
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -113,7 +113,7 @@ class CourseController extends BaseController{
 			return this.success("Register Success", course);
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -163,7 +163,7 @@ class CourseController extends BaseController{
 			return this.success("Register success", course);
 		} catch (e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 	
@@ -187,7 +187,7 @@ class CourseController extends BaseController{
 			return this.success("Leave course success", course);
 		} catch (e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -222,7 +222,7 @@ class CourseController extends BaseController{
 			return this.success("Success", course);
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -269,7 +269,7 @@ class CourseController extends BaseController{
 			return this.success("Update course success", course);
 		} catch (e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -314,7 +314,7 @@ class CourseController extends BaseController{
 			return this.success("Xóa bài học thành công");
 		} catch (e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 
@@ -359,7 +359,7 @@ class CourseController extends BaseController{
 			});		
 		} catch (e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 

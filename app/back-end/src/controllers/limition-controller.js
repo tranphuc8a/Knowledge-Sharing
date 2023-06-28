@@ -15,7 +15,7 @@ class LimitionController extends BaseController{
 			return this.info("You are limited this functional");
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 	async checkLimitLevelOne(req, res, next){
@@ -27,7 +27,7 @@ class LimitionController extends BaseController{
 			return this.info("You are limited this functional");
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 	async checkLimitLevelTwo(req, res, next){
@@ -39,7 +39,7 @@ class LimitionController extends BaseController{
 			return this.info("You are limited this functional");
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 	async checkLimitLevelThree(req, res, next){
@@ -51,7 +51,7 @@ class LimitionController extends BaseController{
 			return this.info("You are limited this functional");
 		} catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
 	}
 }

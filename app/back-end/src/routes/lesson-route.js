@@ -66,6 +66,14 @@ class LessonRoute{
 			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
 			this.lsnCtrl.updateLessonInCourse.bind(this.lsnCtrl))
 
+		// update list-lesson in course
+		this.app.patch(this.lessonUrl.courseList,
+			this.authCtrl.checkToken.bind(this.authCtrl),
+			this.accCtrl.checkUser.bind(this.accCtrl),
+			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
+			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
+			this.lsnCtrl.updateListLessonInCourse.bind(this.lsnCtrl))
+
 		// update lesson
 		this.app.patch(this.lessonUrl.update,
 			this.authCtrl.checkToken.bind(this.authCtrl),

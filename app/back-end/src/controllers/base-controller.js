@@ -18,7 +18,7 @@ class BaseController{
             next();
         } catch(e){
 			console.log(e);
-			this.serverError(e);
+			return this.serverError(e);
 		}
     }
     response(responseCode = Response.ResponseCode.SERVER_ERROR, message = null, data = null, detail = null){

@@ -32,7 +32,7 @@ class AdminController extends BaseController{
             return next();
         } catch (e){
             console.log(e);
-            this.serverError(e);
+            return this.serverError(e);
         }
     }
 
@@ -47,7 +47,7 @@ class AdminController extends BaseController{
             return next();
         } catch (e){
             console.log(e);
-            this.serverError(e);
+            return this.serverError(e);
         }
     }
 
@@ -62,7 +62,7 @@ class AdminController extends BaseController{
             return next();
         } catch (e){
             console.log(e);
-            this.serverError(e);
+            return this.serverError(e);
         }
     }
 
@@ -229,7 +229,7 @@ class AdminController extends BaseController{
             return this.success("Success", rs1);
         } catch (e){
             console.log(e);
-            this.serverError(e);
+            return this.serverError(e);
         }
     }
 }
