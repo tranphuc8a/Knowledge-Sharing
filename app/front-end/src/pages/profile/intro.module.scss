@@ -1,0 +1,32 @@
+.card {
+    width: 80%;
+    margin-left: 32px;
+}
+
+.access-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.access-icon:hover .access-tooltip {
+    display: block;
+}
+
+.access-tooltip {
+    display: none;
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 999;
+}
+
+.update-button:hover {
+    background-color: rgb(207, 207, 207);
+}
