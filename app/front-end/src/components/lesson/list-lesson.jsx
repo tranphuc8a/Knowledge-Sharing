@@ -24,9 +24,9 @@ class ListLesson extends React.Component{
                 <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
                     {numLessons > 0 ? "Danh sách bài học" : "Không có bài học nào"}
                 </div>
-                <div >
+                <div style={{ flexDirection: 'column'}} >
                     {listLesson.map((lesson, index) => {
-                        return <LessonCard updateLesson={() => { this.updateLesson(lesson, index)}} lesson={lesson} key={index}/>
+                        return <LessonCard style={{margin: '12px 0px'}} updateLesson={() => { this.updateLesson(lesson, index)}} lesson={lesson} key={index}/>
                     })}
                 </div>
             </div>

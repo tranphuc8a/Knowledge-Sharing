@@ -18,6 +18,7 @@ import Session from '../../session/session';
 import DomainConfig from '../../config/domain-config';
 import GetAPI from '../../services/api/get-api';
 import PatchAPI from '../../services/api/patch-api';
+import Banner from '../../components/layout/banner/banner';
 
 
 class CourseUpdate extends React.Component{
@@ -74,9 +75,9 @@ class CourseUpdate extends React.Component{
         return <Layout header={<Header active={1}/>} >
             <Banner />
             <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
-                <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
+                <div style={{justifyContent: 'space-between', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
                     {"Chỉnh sửa khóa học của bạn"}
-                    {/* Thêm nút cho phép chuyển sang trang chỉnh sửa danh sách bài học trong khóa học */}
+                    <Button style={{width: 'auto'}} text="Quản lý khóa học" onclick={this.manageCourse} />
                 </div>
                 <Separate style={{margin: '0 0 72px 0'}} />
                 { this.inputCourseTitle() }
@@ -88,6 +89,10 @@ class CourseUpdate extends React.Component{
                 { this.submitButton() }
             </div>
         </Layout>;
+    }
+
+    manageCourse = (event) => {
+        this.props.router.navigate('/course-manage/' + this.state.course.knowledge_id);
     }
 
     nullCourse(){

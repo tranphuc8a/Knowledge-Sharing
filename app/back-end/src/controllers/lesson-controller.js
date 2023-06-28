@@ -402,12 +402,12 @@ class LessonController extends BaseController{
 					offset: lesson.offset
 				}, {
 					courses_id: course.knowledge_id,
-					lesson_id: lesson.knowledge_id
+					lesson_id: lesson.lessonid
 				});
 			}));
 
 			if (!rs) return this.serverError();
-			return this.success();
+			return this.success(listLesson);
 		} catch(e){
 			console.log(e);
 			return this.serverError(e);
