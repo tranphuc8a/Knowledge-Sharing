@@ -62,7 +62,7 @@ class ListComment extends React.Component{
 
     commentPopup = () => {
         return <Popup> 
-            <div style={{width: '60%', height: 'auto', borderRadius: '6px', flexDirection:'column', padding: '48px 24px'}}>
+            <div style={{width: '60%', height: 'auto', maxHeight: '80vh', borderRadius: '6px', flexDirection:'column', padding: '48px 24px'}}>
                 <div style={{flexDirection: 'column', width: '90%'}}>
                     <div style={{fontSize: '24px', fontWeight: '500'}}>
                         {"Thêm bình luận"}

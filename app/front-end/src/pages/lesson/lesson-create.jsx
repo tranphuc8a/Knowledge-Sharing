@@ -18,6 +18,7 @@ import DomainConfig from '../../config/domain-config';
 import './lesson-create.css';
 import AutoHeightIframe from '../../components/iframe/auto-height-iframe';
 import FullheightIframe from '../../components/iframe/full-height-iframe';
+import Banner from '../../components/layout/banner/banner';
 
 
 class LessonCreate extends React.Component{
