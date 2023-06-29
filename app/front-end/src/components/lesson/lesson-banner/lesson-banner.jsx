@@ -94,7 +94,7 @@ class LessonBanner extends React.Component{
                 <div className="ci-name" style={{justifyContent: 'flex-start', fontSize: '14px', marginBottom: '12px'}}>
                     <span style={{width: 'auto', marginRight: '4px'}}> Tác giả: </span>
                     <p 
-                        style={{ width: 'auto', cursor: 'pointer', width: 'auto'}} 
+                        style={{ width: 'auto', cursor: 'pointer'}} 
                         onClick={this.clickAuthor}> 
                         {this.lesson.name} </p>
                 </div>

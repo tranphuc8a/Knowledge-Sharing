@@ -1,17 +1,17 @@
 
-
 import React from "react";
+import ListMyRequest from "./list-my-request";
 
-class CourseCard extends React.Component{
+class ListMyInviteConcrete extends ListMyRequest{
     constructor(props){
         super(props);
         this.state = {
-            course: null
+
         }
     }
 
     render(){
-        let {style } = this.props;
+        let { style, focus, type } = this.props;
         return (
             <div style={{...style}}>  
 
@@ -20,6 +20,5 @@ class CourseCard extends React.Component{
     }
 }
 
-export default CourseCard;
-
+export default ListMyInviteConcrete;
 

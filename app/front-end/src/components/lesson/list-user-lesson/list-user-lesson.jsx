@@ -1,12 +1,11 @@
 
-
 import React from "react";
 
-class CourseCard extends React.Component{
+class ListUserLesson extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            course: null
+
         }
     }
 
@@ -20,6 +19,5 @@ class CourseCard extends React.Component{
     }
 }
 
-export default CourseCard;
-
+export default ListUserLesson;
 

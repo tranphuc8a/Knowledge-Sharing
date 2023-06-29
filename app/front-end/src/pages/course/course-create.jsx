@@ -16,6 +16,7 @@ import Toast from '../../utils/toast';
 import PostAPI from '../../services/api/post-api';
 import Session from '../../session/session';
 import DomainConfig from '../../config/domain-config';
+import Banner from '../../components/layout/banner/banner';
 
 
 class CourseCreate extends React.Component{
@@ -216,7 +217,7 @@ class CourseCreate extends React.Component{
 
     onChangeFee = (value) => {
         this.state.course.fee = value;
-        this.setState(value);
+        this.setState(this.state);
     }
 
     submitButton = () => {
