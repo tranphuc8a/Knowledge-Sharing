@@ -13,9 +13,12 @@ import PostAPI from '../../services/api/post-api';
 import PopupConfirm from '../../components/popup/popup-confirm/popup-confirm';
 import DeleteAPI from '../../services/api/delete-api';
 import PutAPI from '../../services/api/put-api';
+import { useParams } from 'react-router-dom';
 
 
 export default function (props) {
+    // get email from url params
+    const { email } = useParams();
 
     const [profile, setProfile] = useState({});
     const [isLoading, setIsloading] = useState(false);
@@ -28,9 +31,7 @@ export default function (props) {
         try {
             const token = localStorage.getItem('token');
             async function fetchAPI() {
-
-                // temporily wait 2 seconds for developing
-                // await new Promise((resolve) => setTimeout(resolve, 2000));
+                console.log(email);
 
                 // call get profile api
                 await GetAPI.getInstance().setURL("http://localhost:3000/api/profile/" + "tranphuc8a@gmail.com")
@@ -71,7 +72,7 @@ export default function (props) {
 
             await PostAPI.getInstance().setURL("http://localhost:3000/api/follow")
                 .setToken(token)
-                .setData({ followedEmail: 'tieptd1@gmail.com' }) // todo
+                .setData({ followedEmail: email }) // todo
                 .execute()
                 .then(res => {
                     console.log(res);
@@ -120,7 +121,7 @@ export default function (props) {
 
             await DeleteAPI.getInstance().setURL("http://localhost:3000/api/follow")
                 .setToken(token)
-                .setData({ followedEmail: 'tieptd1@gmail.com' }) // todo
+                .setData({ followedEmail: email }) // todo
                 .execute()
                 .then(res => {
                     console.log(res);
