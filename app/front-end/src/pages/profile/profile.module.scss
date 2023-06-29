@@ -2,6 +2,10 @@
     margin-bottom: 32px;
 }
 
+.btn {
+    color: #500064;
+}
+
 .btn:hover {
     color: white !important;
     background-color: black
@@ -15,8 +19,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --bs-nav-pills-border-radius: var(--bs-border-radius);
     --bs-nav-pills-link-active-color: #fff;
-    --bs-nav-pills-link-active-bg: #1a1b1c;
-    // --bs-nav-pills-link-active-bg: violet;
+    --bs-nav-pills-link-active-bg: #500064;
 }
 
 .nav-link {
@@ -28,4 +31,8 @@
     background-color: #d6d6d6;
     color: violet;
     /* Màu xám nhạt khi hover vào */
+}
+
+.follow-icon {
+    color: #500064;
 }
