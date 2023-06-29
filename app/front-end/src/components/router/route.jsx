@@ -96,7 +96,7 @@ class MyRoute extends React.Component {
             />
 
             <Route
-                path="/profile"
+                path="/profile/:email"
                 element={<Profile />}
             />
 
