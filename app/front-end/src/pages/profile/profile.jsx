@@ -13,12 +13,17 @@ import PostAPI from '../../services/api/post-api';
 import PopupConfirm from '../../components/popup/popup-confirm/popup-confirm';
 import DeleteAPI from '../../services/api/delete-api';
 import PutAPI from '../../services/api/put-api';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 export default function (props) {
     // get email from url params
-    const { email } = useParams();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const email = queryParams.get('email');
+
+    // for navigating
+    const navigate = useNavigate();
 
     const [profile, setProfile] = useState({});
     const [isLoading, setIsloading] = useState(false);
@@ -31,14 +36,15 @@ export default function (props) {
         try {
             const token = localStorage.getItem('token');
             async function fetchAPI() {
-                console.log(email);
-
                 // call get profile api
                 await GetAPI.getInstance().setURL("http://localhost:3000/api/profile/" + "tranphuc8a@gmail.com")
                     .setToken(token)
                     .execute()
                     .then(res => {
                         console.log(res);
+                        if (res.data == null) { // navigate if email doesn't exist
+                            navigate('/login');
+                        }
                         setProfile(res.data);
                     });
             }
