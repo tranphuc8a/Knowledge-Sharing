@@ -16,10 +16,11 @@ import Toast from '../../utils/toast';
 import PostAPI from '../../services/api/post-api';
 import Session from '../../session/session';
 import DomainConfig from '../../config/domain-config';
+import Banner from '../../components/layout/banner/banner';
 
 
-class CourseCreate extends React.Component{
-    constructor(props){
+class CourseCreate extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             course: {
@@ -33,47 +34,47 @@ class CourseCreate extends React.Component{
         }
     }
 
-    render(){
+    render() {
         let { style } = this.props;
-        return <Layout header={<Header active={1}/>} >
+        return <Layout header={<Header active={1} />} >
             <Banner />
-            <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
-                <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
+            <div style={{ ...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column' }}>
+                <div style={{ justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px' }}>
                     {"Tạo khóa học mới cho bản thân"}
                 </div>
-                <Separate style={{margin: '0 0 72px 0'}} />
-                { this.inputCourseTitle() }
-                { this.inputCourseThumbnail() }
-                { this.inputCourseDescription() }
-                { this.inputCourseLearningTime() }
-                { this.inputCourseCategories() }
-                { this.inputCourseFee() }
-                { this.submitButton() }
+                <Separate style={{ margin: '0 0 72px 0' }} />
+                {this.inputCourseTitle()}
+                {this.inputCourseThumbnail()}
+                {this.inputCourseDescription()}
+                {this.inputCourseLearningTime()}
+                {this.inputCourseCategories()}
+                {this.inputCourseFee()}
+                {this.submitButton()}
             </div>
         </Layout>;
     }
 
     leftTitle = (title) => {
-        return <div style={{ margin: '0px 12px', width: '25%', justifyContent: 'flex-end', textAlign: 'end', fontSize: '18px', fontWeight: '600'}}>
+        return <div style={{ margin: '0px 12px', width: '25%', justifyContent: 'flex-end', textAlign: 'end', fontSize: '18px', fontWeight: '600' }}>
             {title}
         </div>
     }
 
     rightFrame = (elemenet) => {
-        return <div style={{ margin: '0px 12px', width: '75%', justifyContent: 'flex-start'}}>
-            { elemenet }
+        return <div style={{ margin: '0px 12px', width: '75%', justifyContent: 'flex-start' }}>
+            {elemenet}
         </div>
     }
 
     inputCourseTitle = () => {
-        let inputTitle = <TextInput 
-                onchange={this.onChangeTitle} 
-                value={this.state.course.title} 
-                placeholder={"Tiêu đề cho khóa học"}
-            />
+        let inputTitle = <TextInput
+            onchange={this.onChangeTitle}
+            value={this.state.course.title}
+            placeholder={"Tiêu đề cho khóa học"}
+        />
         return <div>
-            { this.leftTitle("Tiêu đề khóa học:") }
-            { this.rightFrame(inputTitle) }
+            {this.leftTitle("Tiêu đề khóa học:")}
+            {this.rightFrame(inputTitle)}
         </div>
     }
 
@@ -83,20 +84,20 @@ class CourseCreate extends React.Component{
     }
 
     inputCourseThumbnail = () => {
-        let element = <div style={{width: 'auto', flexDirection: 'column'}}>
+        let element = <div style={{ width: 'auto', flexDirection: 'column' }}>
             <div>
-                <ImageInput 
-                    style={{ width: '200px', height: '200px'}} 
-                    onchange={this.onChangeThumbnail} 
+                <ImageInput
+                    style={{ width: '200px', height: '200px' }}
+                    onchange={this.onChangeThumbnail}
                 />
-            </div> 
-            <div style={{fontSize: '14px', fontWeight: 'bold'}}>
+            </div>
+            <div style={{ fontSize: '14px', fontWeight: 'bold' }}>
                 {"Tải ảnh lên"}
             </div>
         </div>;
-        return <div style={{margin: '18px 0px'}}>
-            { this.leftTitle("Ảnh thumbnail:") }
-            { this.rightFrame(element)}
+        return <div style={{ margin: '18px 0px' }}>
+            {this.leftTitle("Ảnh thumbnail:")}
+            {this.rightFrame(element)}
         </div>
     }
 
@@ -105,14 +106,14 @@ class CourseCreate extends React.Component{
     }
 
     inputCourseDescription = () => {
-        let inputDescription = <TextField 
-            style={{fontSize: '14px'}}
-            onchange={this.onChangeDescription} value={this.state.course.description} 
-            placeholder={"Nhập mô tả cho khóa học của bạn"}    
+        let inputDescription = <TextField
+            style={{ fontSize: '14px' }}
+            onchange={this.onChangeDescription} value={this.state.course.description}
+            placeholder={"Nhập mô tả cho khóa học của bạn"}
         />
         return <div>
-            { this.leftTitle("Mô tả khóa học:") }
-            { this.rightFrame(inputDescription) }
+            {this.leftTitle("Mô tả khóa học:")}
+            {this.rightFrame(inputDescription)}
         </div>
     }
 
@@ -122,16 +123,16 @@ class CourseCreate extends React.Component{
     }
 
     inputCourseLearningTime = () => {
-        let inputTime = <TextInput 
-            style={{width: '50%', fontSize: '16px'}}
+        let inputTime = <TextInput
+            style={{ width: '50%', fontSize: '16px' }}
             type="number"
-            onchange={this.onChangeTime} 
-            value={this.state.course.learning_time} 
+            onchange={this.onChangeTime}
+            value={this.state.course.learning_time}
             placeholder={"Đơn vị phút"}
         />
         return <div>
-            { this.leftTitle("Thời gian học:") }
-            { this.rightFrame(inputTime) }
+            {this.leftTitle("Thời gian học:")}
+            {this.rightFrame(inputTime)}
         </div>
     }
 
@@ -141,14 +142,14 @@ class CourseCreate extends React.Component{
     }
 
     inputCourseCategories = () => {
-        let inputDescription = <TextField 
-            style={{fontSize: '14px', minHeight: '50px'}}
-            onchange={this.onChangeCategories} value={this.state.course.stringCategories} 
-            placeholder={"Nhập danh sách các categories ngăn cách nhau bởi dấu phẩy\nVí dụ: Math, Physic"}    
+        let inputDescription = <TextField
+            style={{ fontSize: '14px', minHeight: '50px' }}
+            onchange={this.onChangeCategories} value={this.state.course.stringCategories}
+            placeholder={"Nhập danh sách các categories ngăn cách nhau bởi dấu phẩy\nVí dụ: Math, Physic"}
         />
         return <div>
-            { this.leftTitle("Categories") }
-            { this.rightFrame(inputDescription) }
+            {this.leftTitle("Categories")}
+            {this.rightFrame(inputDescription)}
         </div>
     }
 
@@ -180,29 +181,29 @@ class CourseCreate extends React.Component{
                 value: 0
             }
         ];
-        let menuOption = <DropdownMenu 
-                style={{width: '50%'}}
-                listOptions = {listOptions}
-                value = {this.state.course.isfree}
-                onchange = {this.onChangeFeeFlag}
-            />
-        let inputMoney = <TextInput 
-            style={{width: '50%', fontSize: '16px'}}
+        let menuOption = <DropdownMenu
+            style={{ width: '50%' }}
+            listOptions={listOptions}
+            value={this.state.course.isfree}
+            onchange={this.onChangeFeeFlag}
+        />
+        let inputMoney = <TextInput
+            style={{ width: '50%', fontSize: '16px' }}
             type="number"
-            onchange={this.onChangeFee} 
-            value={this.state.course.fee} 
+            onchange={this.onChangeFee}
+            value={this.state.course.fee}
             placeholder={"Đơn vị VNĐ"}
         />
-        return <div style={{flexDirection: 'column'}}>
+        return <div style={{ flexDirection: 'column' }}>
             <div>
-                { this.leftTitle("Chọn hình thức khóa học") }
-                { this.rightFrame(menuOption) }
+                {this.leftTitle("Chọn hình thức khóa học")}
+                {this.rightFrame(menuOption)}
             </div>
             <div>
-                { (this.state.course.isfree == 0) && (
-                    <div> 
-                        { this.leftTitle("Nhập số tiền") }
-                        { this.rightFrame(inputMoney) }
+                {(this.state.course.isfree == 0) && (
+                    <div>
+                        {this.leftTitle("Nhập số tiền")}
+                        {this.rightFrame(inputMoney)}
                     </div>
                 )}
             </div>
@@ -216,14 +217,14 @@ class CourseCreate extends React.Component{
 
     onChangeFee = (value) => {
         this.state.course.fee = value;
-        this.setState(value);
+        this.setState(this.state);
     }
 
     submitButton = () => {
-        return <Button text="Tạo khóa học" 
-            style={{fontSize: '20px', margin: '36px'}}
+        return <Button text="Tạo khóa học"
+            style={{ fontSize: '20px', margin: '36px' }}
             onclick={this.creatCourse}
-             />;
+        />;
     }
 
     creatCourse = async (event) => {
@@ -277,16 +278,16 @@ class CourseCreate extends React.Component{
             if (!(course.description && course.description.trim().length > 0))
                 throw new Error("Mô tả không được rỗng");
             course.description = course.description.trim();
-                
+
             // check learning_time
             if (!(course.learning_time && course.learning_time >= 0))
                 throw new Error("Thời gian học không hợp lệ");
-                
+
             // check categories
             course.categories = this.formatCategories(course.stringCategories);
             if (!(course.categories && course.categories.length > 0))
                 throw new Error("Categories không hợp lệ");
-            
+
             // check fee:
             if (!course.isfree) {
                 if (!(course.fee && course.fee >= 0))

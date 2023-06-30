@@ -15,6 +15,7 @@ import LessonCreate from "../../pages/lesson/lesson-create";
 import LessonUpdate from "../../pages/lesson/lesson-update";
 import CoursePayment from "../../pages/course/course-payment";
 import CourseManage from "../../pages/course/course-manage";
+import ProfileUpdate from "../../pages/profile/profile-update";
 
 class MyRoute extends React.Component {
 
@@ -98,6 +99,11 @@ class MyRoute extends React.Component {
             <Route
                 path="/profile"
                 element={<Profile />}
+            />
+
+            <Route
+                path="/profile-update"
+                element={<ProfileUpdate />}
             />
 
         </Routes> </Router>);
