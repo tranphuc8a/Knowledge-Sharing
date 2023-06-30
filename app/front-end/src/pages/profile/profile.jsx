@@ -9,6 +9,7 @@ import PopupConfirm from '../../components/popup/popup-confirm/popup-confirm';
 import DeleteAPI from '../../services/api/delete-api';
 import PutAPI from '../../services/api/put-api';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Session from '../../session/session';
 
 
 export default function (props) {
@@ -29,10 +30,10 @@ export default function (props) {
     // get profile
     useEffect(() => {
         try {
-            const token = localStorage.getItem('token');
+            const token = Session.getInstance().token;
             async function fetchAPI() {
                 // call get profile api
-                await GetAPI.getInstance().setURL("http://localhost:3000/api/profile/" + email) // todo
+                await GetAPI.getInstance().setURL("http://localhost:3000/api/profile/" + email)
                     .setToken(token)
                     .execute()
                     .then(res => {
@@ -62,7 +63,7 @@ export default function (props) {
             setIsloading(true);
 
             // check token
-            const token = localStorage.getItem('token');
+            const token = Session.getInstance().token;
 
             if (token == null || token == "") {
                 throw new Error("Bạn chưa đăng nhập");
@@ -73,7 +74,7 @@ export default function (props) {
 
             await PostAPI.getInstance().setURL("http://localhost:3000/api/follow")
                 .setToken(token)
-                .setData({ followedEmail: email }) // todo
+                .setData({ followedEmail: email })
                 .execute()
                 .then(res => {
                     console.log(res);
@@ -111,7 +112,7 @@ export default function (props) {
             setIsloading(true);
 
             // check token
-            const token = localStorage.getItem('token');
+            const token = Session.getInstance().token;
 
             if (token == null || token == "") {
                 throw new Error("Bạn chưa đăng nhập");
@@ -122,7 +123,7 @@ export default function (props) {
 
             await DeleteAPI.getInstance().setURL("http://localhost:3000/api/follow")
                 .setToken(token)
-                .setData({ followedEmail: email }) // todo
+                .setData({ followedEmail: email })
                 .execute()
                 .then(res => {
                     console.log(res);
@@ -175,7 +176,7 @@ export default function (props) {
             setIsloading(true);
 
             // check token
-            const token = localStorage.getItem('token');
+            const token = Session.getInstance().token;
 
             if (token == null || token == "") {
                 throw new Error("Bạn chưa đăng nhập");
@@ -308,6 +309,8 @@ export default function (props) {
                                 ""
                         }
 
+                        {/* error text */}
+                        {error && <p className={`error-message text-danger my-2 bg-transparent`} style={{ fontSize: 16 }}>{error}</p>}
 
                     </div>
 
@@ -428,7 +431,7 @@ export default function (props) {
                             tabIndex={0}
                         >
                             {/* Intro tab */}
-                            <Intro profile={profile}>
+                            <Intro profile={{ ...profile, email: email }}>
 
                             </Intro>
                         </div>
