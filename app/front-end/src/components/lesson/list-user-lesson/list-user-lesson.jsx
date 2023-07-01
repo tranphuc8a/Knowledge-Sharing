@@ -1,19 +1,21 @@
 
-import React from "react";
-import GetAPI from "../../../services/api/get-api";
-import DomainConfig from "../../../config/domain-config";
-import Session from "../../../session/session";
-import Toast from "../../../utils/toast";
-import CourseCard from "../course-card/course-card";
-import Separate from "../../separate/separate";
-import Button from "../../button/button";
-import withRouter from "../../router/withRouter";
 
-class ListCourse extends React.Component{
+
+import React from "react";
+import DomainConfig from "../../../config/domain-config";
+import GetAPI from "../../../services/api/get-api";
+import Session from "../../../session/session";
+import withRouter from "../../router/withRouter";
+import Separate from "../../separate/separate";
+import LessonCard from "../lesson-card";
+import Button from "../../button/button";
+import Toast from "../../../utils/toast";
+
+class ListUserLesson extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            listCourse: [],
+            listLesson: [],
             isUpdateApi: true
         }
         this.isMe = false;
@@ -23,26 +25,26 @@ class ListCourse extends React.Component{
     }
 
     componentDidMount() {
-        this.updateListCourse();
+        this.updateListLesson();
     }
 
     componentDidUpdate () {
         if (this.state.isUpdateApi) {
             this.state.isUpdateApi = false;
-            this.updateListCourse();
+            this.updateListLesson();
         }
     }
 
-    updateListCourse = async () => {
+    updateListLesson = async () => {
         let email = this.props.email;
         if (email == null) return null;
         try {
             let res = await new GetAPI()
-                .setURL(DomainConfig.domainAPI + "/api/courses/list?email=" + email)
+                .setURL(DomainConfig.domainAPI + "/api/lesson/list?email=" + email)
                 .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
-            this.state.listCourse = res.data.data || [];
+            this.state.listLesson = res.data || [];
             this.setState(this.state);
         } catch (e) {
             Toast.getInstance().error(e.message);
@@ -51,21 +53,21 @@ class ListCourse extends React.Component{
 
     render = () => {
         let { style, email } = this.props;
-        let listCourse = this.state.listCourse;
-        let numCourse = listCourse ? listCourse.length : 0;
-        if (numCourse <= 0) return this.nullListCourse();
+        let listLesson = this.state.listLesson;
+        let numLesson = listLesson ? listLesson.length : 0;
+        if (numLesson <= 0) return this.nullListLesson();
  
         return (
             <div>
                 <div style={{...style, width: '90%', margin: '36px 0px 12px 0px', flexDirection: 'column'}}>
                     <div style={{justifyContent: 'space-between', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
-                        { this.isMe ? "Danh sách khóa học của bạn" : "Danh sách khóa học" }
-                        { this.isMe && <Button text="Tạo khóa học" onclick = {this.addNewCourse} /> }
+                        { this.isMe ? "Danh sách bài học của bạn" : "Danh sách bài học" }
+                        { this.isMe && <Button text="Tạo bài học" onclick = {this.addNewLesson} /> }
                     </div>
                     <Separate />
                     <div style={{ flexDirection: 'column'}} >
-                        {listCourse.map((course, index) => {
-                            return <CourseCard style={{margin: '12px 0px'}} course={course} key={index}/>
+                        {listLesson.map((lesson, index) => {
+                            return <LessonCard style={{margin: '12px 0px'}} lesson={lesson} key={index}/>
                         })}
                     </div>
                 </div>
@@ -73,22 +75,26 @@ class ListCourse extends React.Component{
         );
     }
 
-    nullListCourse = () => {
+    nullListLesson = () => {
         return <div style={{ width: '90%', margin: '0px 0px 72px 0px', flexDirection: 'column'}}>
             <Separate />
             <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
-                { this.isMe ? "Bạn chưa có khóa học nào" : "Không có khóa học" }
+                { this.isMe ? "Bạn chưa có bài học nào" : "Không có bài học" }
             </div>
             <div style={{ flexDirection: 'column'}} >
-                { this.isMe && <Button text="Thêm khóa học mới" onclick = {this.addNewCourse} /> }
+                { this.isMe && <Button text="Thêm bài học mới" onclick = {this.addNewLesson} /> }
             </div>
         </div>
     }
 
-    addNewCourse = (event) => {
-        this.props.router.navigate('/course-create/');
+    addNewLesson = (event) => {
+        this.props.router.navigate('/lesson-create/');
     }
+
+
     
 }
 
-export default withRouter(ListCourse);
+
+export default withRouter(ListUserLesson);
+

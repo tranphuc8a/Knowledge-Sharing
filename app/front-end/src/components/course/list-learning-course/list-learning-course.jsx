@@ -9,7 +9,7 @@ import Separate from "../../separate/separate";
 import Button from "../../button/button";
 import withRouter from "../../router/withRouter";
 
-class ListCourse extends React.Component{
+class ListLearningCourse extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -38,11 +38,11 @@ class ListCourse extends React.Component{
         if (email == null) return null;
         try {
             let res = await new GetAPI()
-                .setURL(DomainConfig.domainAPI + "/api/courses/list?email=" + email)
+                .setURL(DomainConfig.domainAPI + "/api/courses/listregistered")
                 .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
-            this.state.listCourse = res.data.data || [];
+            this.state.listCourse = res.data || [];
             this.setState(this.state);
         } catch (e) {
             Toast.getInstance().error(e.message);
@@ -54,13 +54,12 @@ class ListCourse extends React.Component{
         let listCourse = this.state.listCourse;
         let numCourse = listCourse ? listCourse.length : 0;
         if (numCourse <= 0) return this.nullListCourse();
- 
+        console.log(listCourse);
         return (
             <div>
                 <div style={{...style, width: '90%', margin: '36px 0px 12px 0px', flexDirection: 'column'}}>
                     <div style={{justifyContent: 'space-between', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
-                        { this.isMe ? "Danh sách khóa học của bạn" : "Danh sách khóa học" }
-                        { this.isMe && <Button text="Tạo khóa học" onclick = {this.addNewCourse} /> }
+                        { this.isMe ? "Danh sách khóa học đang học" : "Danh sách khóa học" }
                     </div>
                     <Separate />
                     <div style={{ flexDirection: 'column'}} >
@@ -77,18 +76,11 @@ class ListCourse extends React.Component{
         return <div style={{ width: '90%', margin: '0px 0px 72px 0px', flexDirection: 'column'}}>
             <Separate />
             <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
-                { this.isMe ? "Bạn chưa có khóa học nào" : "Không có khóa học" }
-            </div>
-            <div style={{ flexDirection: 'column'}} >
-                { this.isMe && <Button text="Thêm khóa học mới" onclick = {this.addNewCourse} /> }
+                { this.isMe ? "Bạn chưa học khóa học nào" : "Không có khóa học" }
             </div>
         </div>
-    }
-
-    addNewCourse = (event) => {
-        this.props.router.navigate('/course-create/');
     }
     
 }
 
-export default withRouter(ListCourse);
+export default withRouter(ListLearningCourse);

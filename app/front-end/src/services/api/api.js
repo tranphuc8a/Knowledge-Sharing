@@ -117,7 +117,7 @@ class API{
             this.updateMethod();
             console.log("Calling API... " + this.method + " " + this.config.url);
             let res = await this.getResult();
-            console.log("Result of " + this.method + " " + this.config.url + ":");
+            console.log("Result of      " + this.method + " " + this.config.url + ":");
             console.log(res.data);
             if (res.data.message == "Expired token") throw new ExpiredToken();
             this.resetData();
@@ -127,7 +127,7 @@ class API{
                 try {
                     console.log("Calling RefreshToken... ");
                     let rs2 = await this.refreshToken();
-                    console.log("Result of refreshToken:");
+                    console.log("Result of refreshToken: ");
                     console.log(rs2.data);
                     if (res.data.code != 200)
                         throw new ExpiredRefreshToken("Refresh token hết hạn hoặc không có");

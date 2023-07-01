@@ -83,8 +83,6 @@ class ChooseLessonPopup extends React.Component{
 
     addLesson = async (lesson) => {
         let course = this.state.course;
-        console.log(course);
-        console.log(lesson);
         try {
             let res = await PostAPI.getInstance()
                 .setURL(DomainConfig.domainAPI + "/api/courses/lesson/" 

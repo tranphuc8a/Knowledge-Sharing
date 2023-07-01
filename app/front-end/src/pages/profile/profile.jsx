@@ -3,6 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './profile.module.scss';
 import Intro from './intro';
 import GetAPI from '../../services/api/get-api';
+import ListCourse from '../../components/course/list-course/list-course';
+import ListUserLesson from '../../components/lesson/list-user-lesson/list-user-lesson';
+import ListMyRequestConcrete from '../../components/request/list-my-request-concrete';
+import ListMyInviteConcrete from '../../components/request/list-my-invite-concrete';
+import ListLearningCourse from '../../components/course/list-learning-course/list-learning-course';
 import Spinner from 'react-bootstrap/Spinner';
 import PostAPI from '../../services/api/post-api';
 import PopupConfirm from '../../components/popup/popup-confirm/popup-confirm';
@@ -38,9 +43,9 @@ export default function (props) {
                     .execute()
                     .then(res => {
                         console.log(res);
-                        if (res.data == null) { // navigate if email doesn't exist
-                            navigate('/login');
-                        }
+                        // if (res.data == null) { // navigate if email doesn't exist
+                        //     navigate('/login');
+                        // }
                         setProfile(res.data);
                     });
             }
@@ -419,6 +424,54 @@ export default function (props) {
                                 Đánh dấu
                             </button>
                         </li>
+
+                        <li className="nav-item w-auto" role="presentation">
+                            <button
+                                className={`nav-link ${styles['nav-link']}`}
+                                id="pills-request-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#pills-request"
+                                type="button"
+                                role="tab"
+                                aria-controls="pills-request"
+                                aria-selected="false"
+                                disabled=""
+                            >
+                                Yêu cầu
+                            </button>
+                        </li>
+
+                        <li className="nav-item w-auto" role="presentation">
+                            <button
+                                className={`nav-link ${styles['nav-link']}`}
+                                id="pills-invite-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#pills-invite"
+                                type="button"
+                                role="tab"
+                                aria-controls="pills-invite"
+                                aria-selected="false"
+                                disabled=""
+                            >
+                                Lời mời
+                            </button>
+                        </li>
+
+                        <li className="nav-item w-auto" role="presentation">
+                            <button
+                                className={`nav-link ${styles['nav-link']}`}
+                                id="pills-learning-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#pills-learning"
+                                type="button"
+                                role="tab"
+                                aria-controls="pills-learning"
+                                aria-selected="false"
+                                disabled=""
+                            >
+                                Đang học
+                            </button>
+                        </li>
                     </ul>
 
                     {/* content */}
@@ -442,7 +495,7 @@ export default function (props) {
                             aria-labelledby="pills-courses-tab"
                             tabIndex={0}
                         >
-                            Courses
+                            <ListCourse email={email} />
                         </div>
                         <div
                             className="tab-pane fade"
@@ -451,7 +504,7 @@ export default function (props) {
                             aria-labelledby="pills-lessons-tab"
                             tabIndex={0}
                         >
-                            Lessons
+                            <ListUserLesson email={email} />
                         </div>
                         <div
                             className="tab-pane fade"
@@ -479,6 +532,34 @@ export default function (props) {
                             tabIndex={0}
                         >
                             Mark
+                        </div>
+                        <div
+                            className="tab-pane fade"
+                            id="pills-request"
+                            role="tabpanel"
+                            aria-labelledby="pills-request-tab"
+                            tabIndex={0}
+                        >
+                            <ListMyRequestConcrete email={email} />
+                        </div>
+                        <div
+                            className="tab-pane fade"
+                            id="pills-invite"
+                            role="tabpanel"
+                            aria-labelledby="pills-invite-tab"
+                            tabIndex={0}
+                        >
+                            <ListMyInviteConcrete email={email} />
+                        </div>
+
+                        <div
+                            className="tab-pane fade"
+                            id="pills-learning"
+                            role="tabpanel"
+                            aria-labelledby="pills-learning-tab"
+                            tabIndex={0}
+                        >
+                            <ListLearningCourse email={email} />
                         </div>
                     </div>
                 </div>

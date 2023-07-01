@@ -80,7 +80,6 @@ export default function (props) {
                 .setBody(newProfile)
                 .execute()
                 .then(res => {
-                    console.log(res);
                     if (res.code == 200) { // success
                         navigate('/profile?email=' + myProfile.email); // todo
                     } else if (res.code == 400 || res.code == 404) { // bad request

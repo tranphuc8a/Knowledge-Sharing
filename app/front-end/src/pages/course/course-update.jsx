@@ -161,7 +161,6 @@ class CourseUpdate extends React.Component{
     }
 
     onChangeThumbnail = (image, src) => {
-        console.log(src);
         this.state.course.image = image;
         // this.state.course.thumbnail = src;
     }

@@ -34,7 +34,23 @@ class CourseRegisterButton extends React.Component{
         let course = this.course;
         switch (course.relevant){
             case 0: // chưa đăng ký
-                return <Button style = {style} text = {"Đăng ký khóa học"} onclick={this.register} />
+                return <div style={{flexDirection: 'column', justifyContent: 'center'}}>
+                    <div style={{ display:'flex', justifyContent: 'center', margin: '12px 0px'}}>
+                        <Button style={{
+                            backgroundColor: 'green',
+                            color: 'white',
+                            margin: '0px 4px',
+                            fontSize: 'smaller'
+                        }} text = {"Đăng ký"} onclick = { this.register } />
+                        <Button style={{
+                            backgroundColor: 'blue',
+                            color: 'white',
+                            margin: '0px 4px',
+                            fontSize: 'smaller'
+                        }} text = {"Gửi yêu cầu"} onclick = { this.request } />
+                    </div>
+                </div>;
+                //  <Button style = {style} text = {"Đăng ký khóa học"} onclick={this.register} />
             case 1: // requested
                 return <Button style = {style} text = {"Hủy yêu cầu"} onclick={this.cancelRequest} />
             case 2: // invited
@@ -79,6 +95,27 @@ class CourseRegisterButton extends React.Component{
                 </div>
             </div>
         </Popup>
+    }
+
+    request = async (event) => {
+        let course = this.course;
+        if (this.lockButton.isLocked()) return;
+        await this.lockButton.lock();
+        let updateCourse = this.props.updateCourse;
+
+        try {
+            let res = await PostAPI.getInstance()
+                .setURL(DomainConfig.domainAPI + "/api/courses/request/" + course.knowledge_id)
+                .setToken(Session.getInstance().token)
+                .execute();
+            if (res.code != 200) throw new Error(res.message);
+            Toast.getInstance().success("Đã gửi yêu cầu đăng ký khóa học");
+            updateCourse();
+        } catch (e) {
+            Toast.getInstance().error(e.message);
+        } finally {
+            this.lockButton.unlock();
+        }
     }
 
     showLeaveCoursePopup = () => {
