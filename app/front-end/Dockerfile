@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Mở cổng mà ứng dụng sẽ lắng nghe
-EXPOSE 3001
+EXPOSE 3003
 
 # Thiết lập biến môi trường cho quá trình chạy ứng dụng
 ENV NODE_ENV=development

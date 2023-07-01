@@ -4,7 +4,7 @@ services:
     container_name: frontend
     image: nhungthisope123/frontend
     ports:
-      - 3001:3001
+      - 3003:3003
     restart: always
     # networks:
     #   - mynetwork
