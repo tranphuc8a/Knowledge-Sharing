@@ -5,17 +5,19 @@ services:
     image: nhungthisope123/frontend
     ports:
       - 3001:3001
-    networks:
-      - mynetwork
+    restart: always
+    # networks:
+    #   - mynetwork
 
   backend:
     container_name: backend
     image: nhungthisope123/backend
     ports:
       - 3000:3000
-    networks:
-      - mynetwork
+    restart: always
+    # networks:
+    #   - mynetwork
 
-networks:
-  mynetwork:
-    driver: bridge
+    # networks:
+    #   mynetwork:
+    #     driver: bridge
