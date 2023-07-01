@@ -13,6 +13,9 @@ RUN npm install
 # Sao chép các file nguồn của ứng dụng vào thư mục làm việc
 COPY . .
 
+# Mở cổng mà ứng dụng sẽ lắng nghe
+EXPOSE 3001
+
 # Thiết lập biến môi trường cho quá trình chạy ứng dụng
 ENV NODE_ENV=development
 

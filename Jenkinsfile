@@ -21,16 +21,32 @@ pipeline{
         stage('Push Images') {
             steps {
                 script {
-                    // Đẩy các image lên Docker Hub
                     sh 'docker tag backend nhungthisope123/backend'
                     sh 'docker tag frontend nhungthisope123/frontend'
-                    // sh 'docker push nhungthisope123/backend'
-                    // sh 'docker push nhungthisope123/frontend'
-                    // ...
+    
                     withDockerRegistry([ credentialsId: "acad2336-7d11-4ff3-97ea-7e4841343f6a", url: "https://index.docker.io/v1/" ]) {
                         sh "docker push nhungthisope123/backend"
                         sh "docker push nhungthisope123/frontend"
                     }
+                }
+            }
+        }
+
+        stage('Build Containers') {
+            steps {
+                script {
+                    // Xây dựng các container từ file docker compose
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+
+        stage('Publish Front-end & Bakc-end') {
+            steps {
+                script {
+                    // Public app front-end & back-end bằng Serveo
+                    sh 'ssh -R knowledgesharing:80:localhost:3001 serveo.net'
+                    sh 'ssh -R knowledgesharing_backend:80:localhost:3000 serveo.net'
                 }
             }
         }

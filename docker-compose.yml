@@ -1,0 +1,21 @@
+version: '3'
+services:
+  frontend:
+    container_name: frontend
+    image: nhungthisope123/frontend
+    ports:
+      - 3001:3001
+    networks:
+      - mynetwork
+
+  backend:
+    container_name: backend
+    image: nhungthisope123/backend
+    ports:
+      - 3000:3000
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
