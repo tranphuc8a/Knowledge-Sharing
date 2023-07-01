@@ -17,6 +17,17 @@ pipeline{
                 }
             }
         }
+
+        stage('Push Images') {
+            steps {
+                script {
+                    // Đẩy các image lên Docker Hub
+                    sh 'docker push nhungthisope123/backend'
+                    sh 'docker push nhungthisope123/frontend'
+                    // ...
+                }
+            }
+        }
     }
 }
 
