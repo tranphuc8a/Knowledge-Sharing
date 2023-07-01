@@ -22,6 +22,7 @@ export default function (props) {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const email = queryParams.get('email');
+    console.log(email);
 
     // for navigating
     const navigate = useNavigate();
@@ -43,15 +44,23 @@ export default function (props) {
                     .execute()
                     .then(res => {
                         console.log(res);
-                        // if (res.data == null) { // navigate if email doesn't exist
-                        //     navigate('/login');
-                        // }
-                        setProfile(res.data);
+                        if (res.data == null) { // navigate if email doesn't exist
+                            if (Session.getInstance().mainUser.email != null) {
+                                // navigate('/profile?email=' + Session.getInstance().mainUser.email);
+                                navigate('/profile?email=' + encodeURIComponent(Session.getInstance().mainUser.email));
+                            }
+                            else {
+                                navigate('/home');
+                            }
+                        } else {
+                            setProfile(res.data);
+                        }
+
                     });
             }
             fetchAPI();
         } catch (error) {
-
+            setError(error.message);
         } finally {
 
         }

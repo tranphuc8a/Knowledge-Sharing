@@ -28,20 +28,6 @@ export default function (props) {
         visible: _profile.visible
     };
 
-    // let profile = {
-    //     "email": "manacoto123@gmail.com",
-    //     "name": "Trịnh Đức Tiệp",
-    //     "avatar": "https://storage.googleapis.com/bksnet-e46a7.appspot.com/knowledge-sharing/manacoto123%40gmail.com2023-06-29%2023%3A03%3A19?GoogleAccessId=firebase-adminsdk-7bnab%40bksnet-e46a7.iam.gserviceaccount.com&Expires=1893456000&Signature=q3RRPq3%2FZFsu4PRWhxLe%2F2%2BTZxCeMpgG7U61au8%2BI6tmhsicpaaUVXtPEtcQcsgOrQh131rF7M44scCp4KqH%2B7JcA6XjYS74iiiTZpHv8b8X2KLmNTgwToeVPFnhojas%2FXx90EzKlkU50kBd1kY6Vj3hj9X6jzUjRTGVswPt9AS4IDqxRkQ7%2FJDYdpJ9b3TnM5aSAHaEmf54zRTiFUdjG2ZSwqEiCLP10CHagOSaKhh6uq7XmbXcdJxxU0xZ2xh81DHY145QllsvEMz4m9ZTsDqv4wCYpvjj2Z%2BM2hDaaBR%2FWNtaYl7OaMa6tLonYQM%2Fci7m90IGdPslrcH0n4Tp9g%3D%3D",
-    //     "dob": "11-11-2001",
-    //     "phone": "0987654321",
-    //     "gender": "other",
-    //     "address": "Hai Bà Trưng, Hà Nội",
-    //     "job": "Quản lý nhà hàng",
-    //     "social_link": null,
-    //     "description": "Tôi đang quan tâm tới các lĩnh vực như web, big data, AI",
-    //     "visible": "2222211002"
-    // }
-
     const [myProfile, setMyprofile] = useState(profile);
     const [visible, setVisible] = useState(profile.visible);
     const [isLoading, setIsloading] = useState(false);
@@ -81,7 +67,7 @@ export default function (props) {
                 .execute()
                 .then(res => {
                     if (res.code == 200) { // success
-                        navigate('/profile?email=' + myProfile.email); // todo
+                        navigate('/profile?email=' + myProfile.email);
                     } else if (res.code == 400 || res.code == 404) { // bad request
                         throw new Error(res.message);
                     } else {
@@ -110,6 +96,23 @@ export default function (props) {
                     <div className="card-body p-0">
                         <ul className="list-group list-group-flush rounded-3">
 
+                            <li className="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <img
+                                    src="/src/assets/null_user.png"
+                                    className={`me-1 bg-transparent ${styles['access-icon']} me-4`}
+                                    alt="Follow Icon"
+                                    style={{ width: '32px', height: '32px' }}
+                                />
+
+                                <input
+                                    type="text"
+                                    className={`form-control mt-1 me-4`}
+                                    placeholder="Nhập họ tên"
+                                    value={myProfile.name || ''}
+                                    onChange={(e) => setMyprofile(prev => ({ ...prev, name: e.target.value }))}
+                                />
+
+                            </li>
 
                             {/* list field */}
                             <li className="list-group-item d-flex justify-content-between align-items-center p-3">
