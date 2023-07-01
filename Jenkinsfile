@@ -22,6 +22,8 @@ pipeline{
             steps {
                 script {
                     // Đẩy các image lên Docker Hub
+                    sh 'docker tag backend nhungthisope123/backend'
+                    sh 'docker tag frontend nhungthisope123/frontend'
                     sh 'docker push nhungthisope123/backend'
                     sh 'docker push nhungthisope123/frontend'
                     // ...
