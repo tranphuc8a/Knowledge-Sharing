@@ -4,7 +4,7 @@ import GetAPI from "../../../services/api/get-api";
 import DomainConfig from "../../../config/domain-config";
 import Session from "../../../session/session";
 import Toast from "../../../utils/toast";
-import CourseCard from "../course-card";
+import CourseCard from "../course-card/course-card";
 import Separate from "../../separate/separate";
 import Button from "../../button/button";
 import withRouter from "../../router/withRouter";
@@ -60,7 +60,7 @@ class ListCourse extends React.Component{
             <div>
                 <div style={{...style, width: '90%', margin: '36px 0px 12px 0px', flexDirection: 'column'}}>
                     <div style={{justifyContent: 'space-between', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
-                        { this.isMe ? "Danh sách bài học của bạn" : "Danh sách bài học" }
+                        { this.isMe ? "Danh sách khóa học của bạn" : "Danh sách khóa học" }
                         { this.isMe && <Button text="Tạo khóa học" onclick = {this.addNewCourse} /> }
                     </div>
                     <Separate />
@@ -78,7 +78,7 @@ class ListCourse extends React.Component{
         <div style={{ width: '90%', margin: '0px 0px 72px 0px', flexDirection: 'column'}}>
             <Separate />
             <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
-                { this.isMe ? "Bạn chưa có bài học nào" : "Không có khóa học" }
+                { this.isMe ? "Bạn chưa có khóa học nào" : "Không có khóa học" }
             </div>
             <div style={{ flexDirection: 'column'}} >
                 { this.isMe && <Button text="Thêm khóa học mới" onclick = {this.addNewCourse} /> }

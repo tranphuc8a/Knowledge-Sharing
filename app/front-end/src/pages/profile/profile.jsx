@@ -492,7 +492,7 @@ export default function (props) {
                             aria-labelledby="pills-courses-tab"
                             tabIndex={0}
                         >
-                            <ListCourse email={profile.email} />
+                            <ListCourse email={email} />
                         </div>
                         <div
                             className="tab-pane fade"
@@ -501,7 +501,7 @@ export default function (props) {
                             aria-labelledby="pills-lessons-tab"
                             tabIndex={0}
                         >
-                            <ListUserLesson email={profile.email} />
+                            <ListUserLesson email={email} />
                         </div>
                         <div
                             className="tab-pane fade"
@@ -537,7 +537,7 @@ export default function (props) {
                             aria-labelledby="pills-request-tab"
                             tabIndex={0}
                         >
-                            <ListMyRequestConcrete email={profile.email} />
+                            <ListMyRequestConcrete email={email} />
                         </div>
                         <div
                             className="tab-pane fade"
@@ -546,7 +546,7 @@ export default function (props) {
                             aria-labelledby="pills-invite-tab"
                             tabIndex={0}
                         >
-                            <ListMyInviteConcrete email={profile.email} />
+                            <ListMyInviteConcrete email={email} />
                         </div>
 
                         <div
@@ -556,7 +556,7 @@ export default function (props) {
                             aria-labelledby="pills-learning-tab"
                             tabIndex={0}
                         >
-                            <ListLearningCourse email={profile.email} />
+                            <ListLearningCourse email={email} />
                         </div>
                     </div>
                 </div>
