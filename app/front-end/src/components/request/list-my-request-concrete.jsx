@@ -1,23 +1,14 @@
-
-import React from "react";
-import ListMyRequest from "./list-my-request";
+import ListMyRequest from './list-my-request';
 
 class ListMyRequestConcrete extends ListMyRequest{
     constructor(props){
         super(props);
-        this.state = {
-
-        }
     }
 
-    render(){
-        let { style, focus, type } = this.props;
-        return (
-            <div style={{...style}}>  
-
-            </div>
-        );
-    }
+    // override steps
+    getType()           { return "request"; }
+    getHaveRequest()    { return "Danh sách yêu cầu của bạn"; }
+    getNoRequest()      { return "Bạn chưa gửi yêu cầu nào"; }
 }
 
 export default ListMyRequestConcrete;

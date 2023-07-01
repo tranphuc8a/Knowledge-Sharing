@@ -1,24 +1,15 @@
+import ListMyRequest from './list-my-request';
 
-import React from "react";
-import ListMyRequest from "./list-my-request";
-
-class ListMyInviteConcrete extends ListMyRequest{
+class ListInviteCourseConcrete extends ListMyRequest{
     constructor(props){
         super(props);
-        this.state = {
-
-        }
     }
 
-    render(){
-        let { style, focus, type } = this.props;
-        return (
-            <div style={{...style}}>  
-
-            </div>
-        );
-    }
+    // override steps
+    getType()           { return "invite"; }
+    getHaveRequest()    { return "Danh sách lời mời gửi tới bạn"; }
+    getNoRequest()      { return "Bạn chưa nhận được lời mời nào"; }
 }
 
-export default ListMyInviteConcrete;
+export default ListInviteCourseConcrete;
 
