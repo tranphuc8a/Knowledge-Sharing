@@ -27,7 +27,7 @@ pipeline{
                     // sh 'docker push nhungthisope123/backend'
                     // sh 'docker push nhungthisope123/frontend'
                     // ...
-                    withDockerRegistry([ credentialsId: "242d1ab5-1a72-4333-92f0-db06b6d73168", url: "https://index.docker.io/v1/" ]) {
+                    withDockerRegistry([ credentialsId: "acad2336-7d11-4ff3-97ea-7e4841343f6a", url: "https://index.docker.io/v1/" ]) {
                         sh "docker push nhungthisope123/backend"
                         sh "docker push nhungthisope123/frontend"
                     }
