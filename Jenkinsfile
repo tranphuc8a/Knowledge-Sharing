@@ -41,15 +41,21 @@ pipeline{
             }
         }
 
+        stage('Key gen') {
+            steps {
+                script {
+                    // Tạo khóa SSH
+                    sh 'ssh-keygen -f ~/.ssh/jenkins_ssh_key -N ""'
+
+                    // Đăng ký khóa công khai với Serveo
+                    sh 'ssh-keyscan -H serveo.net >> ~/.ssh/known_hosts'
+                }
+            }
+        }
+
         stage('Publish Front-end & Bakc-end') {
             steps {
                 script {
-                    // // Tạo khóa SSH
-                    // sh 'ssh-keygen -f ~/.ssh/jenkins_ssh_key -N ""'
-
-                    // // Đăng ký khóa công khai với Serveo
-                    // sh 'ssh-keyscan -H serveo.net >> ~/.ssh/known_hosts'
-
                     // Public app front-end & back-end bằng Serveo
                     sh 'ssh -tt -R knowledgesharing:80:localhost:3001 serveo.net'
                     sh 'ssh -tt -R knowledgesharing_backend:80:localhost:3000 serveo.net'
