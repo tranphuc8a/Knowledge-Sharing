@@ -41,17 +41,17 @@ pipeline{
             }
         }
 
-        stage('Key gen') {
-            steps {
-                script {
-                    // Tạo khóa SSH
-                    sh 'ssh-keygen -f ~/.ssh/jenkins_ssh_key -N ""'
+        // stage('Key gen') {
+        //     steps {
+        //         script {
+        //             // Tạo khóa SSH
+        //             sh 'ssh-keygen -f ~/.ssh/jenkins_ssh_key -N ""'
 
-                    // Đăng ký khóa công khai với Serveo
-                    sh 'ssh-keyscan -H serveo.net >> ~/.ssh/known_hosts'
-                }
-            }
-        }
+        //             // Đăng ký khóa công khai với Serveo
+        //             sh 'ssh-keyscan -H serveo.net >> ~/.ssh/known_hosts'
+        //         }
+        //     }
+        // }
 
         stage('Publish Front-end & Bakc-end') {
             steps {
