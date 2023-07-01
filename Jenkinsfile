@@ -45,7 +45,7 @@ pipeline{
             steps {
                 script {
                     // Public app front-end & back-end bằng Serveo
-                    sh 'ssh -R knowledgesharing:80:localhost:3003 serveo.net'
+                    sh 'ssh -R knowledgesharing:80:localhost:3001 serveo.net'
                     sh 'ssh -R knowledgesharing_backend:80:localhost:3000 serveo.net'
                 }
             }

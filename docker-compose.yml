@@ -4,17 +4,17 @@ services:
     container_name: frontend
     image: nhungthisope123/frontend
     ports:
-      - 3003:3003
+      - 3001:3001
     restart: always
     # networks:
     #   - mynetwork
 
-  backend:
-    container_name: backend
-    image: nhungthisope123/backend
-    ports:
-      - 3000:3000
-    restart: always
+  # backend:
+  #   container_name: backend
+  #   image: nhungthisope123/backend
+  #   ports:
+  #     - 3000:3000
+  #   restart: always
     # networks:
     #   - mynetwork
 
