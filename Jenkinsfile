@@ -51,8 +51,8 @@ pipeline{
                     // sh 'ssh-keyscan -H serveo.net >> ~/.ssh/known_hosts'
 
                     // Public app front-end & back-end bằng Serveo
-                    sh 'ssh -R knowledgesharing:80:localhost:3001 serveo.net'
-                    sh 'ssh -R knowledgesharing_backend:80:localhost:3000 serveo.net'
+                    sh 'ssh -tt -R knowledgesharing:80:localhost:3001 serveo.net'
+                    sh 'ssh -tt -R knowledgesharing_backend:80:localhost:3000 serveo.net'
                 }
             }
         }
