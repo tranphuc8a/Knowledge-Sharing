@@ -24,9 +24,13 @@ pipeline{
                     // Đẩy các image lên Docker Hub
                     sh 'docker tag backend nhungthisope123/backend'
                     sh 'docker tag frontend nhungthisope123/frontend'
-                    sh 'docker push nhungthisope123/backend'
-                    sh 'docker push nhungthisope123/frontend'
+                    // sh 'docker push nhungthisope123/backend'
+                    // sh 'docker push nhungthisope123/frontend'
                     // ...
+                    withDockerRegistry([ credentialsId: "242d1ab5-1a72-4333-92f0-db06b6d73168", url: "https://index.docker.io/v1/" ]) {
+                        bat "docker push nhungthisope123/backend"
+                        bat "docker push nhungthisope123/frontend"
+                    }
                 }
             }
         }
