@@ -46,6 +46,7 @@ function getVisibleProfile(profile) {
                 case 9:
                     visibleProfile.description = profile.description;
                     break;
+                    ;;;;;;;;;;;;;;;
             }
         }
     }
