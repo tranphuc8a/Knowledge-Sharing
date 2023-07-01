@@ -47,10 +47,10 @@ function getVisibleProfile(profile) {
                 //     visibleProfile.description = profile.description;
                 //     break;
                 //     ;;;;;;;;;;;;;;;
-                // case 9:
-                //     visibleProfile.description = profile.description;
-                //     break;
-                //     ;;;;;;;;;;;;;;;
+                case 9:
+                    visibleProfile.description = profile.description;
+                    break;
+                    ;;;;;;;;;;;;;;;
             }
         }
     }
