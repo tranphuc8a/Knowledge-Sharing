@@ -39,7 +39,7 @@ class ListUserLesson extends React.Component{
         let email = this.props.email;
         if (email == null) return null;
         try {
-            let res = await GetAPI.getInstance()
+            let res = await new GetAPI()
                 .setURL(DomainConfig.domainAPI + "/api/lesson/list?email=" + email)
                 .setToken(Session.getInstance().token)
                 .execute();
@@ -52,7 +52,6 @@ class ListUserLesson extends React.Component{
     }
 
     render = () => {
-        console.log("Render");
         let { style, email } = this.props;
         let listLesson = this.state.listLesson;
         let numLesson = listLesson ? listLesson.length : 0;
@@ -77,7 +76,7 @@ class ListUserLesson extends React.Component{
     }
 
     nullListLesson = () => {
-        <div style={{ width: '90%', margin: '0px 0px 72px 0px', flexDirection: 'column'}}>
+        return <div style={{ width: '90%', margin: '0px 0px 72px 0px', flexDirection: 'column'}}>
             <Separate />
             <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
                 { this.isMe ? "Bạn chưa có bài học nào" : "Không có bài học" }

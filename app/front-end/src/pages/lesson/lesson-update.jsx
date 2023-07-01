@@ -271,7 +271,6 @@ class LessonUpdate extends React.Component{
     }
 
     onChangeVisible = (value) => {
-        console.log(value);
         this.state.lesson.visible = value;
         this.setState(this.state);
     }

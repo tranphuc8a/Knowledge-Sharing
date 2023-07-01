@@ -1,0 +1,26 @@
+.btn {
+    background-color: rgb(224, 224, 224);
+    color: black;
+
+    &:hover {
+        background-color: black;
+        color: white;
+
+        .follow-icon {
+            filter: brightness(0) invert(1);
+        }
+    }
+
+}
+
+// :hover .follow-icon {
+//     filter: brightness(0) invert(1);
+// }
+
+
+.dropdown-item {
+    &:hover {
+        background-color: black;
+        color: white;
+    }
+}

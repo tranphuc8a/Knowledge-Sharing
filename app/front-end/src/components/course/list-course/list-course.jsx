@@ -37,8 +37,8 @@ class ListCourse extends React.Component{
         let email = this.props.email;
         if (email == null) return null;
         try {
-            let res = await GetAPI.getInstance()
-                .setURL(DomainConfig.domainAPI + "/api/courses/list")
+            let res = await new GetAPI()
+                .setURL(DomainConfig.domainAPI + "/api/courses/list?email=" + email)
                 .setToken(Session.getInstance().token)
                 .execute();
             if (res.code != 200) throw new Error(res.message);
@@ -50,7 +50,6 @@ class ListCourse extends React.Component{
     }
 
     render = () => {
-        console.log("Render");
         let { style, email } = this.props;
         let listCourse = this.state.listCourse;
         let numCourse = listCourse ? listCourse.length : 0;
@@ -75,7 +74,7 @@ class ListCourse extends React.Component{
     }
 
     nullListCourse = () => {
-        <div style={{ width: '90%', margin: '0px 0px 72px 0px', flexDirection: 'column'}}>
+        return <div style={{ width: '90%', margin: '0px 0px 72px 0px', flexDirection: 'column'}}>
             <Separate />
             <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
                 { this.isMe ? "Bạn chưa có khóa học nào" : "Không có khóa học" }

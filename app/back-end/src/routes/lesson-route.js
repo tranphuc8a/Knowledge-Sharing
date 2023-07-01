@@ -20,75 +20,75 @@ class LessonRoute{
 	async route(){
 		// get lesson detail
 		this.app.get(this.lessonUrl.detail,
-			this.authCtrl.checkOptionalApi.bind(this.authCtrl),
-			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
-			this.lsnCtrl.getLessonDetail.bind(this.lsnCtrl))
+			this.authCtrl.checkOptionalApi.bind(new AuthController()),
+			this.lsnCtrl.checkLessonExisted.bind(new LessonController()),
+			this.lsnCtrl.getLessonDetail.bind(new LessonController()))
 
 		// get list lesson
 		this.app.get(this.lessonUrl.list,
-			this.authCtrl.checkToken.bind(this.authCtrl),
-			this.accCtrl.checkUser.bind(this.accCtrl),
-			this.lmtCtrl.checkLimitLevelTwo.bind(this.lmtCtrl),
-			this.lsnCtrl.getListLesson.bind(this.lsnCtrl)
+			this.authCtrl.checkToken.bind(new AuthController()),
+			this.accCtrl.checkUser.bind(new AccountController()),
+			this.lmtCtrl.checkLimitLevelTwo.bind(new LimitionController()),
+			this.lsnCtrl.getListLesson.bind(new LessonController())
 			)
 
 		// add Lesson
 		this.app.post(this.lessonUrl.create,
-			this.authCtrl.checkToken.bind(this.authCtrl),
-			this.accCtrl.checkUser.bind(this.accCtrl),
-			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.lsnCtrl.addLesson.bind(this.lsnCtrl))
+			this.authCtrl.checkToken.bind(new AuthController()),
+			this.accCtrl.checkUser.bind(new AccountController()),
+			this.lmtCtrl.checkLimitLevelZero.bind(new LimitionController()),
+			this.lsnCtrl.addLesson.bind(new LessonController()))
 		
 		// add lesson to course
 		this.app.post(this.lessonUrl.course,
-			this.authCtrl.checkToken.bind(this.authCtrl),
-			this.accCtrl.checkUser.bind(this.accCtrl),
-			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
-			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
-			this.lsnCtrl.addLessonToCourse.bind(this.lsnCtrl))
+			this.authCtrl.checkToken.bind(new AuthController()),
+			this.accCtrl.checkUser.bind(new AccountController()),
+			this.lmtCtrl.checkLimitLevelZero.bind(new LimitionController()),
+			this.crsCtrl.checkCourseExisted.bind(new CourseController()),
+			this.lsnCtrl.checkLessonExisted.bind(new LessonController()),
+			this.lsnCtrl.addLessonToCourse.bind(new LessonController()))
 		
 		// delete lesson from course
 		this.app.delete(this.lessonUrl.course,
-			this.authCtrl.checkToken.bind(this.authCtrl),
-			this.accCtrl.checkUser.bind(this.accCtrl),
-			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
-			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
-			this.lsnCtrl.deleteLessonFromCourse.bind(this.lsnCtrl))
+			this.authCtrl.checkToken.bind(new AuthController()),
+			this.accCtrl.checkUser.bind(new AccountController()),
+			this.lmtCtrl.checkLimitLevelZero.bind(new LimitionController()),
+			this.crsCtrl.checkCourseExisted.bind(new CourseController()),
+			this.lsnCtrl.checkLessonExisted.bind(new LessonController()),
+			this.lsnCtrl.deleteLessonFromCourse.bind(new LessonController()))
 
 		// update lesson in course
 		this.app.patch(this.lessonUrl.course,
-			this.authCtrl.checkToken.bind(this.authCtrl),
-			this.accCtrl.checkUser.bind(this.accCtrl),
-			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
-			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
-			this.lsnCtrl.updateLessonInCourse.bind(this.lsnCtrl))
+			this.authCtrl.checkToken.bind(new AuthController()),
+			this.accCtrl.checkUser.bind(new AccountController()),
+			this.lmtCtrl.checkLimitLevelZero.bind(new LimitionController()),
+			this.crsCtrl.checkCourseExisted.bind(new CourseController()),
+			this.lsnCtrl.checkLessonExisted.bind(new LessonController()),
+			this.lsnCtrl.updateLessonInCourse.bind(new LessonController()))
 
 		// update list-lesson in course
 		this.app.patch(this.lessonUrl.courseList,
-			this.authCtrl.checkToken.bind(this.authCtrl),
-			this.accCtrl.checkUser.bind(this.accCtrl),
-			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.crsCtrl.checkCourseExisted.bind(this.crsCtrl),
-			this.lsnCtrl.updateListLessonInCourse.bind(this.lsnCtrl))
+			this.authCtrl.checkToken.bind(new AuthController()),
+			this.accCtrl.checkUser.bind(new AccountController()),
+			this.lmtCtrl.checkLimitLevelZero.bind(new LimitionController()),
+			this.crsCtrl.checkCourseExisted.bind(new CourseController()),
+			this.lsnCtrl.updateListLessonInCourse.bind(new LessonController()))
 
 		// update lesson
 		this.app.patch(this.lessonUrl.update,
-			this.authCtrl.checkToken.bind(this.authCtrl),
-			this.accCtrl.checkUser.bind(this.accCtrl),
-			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
-			this.lsnCtrl.updateLesson.bind(this.lsnCtrl))
+			this.authCtrl.checkToken.bind(new AuthController()),
+			this.accCtrl.checkUser.bind(new AccountController()),
+			this.lmtCtrl.checkLimitLevelZero.bind(new LimitionController()),
+			this.lsnCtrl.checkLessonExisted.bind(new LessonController()),
+			this.lsnCtrl.updateLesson.bind(new LessonController()))
 		
 		// delete lesson
 		this.app.delete(this.lessonUrl.update,
-			this.authCtrl.checkToken.bind(this.authCtrl),
-			this.accCtrl.checkUser.bind(this.accCtrl),
-			this.lmtCtrl.checkLimitLevelZero.bind(this.lmtCtrl),
-			this.lsnCtrl.checkLessonExisted.bind(this.lsnCtrl),
-			this.lsnCtrl.deleteLesson.bind(this.lsnCtrl))
+			this.authCtrl.checkToken.bind(new AuthController()),
+			this.accCtrl.checkUser.bind(new AccountController()),
+			this.lmtCtrl.checkLimitLevelZero.bind(new LimitionController()),
+			this.lsnCtrl.checkLessonExisted.bind(new LessonController()),
+			this.lsnCtrl.deleteLesson.bind(new LessonController()))
 	} 
 }
 

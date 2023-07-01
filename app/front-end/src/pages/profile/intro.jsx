@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './intro.module.scss';
 import VisibleDisplay from '../../components/visible/visible-display';
-import VisibleMenu from '../../components/visible/visibleMenu';
+import { useNavigate } from 'react-router-dom';
 
 export default function (props) {
+
+    const navigate = useNavigate();
 
     return (
         <div className='d-flex flex-lg-row flex-column align-items-start container-fluid'>
@@ -16,7 +18,10 @@ export default function (props) {
                         {
                             props.profile.relation == "ME"
                                 ?
-                                <div className={`align-self-start mb-4 1p-2 w-auto ${styles['update-button']} py-1 px-2 rounded border border-dark shadow`}>
+                                <div
+                                    className={`align-self-start mb-4 1p-2 w-auto ${styles['update-button']} py-1 px-2 rounded border border-dark shadow`}
+                                    onClick={() => navigate('/profile-update', { state: { profile: props.profile } })}
+                                >
                                     <img
                                         src="/src/assets/ic_update.png"
                                         className={`me-1 bg-transparent`}
