@@ -43,10 +43,10 @@ function getVisibleProfile(profile) {
                 case 8:
                     visibleProfile.social_link = profile.social_link;
                     break;
-                case 9:
-                    visibleProfile.description = profile.description;
-                    break;
-                    ;;;;;;;;;;;;;;;
+                // case 9:
+                //     visibleProfile.description = profile.description;
+                //     break;
+                //     ;;;;;;;;;;;;;;;
             }
         }
     }
