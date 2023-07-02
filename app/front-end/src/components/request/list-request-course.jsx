@@ -6,6 +6,7 @@ import Request from "./request";
 import Separate from "../separate/separate";
 import DomainConfig from "../../config/domain-config";
 import Session from "../../session/session";
+import withRouter from "../router/withRouter";
 
 class ListRequestCourse extends React.Component{
     constructor(props){

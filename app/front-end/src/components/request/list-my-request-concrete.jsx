@@ -1,3 +1,4 @@
+import withRouter from '../router/withRouter';
 import ListMyRequest from './list-my-request';
 
 class ListMyRequestConcrete extends ListMyRequest{
@@ -11,5 +12,5 @@ class ListMyRequestConcrete extends ListMyRequest{
     getNoRequest()      { return "Bạn chưa gửi yêu cầu nào"; }
 }
 
-export default ListMyRequestConcrete;
+export default withRouter(ListMyRequestConcrete);
 

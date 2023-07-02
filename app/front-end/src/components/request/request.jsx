@@ -8,6 +8,7 @@ import MyMutex from "../../utils/mutex";
 import PostAPI from "../../services/api/post-api";
 import Toast from "../../utils/toast";
 import DeleteAPI from "../../services/api/delete-api";
+import withRouter from "../router/withRouter";
 
 class Request extends React.Component{
     constructor(props){
@@ -240,5 +241,5 @@ class Request extends React.Component{
 
 }
 
-export default Request;
+export default withRouter(Request);
 

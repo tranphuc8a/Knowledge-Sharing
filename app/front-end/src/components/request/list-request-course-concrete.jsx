@@ -1,3 +1,4 @@
+import withRouter from "../router/withRouter";
 import ListRequestCourse from "./list-request-course";
 
 class ListRequestCourseConcrete extends ListRequestCourse{
@@ -11,5 +12,5 @@ class ListRequestCourseConcrete extends ListRequestCourse{
     getNoRequest()      { return "Không có yêu cầu nào"; }
 }
 
-export default ListRequestCourseConcrete;
+export default withRouter(ListRequestCourseConcrete);
 

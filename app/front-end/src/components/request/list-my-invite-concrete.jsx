@@ -1,3 +1,4 @@
+import withRouter from '../router/withRouter';
 import ListMyRequest from './list-my-request';
 
 class ListInviteCourseConcrete extends ListMyRequest{
@@ -11,5 +12,5 @@ class ListInviteCourseConcrete extends ListMyRequest{
     getNoRequest()      { return "Bạn chưa nhận được lời mời nào"; }
 }
 
-export default ListInviteCourseConcrete;
+export default withRouter(ListInviteCourseConcrete);
 
