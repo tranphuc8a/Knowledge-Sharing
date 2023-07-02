@@ -15,6 +15,7 @@ import DeleteAPI from '../../services/api/delete-api';
 import PutAPI from '../../services/api/put-api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Session from '../../session/session';
+import ListFollow from '../list-follow/list-follow';
 
 
 export default function (props) {
@@ -22,7 +23,6 @@ export default function (props) {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const email = queryParams.get('email');
-    console.log(email);
 
     // for navigating
     const navigate = useNavigate();
@@ -64,7 +64,7 @@ export default function (props) {
         } finally {
 
         }
-    }, []);
+    }, [location.search]);
 
     const handleEmpty = () => {
 
@@ -522,7 +522,9 @@ export default function (props) {
                             aria-labelledby="pills-followed-tab"
                             tabIndex={0}
                         >
-                            Followed
+                            <ListFollow email={email} type={0}>
+
+                            </ListFollow>
                         </div>
                         <div
                             className="tab-pane fade"
@@ -531,7 +533,9 @@ export default function (props) {
                             aria-labelledby="pills-following-tab"
                             tabIndex={0}
                         >
-                            Following
+                            <ListFollow email={email} type={1}>
+
+                            </ListFollow>
                         </div>
                         <div
                             className="tab-pane fade"

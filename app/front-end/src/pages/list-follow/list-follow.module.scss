@@ -1,0 +1,14 @@
+.custom-underline-text {
+    margin-left: 16px;
+    position: relative;
+}
+
+.custom-underline-text::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1.5px;
+    background-color: violet;
+}
