@@ -74,13 +74,15 @@ class ListCourse extends React.Component{
     }
 
     nullListCourse = () => {
-        return <div style={{ width: '90%', margin: '0px 0px 72px 0px', flexDirection: 'column'}}>
-            <Separate />
-            <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
-                { this.isMe ? "Bạn chưa có khóa học nào" : "Không có khóa học" }
-            </div>
-            <div style={{ flexDirection: 'column'}} >
-                { this.isMe && <Button text="Thêm khóa học mới" onclick = {this.addNewCourse} /> }
+        return <div>
+            <div style={{width: '90%', margin: '36px 0px 12px 0px', flexDirection: 'column'}}>
+                <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
+                    { this.isMe ? "Bạn chưa có khóa học nào" : "Không có khóa học" }
+                </div>
+                <Separate />
+                <div style={{ flexDirection: 'column'}} >
+                    { this.isMe && <Button text="Thêm khóa học mới" onclick = {this.addNewCourse} /> }
+                </div>
             </div>
         </div>
     }

@@ -97,7 +97,7 @@ class LessonController extends BaseController{
 				owner_email: user.email
 			}, null, this.pagination);
 			if (lessons == null) return this.serverError();
-			
+			666
 			// update infor for list Lesson:
 			await this.knCtrl.updateInforListKnowledge(account, lessons);
 			// update visible:

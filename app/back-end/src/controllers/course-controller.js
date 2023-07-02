@@ -205,6 +205,7 @@ class CourseController extends BaseController{
 				return this.badRequest("Lack of params");
 			if (course.isfree == 0 && !course.fee) return this.badRequest("Lack of params");
 			if (course.fee && !(course.fee >= 0)) return this.badRequest("Fee is not valid");
+			course.fee = course.fee || 0;
 
 			course.owner_email = account.email;
 			course.create_at = DateTime.now();

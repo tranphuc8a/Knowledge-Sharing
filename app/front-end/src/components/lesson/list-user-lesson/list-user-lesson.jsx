@@ -76,15 +76,17 @@ class ListUserLesson extends React.Component{
     }
 
     nullListLesson = () => {
-        return <div style={{ width: '90%', margin: '0px 0px 72px 0px', flexDirection: 'column'}}>
-            <Separate />
-            <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
-                { this.isMe ? "Bạn chưa có bài học nào" : "Không có bài học" }
+        return <div>
+            <div style={{width: '90%', margin: '36px 0px 12px 0px', flexDirection: 'column'}}>
+                <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
+                    { this.isMe ? "Bạn chưa có bài học nào" : "Không có bài học" }
+                </div>
+                <Separate />
+                <div style={{ flexDirection: 'column'}} >
+                    { this.isMe && <Button text="Thêm bài học mới" onclick = {this.addNewLesson} /> }
+                </div>
             </div>
-            <div style={{ flexDirection: 'column'}} >
-                { this.isMe && <Button text="Thêm bài học mới" onclick = {this.addNewLesson} /> }
-            </div>
-        </div>
+        </div>;
     }
 
     addNewLesson = (event) => {

@@ -132,8 +132,9 @@ class Comment extends React.Component{
     }
 
     clickUser = (event) => {
-        // navigate to user page
-        this.props.router.navigate('/home');
+        event.stopPropagation();
+        // navigate to profile page
+        this.props.router.navigate('/profile?email=' + this.comment.email);
     }
 
     mouseEnterComment = (event) => {

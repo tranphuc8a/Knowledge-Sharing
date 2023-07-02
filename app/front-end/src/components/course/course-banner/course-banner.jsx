@@ -9,6 +9,7 @@ import DomainConfig from "../../../config/domain-config";
 import CourseContext from "../../../pages/course/course-context";
 import Mark from "../../discussion/mark/mark";
 import Banner from "../../layout/banner/banner";
+import withRouter from "../../router/withRouter";
 
 
 class CourseBanner extends React.Component{
@@ -137,6 +138,11 @@ class CourseBanner extends React.Component{
         </div>;
     }
 
+    clickAuthor = (event) => {
+        event.stopPropagation();
+        // navigate to profile page
+        this.props.router.navigate('/profile?email=' + this.course.owner_email);
+    }
 
     CICost(){
         return <div className="ci-cost">
@@ -165,4 +171,4 @@ class CourseBanner extends React.Component{
 }
 
 
-export default CourseBanner;
+export default withRouter(CourseBanner);

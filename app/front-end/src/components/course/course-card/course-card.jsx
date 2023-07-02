@@ -72,6 +72,7 @@ class CourseCard extends React.Component{
     clickName = (event) => {
         event.stopPropagation();
         // navigate to profile page
+        this.props.router.navigate('/profile?email=' + this.course.owner_email);
     }
 
 }

@@ -141,6 +141,12 @@ class LessonBanner extends React.Component{
     clickUpdateButton = (event) => {
         this.props.router.navigate('/lesson-update/' + this.context.state.lesson.knowledge_id);
     }
+
+    clickAuthor = (event) => {
+        event.stopPropagation();
+        // navigate to profile page
+        this.props.router.navigate('/profile?email=' + this.lesson.owner_email);
+    }
 }
 
 

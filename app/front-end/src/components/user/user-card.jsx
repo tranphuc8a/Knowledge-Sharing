@@ -133,7 +133,10 @@ class UserCard extends React.Component{
     }
 
     clickAvatar = (event) => {
+        let {width, height, focus, request} = this.props;
+        event.stopPropagation();
 
+        this.props.router.navigate('/profile?email=' + this.user.email);
     }
 }
 

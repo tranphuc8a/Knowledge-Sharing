@@ -62,7 +62,9 @@ class LessonContent extends React.Component{
     }
 
     clickAuthor = (event) => {
-
+        event.stopPropagation();
+        // navigate to profile page
+        this.props.router.navigate('/profile?email=' + this.lesson.owner_email);
     }
 }
 

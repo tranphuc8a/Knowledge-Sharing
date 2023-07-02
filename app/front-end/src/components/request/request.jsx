@@ -120,11 +120,23 @@ class Request extends React.Component{
     }
 
     clickName = (event) => {
+        let {width, height, focus, request} = this.props;
+        event.stopPropagation();
 
+        if (focus == "course")
+            return this.props.router.navigate('/course-detail/' + this.request.courses_id);
+
+        this.props.router.navigate('/profile?email=' + this.request.email);
     }
 
     clickAvatar = (event) => {
+        let {width, height, focus, request} = this.props;
+        event.stopPropagation();
 
+        if (focus == "course")
+            return this.props.router.navigate('/course-detail/' + this.request.courses_id);
+
+        this.props.router.navigate('/profile?email=' + this.request.email);
     }
 
     cancelRequest = async (event) => {

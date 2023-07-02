@@ -66,6 +66,7 @@ class LessonCard extends React.Component{
     }
 
     clickLesson = (event) => {
+        event.stopPropagation();
         // navigate to lesson detail
         this.props.router.navigate('/lesson-detail/' + this.props.lesson.knowledge_id);
     }
@@ -73,6 +74,7 @@ class LessonCard extends React.Component{
     clickName = (event) => {
         event.stopPropagation();
         // navigate to profile page
+        this.props.router.navigate('/profile?email=' + this.props.lesson.owner_email);
     }
 
 }
