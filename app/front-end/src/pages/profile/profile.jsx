@@ -15,6 +15,7 @@ import DeleteAPI from '../../services/api/delete-api';
 import PutAPI from '../../services/api/put-api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Session from '../../session/session';
+import ListFollow from '../list-follow/list-follow';
 
 
 export default function (props) {
@@ -43,19 +44,27 @@ export default function (props) {
                     .execute()
                     .then(res => {
                         console.log(res);
-                        // if (res.data == null) { // navigate if email doesn't exist
-                        //     navigate('/login');
-                        // }
-                        setProfile(res.data);
+                        if (res.data == null) { // navigate if email doesn't exist
+                            if (Session.getInstance().mainUser.email != null) {
+                                // navigate('/profile?email=' + Session.getInstance().mainUser.email);
+                                navigate('/profile?email=' + encodeURIComponent(Session.getInstance().mainUser.email));
+                            }
+                            else {
+                                navigate('/home');
+                            }
+                        } else {
+                            setProfile(res.data);
+                        }
+
                     });
             }
             fetchAPI();
         } catch (error) {
-
+            setError(error.message);
         } finally {
 
         }
-    }, []);
+    }, [location.search]);
 
     const handleEmpty = () => {
 
@@ -513,7 +522,9 @@ export default function (props) {
                             aria-labelledby="pills-followed-tab"
                             tabIndex={0}
                         >
-                            Followed
+                            <ListFollow email={email} type={0}>
+
+                            </ListFollow>
                         </div>
                         <div
                             className="tab-pane fade"
@@ -522,7 +533,9 @@ export default function (props) {
                             aria-labelledby="pills-following-tab"
                             tabIndex={0}
                         >
-                            Following
+                            <ListFollow email={email} type={1}>
+
+                            </ListFollow>
                         </div>
                         <div
                             className="tab-pane fade"
