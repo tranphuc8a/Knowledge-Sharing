@@ -34,7 +34,7 @@ class ListRequestCourse extends React.Component{
                         {/* (type == "request" ? "Danh sách yêu cầu" : "Danh sách lời mời") : 
                         (type == "request" ? "Không có yêu cầu" : "Không có lời mời")} */}
                 </div>
-                <div style={{ flexWrap: 'nowrap', justifyContent: 'flex-start' }}>
+                <div style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                     {
                         listRequest.map((request, index) => {
                             return <div style={{margin: '16px', width: 'auto'}} key={index}> 
