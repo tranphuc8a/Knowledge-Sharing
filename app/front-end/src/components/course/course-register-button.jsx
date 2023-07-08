@@ -42,12 +42,15 @@ class CourseRegisterButton extends React.Component{
                             margin: '0px 4px',
                             fontSize: 'smaller'
                         }} text = {"Đăng ký"} onclick = { this.register } />
-                        <Button style={{
-                            backgroundColor: 'blue',
-                            color: 'white',
-                            margin: '0px 4px',
-                            fontSize: 'smaller'
-                        }} text = {"Gửi yêu cầu"} onclick = { this.request } />
+                        {
+                            this.course.isfree ? null :
+                            <Button style={{
+                                backgroundColor: 'blue',
+                                color: 'white',
+                                margin: '0px 4px',
+                                fontSize: 'smaller'
+                            }} text = {"Gửi yêu cầu"} onclick = { this.request } />
+                        }
                     </div>
                 </div>;
                 //  <Button style = {style} text = {"Đăng ký khóa học"} onclick={this.register} />
