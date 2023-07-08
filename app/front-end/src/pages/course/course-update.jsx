@@ -19,6 +19,8 @@ import DomainConfig from '../../config/domain-config';
 import GetAPI from '../../services/api/get-api';
 import PatchAPI from '../../services/api/patch-api';
 import Banner from '../../components/layout/banner/banner';
+import Popup from '../../components/popup/popup';
+import DeleteAPI from '../../services/api/delete-api';
 
 
 class CourseUpdate extends React.Component{
@@ -34,6 +36,7 @@ class CourseUpdate extends React.Component{
                 fee: '',
                 isfree: 1
             },
+            isShowDeletePopup: false
         }
     }
 
@@ -77,7 +80,10 @@ class CourseUpdate extends React.Component{
             <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
                 <div style={{justifyContent: 'space-between', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
                     {"Chỉnh sửa khóa học của bạn"}
-                    <Button style={{width: 'auto'}} text="Quản lý khóa học" onclick={this.manageCourse} />
+                    <div style={{width: 'auto'}}>
+                        <Button style={{width: 'auto'}} text="Quản lý khóa học" onclick={this.manageCourse} />
+                        <Button style={{width: 'auto', backgroundColor: 'red', margin: '0 12px'}} text="Xóa khóa học" onclick={this.showDeleteCoursePopup} />
+                    </div>
                 </div>
                 <Separate style={{margin: '0 0 72px 0'}} />
                 { this.inputCourseTitle() }
@@ -87,12 +93,63 @@ class CourseUpdate extends React.Component{
                 { this.inputCourseCategories() }
                 { this.inputCourseFee() }
                 { this.submitButton() }
+                { this.state.isShowDeletePopup ? this.deletePopup() : null }
             </div>
         </Layout>;
     }
 
     manageCourse = (event) => {
         this.props.router.navigate('/course-manage/' + this.state.course.knowledge_id);
+    }
+
+    showDeleteCoursePopup = () => {
+        this.state.isShowDeletePopup = true;
+        this.setState(this.state);
+    }
+
+    hideDeleteCoursePopup = () => {
+        this.state.isShowDeletePopup = false;
+        this.setState(this.state);
+    }
+
+    deleteCourse = async () => {
+        this.hideDeleteCoursePopup();
+        let course = this.state.course;
+
+        try {
+            let rs = await DeleteAPI.getInstance()
+                .setToken(Session.getInstance().token)
+                .setURL(DomainConfig.domainAPI + "/api/courses/" + course.knowledge_id)
+                .execute();
+            if (rs.code != 200) throw new Error(rs.message);
+            // success navigate to profile
+            Toast.getInstance().success("Đã xóa khóa học");
+            let email = course.owner_email;
+            this.props.router.navigate('/profile?email=' + email);
+        } catch (e) {
+            Toast.getInstance().error(e.message);
+        }
+    }
+
+    deletePopup = () => {
+        console.log("here");
+        return <Popup>
+            <div style={{width: '60%', height: 'auto', borderRadius: '6px', flexDirection:'column', padding: '48px 24px'}}>
+                <div style={{flexDirection: 'column', margin: '32px 0px'}}>
+                    <div style={{fontSize: '24px', fontWeight: '500'}}>
+                        {"Bạn có chắc muốn xóa khóa học này không?"}
+                    </div>
+                </div>
+                <div style={{width: '50%'}}>
+                    <div>
+                        <Button text="Chắc chắn" onclick={this.deleteCourse} style={{width: '150px', margin: '0px 6px'}}/>
+                    </div>
+                    <div>
+                        <Button text="Hủy bỏ" onclick={this.hideDeleteCoursePopup} style={{width: '150px', margin: '0px 6px'}} />
+                    </div>
+                </div>
+            </div>
+        </Popup>
     }
 
     nullCourse(){

@@ -3,13 +3,14 @@ import React from "react";
 import MyRoute from "../../router/route";
 import Session from "../../../session/session";
 import DomainConfig from "../../../config/domain-config";
+import withRouter from "../../router/withRouter";
 
 class AvatarToolbar extends React.Component{
     constructor(props){
         super(props);
         Session.getInstance().attach(this);
         this.state = {
-            user:  {
+            user: {
                 avatar: DomainConfig.domain + "/src/assets/null_user.png"
             }
         };
@@ -44,7 +45,10 @@ class AvatarToolbar extends React.Component{
     }
 
     clickAvatar = (event) => {
-
+        let mainUser = Session.getInstance().mainUser;
+        let email = mainUser ? mainUser.email : null;
+        if (email != null) 
+            this.props.router.navigate('/profile?email=' + email);
     }
 
     clickBell = (event) => {
@@ -52,10 +56,11 @@ class AvatarToolbar extends React.Component{
     }
 
     formatUser = (user) => {
+        if (user == null || typeof user != 'object') return null;
         user.avatar = user.avatar || DomainConfig.domain + "/src/assets/null_user.png";
 
         return user;
     }
 }
 
-export default AvatarToolbar;
+export default withRouter(AvatarToolbar);
