@@ -19,13 +19,11 @@ export default function (props) {
     const [isShowPopupConfirm, setIsShowPopupConfirm] = useState(false);
 
     const handleEmpty = (event) => {
-        // event.stopPropagation();
     }
 
     // add follow click
     const handleFollow = async (event) => {
         try {
-            // event.stopPropagation();
             // loading...
             setIsloading(true);
 
@@ -138,7 +136,9 @@ export default function (props) {
     return (
         <div
             className={`justify-content-start my-2 ${styles['container']} rounded`}
-            onClick={() => { navigate("/profile?email=" + profile.email) }}
+            onClick={() => {
+                window.location.href = "/profile?email=" + profile.email;
+            }}
         >
             <img
                 src={profile.avatar}
