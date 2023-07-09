@@ -10,9 +10,11 @@ export default function (props) {
             <Modal
                 show={showModal}
                 className={`${styles['modal']}`}
-                onHide={() => {
+                onHide={(event) => {
+                    event.stopPropagation();
                     props.actionCancel();
                     setShowModal(false);
+
                 }}>
                 <Modal.Header closeButton>
                     <Modal.Title className={`${styles['modal-text']}`}>{props.title}</Modal.Title>
@@ -21,7 +23,8 @@ export default function (props) {
                     {props.content}
                 </Modal.Body>
                 <Modal.Footer className={`${styles['modal-footer']}`}>
-                    <Button variant="secondary" onClick={() => {
+                    <Button variant="secondary" onClick={(event) => {
+                        event.stopPropagation();
                         props.actionCancel();
                         setShowModal(false);
                     }}>
@@ -30,7 +33,10 @@ export default function (props) {
                     <Button
                         className={`${styles['btn-primary']}`}
                         variant="primary"
-                        onClick={props.actionOk}>
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            props.actionOk();
+                        }}>
                         Xác nhận
                     </Button>
                 </Modal.Footer>
