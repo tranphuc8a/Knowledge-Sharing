@@ -17,7 +17,7 @@ export default function (props) {
             async function fetchAPI() {
                 const token = Session.getInstance().token;
 
-                let api = GetAPI.getInstance().setURL("http://localhost:3000/api/search/account/*");
+                let api = GetAPI.getInstance().setURL("http://localhost:3000/api/search/account/*?offset=0&length=8");
                 if (token != null && token.length > 0) {
                     api.setToken(token);
                 }
