@@ -13,6 +13,7 @@ export default function (props) {
 
     const location = useLocation();
     const _profile = location.state.profile;
+    console.log(_profile);
 
     let profile = {
         email: _profile.email,
@@ -240,7 +241,7 @@ export default function (props) {
                                     className={`form-control mt-1 me-4`}
                                     placeholder="Nhập công việc"
                                     value={myProfile.job || ''}
-                                    onChange={(e) => setMyprofile(prev => ({ ...prev, job: e.target.job }))}
+                                    onChange={(e) => setMyprofile(prev => ({ ...prev, job: e.target.value }))}
                                 />
 
                                 <div className='ms-auto w-auto'>
