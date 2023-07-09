@@ -141,7 +141,7 @@ export default function (props) {
             }}
         >
             <img
-                src={profile.avatar}
+                src={(profile.avatar) ? profile.avatar : "/src/assets/null_user.png"}
                 className={`${styles['access-icon']} mx-4 mb-4 mt-2 rounded-circle`}
                 alt="/src/assets/null_user.png"
                 style={{ width: '50px', height: '50px' }}
