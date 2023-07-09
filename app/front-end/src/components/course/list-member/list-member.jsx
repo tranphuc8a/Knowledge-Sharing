@@ -30,7 +30,7 @@ class ListMember extends React.Component{
                 <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 36px 0px'}}>
                     {numMembers > 0 ? "Danh sách thành viên" : "Không có thành viên nào"}
                 </div>
-                <div style={{flexWrap: 'nowrap', justifyContent: 'flex-start'}}>
+                <div style={{flexWrap: 'wrap', justifyContent: 'flex-start'}}>
                     {
                         listMember.map((member, index) => {
                             return <div style={{margin: '16px', width: 'auto'}} key={index}> 

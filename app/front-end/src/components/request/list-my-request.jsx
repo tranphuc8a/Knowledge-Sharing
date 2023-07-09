@@ -35,7 +35,7 @@ class ListMyRequest extends React.Component{
                             (type == "request" ? "Không có yêu cầu" : "Không có lời mời")} */}
                     </div>
                     <Separate />
-                    <div style={{ flexWrap: 'nowrap', justifyContent: 'flex-start' }}>
+                    <div style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                         {
                             listRequest.map((request, index) => {
                                 return <div style={{margin: '16px', width: 'auto'}} key={index}> 

@@ -4,6 +4,7 @@ import MyRoute from "../../router/route";
 import Session from "../../../session/session";
 import DomainConfig from "../../../config/domain-config";
 import withRouter from "../../router/withRouter";
+import { AiOutlineSearch as Search } from 'react-icons/ai'
 
 class AvatarToolbar extends React.Component {
     constructor(props) {
@@ -20,6 +21,12 @@ class AvatarToolbar extends React.Component {
         this.formatUser(this.state.user);
         return (
             <div style={{ ...this.props.style, padding: '0px 18px' }}>
+                <div className="announce" style={{ padding: '0px 12px' }}>
+                    <div onClick={this.clickSearch}
+                        style={{ cursor: 'pointer', borderRadius: '50%', width: '30px', height: '30px', overflow: 'hidden' }}>
+                        <Search style={{ height: '30px', width: 'auto', fill: 'violet' }} />
+                    </div>
+                </div>
                 <div className="announce" style={{ padding: '0px 12px' }}>
                     <div onClick={this.clickBell}
                         style={{ cursor: 'pointer', borderRadius: '50%', width: '30px', height: '30px', overflow: 'hidden' }}>
@@ -45,14 +52,22 @@ class AvatarToolbar extends React.Component {
     }
 
     clickAvatar = (event) => {
-        this.props.router.navigate('/profile?email=' + Session.getInstance().mainUser.email);
+        let mainUser = Session.getInstance().mainUser;
+        let email = mainUser ? mainUser.email : null;
+        if (email != null)
+            this.props.router.navigate('/profile?email=' + email);
     }
 
     clickBell = (event) => {
 
     }
 
+    clickSearch = (event) => {
+        this.props.router.navigate('/search');
+    }
+
     formatUser = (user) => {
+        if (user == null || typeof user != 'object') return null;
         user.avatar = user.avatar || DomainConfig.domain + "/src/assets/null_user.png";
 
         return user;

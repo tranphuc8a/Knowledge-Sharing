@@ -1,6 +1,7 @@
 
 import React from "react";
 import './categories-card.css';
+import withRouter from "../../router/withRouter";
 
 class CategoriesCard extends React.Component{
     constructor(props){
@@ -24,9 +25,9 @@ class CategoriesCard extends React.Component{
 
     clickCategoryCard = (event) => {
         // navigate màn search với category tương ứng
-        
+        this.props.router.navigate('/search?type=lesson&categories=' + this.props.category);
     }
 }
 
-export default CategoriesCard;
+export default withRouter(CategoriesCard);
 

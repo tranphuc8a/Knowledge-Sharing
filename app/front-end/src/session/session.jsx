@@ -33,7 +33,7 @@ class Session{
                 .setURL(DomainConfig.domainAPI + "/api/auth/validateToken")
                 .setToken(this.token)
                 .execute();
-            if (res.data == null) return;
+            if (res.code != 200) return;
             this.mainUser = res.data;
             localStorage.setItem('mainUser', JSON.stringify(this.mainUser));
             this.notify();

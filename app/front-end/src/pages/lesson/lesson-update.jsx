@@ -21,6 +21,8 @@ import FullheightIframe from '../../components/iframe/full-height-iframe';
 import PatchAPI from '../../services/api/patch-api';
 import GetAPI from '../../services/api/get-api';
 import Banner from '../../components/layout/banner/banner';
+import DeleteAPI from '../../services/api/delete-api';
+import Popup from '../../components/popup/popup';
 
 
 class LessonUpdate extends React.Component{
@@ -30,6 +32,7 @@ class LessonUpdate extends React.Component{
         this.lesson = null;
         this.state = {
             lesson: null,
+            isShowDeletePopup: false
         }
     }
 
@@ -71,8 +74,9 @@ class LessonUpdate extends React.Component{
         return <Layout header={<Header active={1}/>} >
             <Banner />
             <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
-                <div style={{justifyContent: 'flex-start', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
+                <div style={{justifyContent: 'space-between', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
                     {"Chỉnh sửa bài học"}
+                    <Button style={{width: 'auto', backgroundColor: 'red', margin: '0 12px'}} text="Xóa khóa học" onclick={this.showDeletePopup} />
                 </div>
                 <Separate style={{margin: '0 0 72px 0'}} />
                 { this.inputLessonTitle() }
@@ -82,6 +86,7 @@ class LessonUpdate extends React.Component{
                 { this.inputLessonContent() }
                 { this.inputVisible() }
                 { this.submitButton() }
+                { this.state.isShowDeletePopup ? this.deletePopup() : null }
             </div>
         </Layout>;
     }
@@ -102,6 +107,57 @@ class LessonUpdate extends React.Component{
             > Không tìm thấy bài học này rùi bạn ơi!!! </div>
         </Layout>
     }
+
+    showDeletePopup = () => {
+        this.state.isShowDeletePopup = true;
+        this.setState(this.state);
+    }
+
+    hideDeletePopup = () => {
+        this.state.isShowDeletePopup = false;
+        this.setState(this.state);
+    }
+
+    deleteLesson = async () => {
+        this.hideDeletePopup();
+        let lesson = this.state.lesson;
+
+        try {
+            let rs = await DeleteAPI.getInstance()
+                .setToken(Session.getInstance().token)
+                .setURL(DomainConfig.domainAPI + "/api/lesson/" + lesson.knowledge_id)
+                .execute();
+            if (rs.code != 200) throw new Error(rs.message);
+            // success navigate to profile
+            Toast.getInstance().success("Đã xóa bài học");
+            let email = lesson.owner_email;
+            this.props.router.navigate('/profile?email=' + email);
+        } catch (e) {
+            Toast.getInstance().error(e.message);
+        }
+    }
+
+    deletePopup = () => {
+        console.log("here");
+        return <Popup>
+            <div style={{width: '60%', height: 'auto', borderRadius: '6px', flexDirection:'column', padding: '48px 24px'}}>
+                <div style={{flexDirection: 'column', margin: '32px 0px'}}>
+                    <div style={{fontSize: '24px', fontWeight: '500'}}>
+                        {"Bạn có chắc muốn xóa bài học này không?"}
+                    </div>
+                </div>
+                <div style={{width: '50%'}}>
+                    <div>
+                        <Button text="Chắc chắn" onclick={this.deleteLesson} style={{width: '150px', margin: '0px 6px'}}/>
+                    </div>
+                    <div>
+                        <Button text="Hủy bỏ" onclick={this.hideDeletePopup} style={{width: '150px', margin: '0px 6px'}} />
+                    </div>
+                </div>
+            </div>
+        </Popup>
+    }
+
 
     formatLesson = (lesson) => {
         try {

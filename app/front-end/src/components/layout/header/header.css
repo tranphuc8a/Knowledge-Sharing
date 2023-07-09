@@ -38,7 +38,7 @@ nav, nav * {
     }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 820px) {
     .header .header-navbar {
         visibility: hidden;
     }

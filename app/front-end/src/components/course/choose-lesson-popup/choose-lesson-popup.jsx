@@ -105,7 +105,7 @@ class ChooseLessonPopup extends React.Component{
 
     getContent = () => {
         let filterLesson = this.state.listLesson.filter((lesson) => {
-            return lesson.title.includes(this.state.keyword);
+            return lesson.title.toLowerCase().includes(this.state.keyword.toLowerCase());
         });        
         // console.log(filterLesson);
         return <div style={{ flexDirection: 'column', height: '300px', overflow: 'auto', alignItems: 'flex-start', justifyContent: 'flex-start'}}>

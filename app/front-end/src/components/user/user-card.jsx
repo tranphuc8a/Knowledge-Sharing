@@ -9,6 +9,7 @@ import Button from "../button/button";
 import DeleteAPI from "../../services/api/delete-api";
 import PostAPI from "../../services/api/post-api";
 import MyMutex from "../../utils/mutex";
+import withRouter from "../router/withRouter";
 
 class UserCard extends React.Component{
     constructor(props){
@@ -140,5 +141,5 @@ class UserCard extends React.Component{
     }
 }
 
-export default UserCard;
+export default withRouter(UserCard);
 
