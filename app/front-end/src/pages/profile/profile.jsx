@@ -248,7 +248,7 @@ export default function (props) {
                                     src={(profile.avatar) ? profile.avatar : "/src/assets/null_user.png"}
                                     alt="Generic placeholder image"
                                     className="img-fluid img-thumbnail m-0 rounded-circle border border-dark"
-                                    style={{ width: 150, zIndex: 1 }}
+                                    style={{ width: 150, height: 150, zIndex: 1, objectFit: 'cover' }}
                                 />) :
                                 (
                                     <img
