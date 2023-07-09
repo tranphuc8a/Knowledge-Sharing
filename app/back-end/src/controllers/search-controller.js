@@ -32,7 +32,11 @@ class SearchController {
         try {
             // check key
             if (key == null) {
-                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", null, "Empty key")
+                return Response.response(res, Response.ResponseCode.BAD_REQUEST, "Bad request", null, "Empty key");
+            }
+
+            if (key == '*') {
+                key = '.';
             }
 
             // get list profile with email or name like key

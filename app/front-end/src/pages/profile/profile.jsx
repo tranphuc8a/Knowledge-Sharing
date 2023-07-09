@@ -67,10 +67,6 @@ export default function (props) {
         }
     }, [location.search]);
 
-    // useEffect(() => {
-    //     // window.location.reload();
-    // }, [location.search]);
-
     const handleEmpty = () => {
 
     }

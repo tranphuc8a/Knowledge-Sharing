@@ -11,7 +11,7 @@ export default function (props) {
                 show={showModal}
                 className={`${styles['modal']}`}
                 onHide={(event) => {
-                    event.stopPropagation();
+                    // event.stopPropagation();
                     props.actionCancel();
                     setShowModal(false);
 
