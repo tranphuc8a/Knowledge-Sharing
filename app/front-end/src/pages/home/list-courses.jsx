@@ -8,9 +8,7 @@ import CourseCard from '../../components/course/course-card/course-card';
 
 export default function (props) {
 
-    // let listLesson = this.state.listLesson;
-    // let numLesson = listLesson ? listLesson.length : 0;
-    const [listLesson, setListLesson] = useState([]);
+    const [listCourse, setListCourse] = useState([]);
     const [numLesson, setNumLesson] = useState(0);
     const [isLoading, setIsloading] = useState(false);
     const [error, setError] = useState('');
@@ -28,7 +26,7 @@ export default function (props) {
                     .then(res => {
                         console.log(res);
                         if (res.code == 200) {
-                            setListLesson(res.data);
+                            setListCourse(res.data);
                             setNumLesson(res.data.length);
                         } else {
                             throw new Error(res.message);
@@ -58,8 +56,8 @@ export default function (props) {
                     "Không tìm thấy khoá học"
                 ) : (
                     <div style={{ flexDirection: 'column' }} >
-                        {listLesson.map((lesson, index) => {
-                            return <CourseCard style={{ margin: '12px 0px' }} course={lesson} key={index} />
+                        {listCourse.map((course, index) => {
+                            return <CourseCard style={{ margin: '12px 0px' }} course={course} key={index} />
                         })}
                     </div>
                 )
