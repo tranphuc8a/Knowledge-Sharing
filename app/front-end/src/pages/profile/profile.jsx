@@ -16,6 +16,7 @@ import PutAPI from '../../services/api/put-api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Session from '../../session/session';
 import ListFollow from '../list-follow/list-follow';
+import ListMyMark from '../../components/discussion/mark/list-my-mark';
 
 
 export default function (props) {
@@ -418,7 +419,7 @@ export default function (props) {
                             </button>
                         </li>
 
-                        <li className="nav-item w-auto" role="presentation">
+                        {profile.relation=="ME" ? <li className="nav-item w-auto" role="presentation">
                             <button
                                 className={`nav-link ${styles['nav-link']}`}
                                 id="pills-mark-tab"
@@ -432,9 +433,9 @@ export default function (props) {
                             >
                                 Đánh dấu
                             </button>
-                        </li>
+                        </li> : null }
 
-                        <li className="nav-item w-auto" role="presentation">
+                        {profile.relation=="ME" ? <li className="nav-item w-auto" role="presentation">
                             <button
                                 className={`nav-link ${styles['nav-link']}`}
                                 id="pills-request-tab"
@@ -448,9 +449,9 @@ export default function (props) {
                             >
                                 Yêu cầu
                             </button>
-                        </li>
+                        </li> : null }
 
-                        <li className="nav-item w-auto" role="presentation">
+                        {profile.relation=="ME" ? <li className="nav-item w-auto" role="presentation">
                             <button
                                 className={`nav-link ${styles['nav-link']}`}
                                 id="pills-invite-tab"
@@ -464,9 +465,9 @@ export default function (props) {
                             >
                                 Lời mời
                             </button>
-                        </li>
+                        </li> : null }
 
-                        <li className="nav-item w-auto" role="presentation">
+                        {profile.relation=="ME" ? <li className="nav-item w-auto" role="presentation">
                             <button
                                 className={`nav-link ${styles['nav-link']}`}
                                 id="pills-learning-tab"
@@ -480,7 +481,7 @@ export default function (props) {
                             >
                                 Đang học
                             </button>
-                        </li>
+                        </li> : null}
                     </ul>
 
                     {/* content */}
@@ -544,7 +545,7 @@ export default function (props) {
                             aria-labelledby="pills-mark-tab"
                             tabIndex={0}
                         >
-                            Mark
+                            <ListMyMark />
                         </div>
                         <div
                             className="tab-pane fade"
