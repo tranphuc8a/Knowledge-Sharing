@@ -10,14 +10,6 @@ import Session from '../../session/session';
 
 export default function (props) {
 
-    // let data = {
-    //     name: "trịnh đức tiệp",
-    //     email: "manacoto123@gmail.com",
-    //     relation: "UNKNOWN",
-    //     followers: 300,
-    //     avatar: "https://storage.googleapis.com/bksnet-e46a7.appspot.com/knowledge-sharing/manacoto123%40gmail.com2023-06-29%2023%3A03%3A19?GoogleAccessId=firebase-adminsdk-7bnab%40bksnet-e46a7.iam.gserviceaccount.com&Expires=1893456000&Signature=q3RRPq3%2FZFsu4PRWhxLe%2F2%2BTZxCeMpgG7U61au8%2BI6tmhsicpaaUVXtPEtcQcsgOrQh131rF7M44scCp4KqH%2B7JcA6XjYS74iiiTZpHv8b8X2KLmNTgwToeVPFnhojas%2FXx90EzKlkU50kBd1kY6Vj3hj9X6jzUjRTGVswPt9AS4IDqxRkQ7%2FJDYdpJ9b3TnM5aSAHaEmf54zRTiFUdjG2ZSwqEiCLP10CHagOSaKhh6uq7XmbXcdJxxU0xZ2xh81DHY145QllsvEMz4m9ZTsDqv4wCYpvjj2Z%2BM2hDaaBR%2FWNtaYl7OaMa6tLonYQM%2Fci7m90IGdPslrcH0n4Tp9g%3D%3D"
-    // }
-
     // for navigating
     const navigate = useNavigate();
 
@@ -26,13 +18,14 @@ export default function (props) {
     const [error, setError] = useState(''); // errors come
     const [isShowPopupConfirm, setIsShowPopupConfirm] = useState(false);
 
-    const handleEmpty = () => {
-
+    const handleEmpty = (event) => {
+        // event.stopPropagation();
     }
 
     // add follow click
-    const handleFollow = async () => {
+    const handleFollow = async (event) => {
         try {
+            // event.stopPropagation();
             // loading...
             setIsloading(true);
 
@@ -80,8 +73,9 @@ export default function (props) {
     }
 
     // un follow click
-    const handleUnfollow = async () => {
+    const handleUnfollow = async (event) => {
         try {
+            // event.stopPropagation();
             setIsShowPopupConfirm(false);
             // loading...
             setIsloading(true);
@@ -130,11 +124,13 @@ export default function (props) {
         }
     }
 
-    const showPopupConfirm = () => {
+    const showPopupConfirm = (event) => {
+        // event.stopPropagation();
         setIsShowPopupConfirm(true);
     }
 
-    const unShowPopupConfirm = () => {
+    const unShowPopupConfirm = (event) => {
+        event.stopPropagation();
         setIsShowPopupConfirm(false);
     }
 
@@ -178,12 +174,14 @@ export default function (props) {
                     className={`btn btn-light btn-outline-secondary mt-2 d-flex w-auto ${styles['btn']} mx-4 ms-auto`}
                     data-mdb-ripple-color="dark"
                     style={{ zIndex: 1, fontFamily: 'Montserrat', fontSize: '18px' }}
-                    onClick={
-                        profile.relation == 'ME' ? handleEmpty :
-                            profile.relation == 'FOLLOWING' ? showPopupConfirm :
-                                profile.relation == 'FOLLOWED' ? handleFollow :
-                                    profile.relation == 'BOTH' ? showPopupConfirm :
-                                        handleFollow
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        profile.relation == 'ME' ? handleEmpty(event) :
+                            profile.relation == 'FOLLOWING' ? showPopupConfirm(event) :
+                                profile.relation == 'FOLLOWED' ? handleFollow(event) :
+                                    profile.relation == 'BOTH' ? showPopupConfirm(event) :
+                                        handleFollow(event)
+                    }
                     }
                 >
                     <img
@@ -213,7 +211,7 @@ export default function (props) {
                         title="Huỷ follow?"
                         content={`Bạn có chắc chắn muốn huỷ follow với ${profile.name}?`}
                         isShow={isShowPopupConfirm}
-                        actionCancel={unShowPopupConfirm}
+                        actionCancel={(event) => { unShowPopupConfirm(event) }}
                         actionOk={handleUnfollow}>
                     </PopupConfirm>) :
                     ""
