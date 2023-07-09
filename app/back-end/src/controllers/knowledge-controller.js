@@ -117,13 +117,13 @@ class KnowledgeController extends BaseController{
             scoreObj = new Score({
                 email: account.email,
                 knowledge_id: knowledge.id,
-                score: score,
+                score: score.toString(),
                 time: DateTime.now()
             });
             rs = await ScoreDAO.getInstance().insert(scoreObj);
         } else { // update
             rs = await ScoreDAO.getInstance().update({
-                score: score,
+                score: score.toString(),
                 time: DateTime.now()
             }, {
                 email: account.email,
