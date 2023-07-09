@@ -47,11 +47,11 @@ export default function (props) {
                         console.log(res);
                         if (res.data == null) { // navigate if email doesn't exist
                             if (Session.getInstance().mainUser.email != null) {
-                                // navigate('/profile?email=' + Session.getInstance().mainUser.email);
-                                navigate('/profile?email=' + encodeURIComponent(Session.getInstance().mainUser.email));
+                                window.location.href = '/profile?email=' + encodeURIComponent(Session.getInstance().mainUser.email);
+
                             }
                             else {
-                                navigate('/home');
+                                window.location.href = '/home';
                             }
                         } else {
                             setProfile(res.data);
@@ -66,6 +66,10 @@ export default function (props) {
 
         }
     }, [location.search]);
+
+    // useEffect(() => {
+    //     // window.location.reload();
+    // }, [location.search]);
 
     const handleEmpty = () => {
 
@@ -419,7 +423,7 @@ export default function (props) {
                             </button>
                         </li>
 
-                        {profile.relation=="ME" ? <li className="nav-item w-auto" role="presentation">
+                        {profile.relation == "ME" ? <li className="nav-item w-auto" role="presentation">
                             <button
                                 className={`nav-link ${styles['nav-link']}`}
                                 id="pills-mark-tab"
@@ -433,9 +437,9 @@ export default function (props) {
                             >
                                 Đánh dấu
                             </button>
-                        </li> : null }
+                        </li> : null}
 
-                        {profile.relation=="ME" ? <li className="nav-item w-auto" role="presentation">
+                        {profile.relation == "ME" ? <li className="nav-item w-auto" role="presentation">
                             <button
                                 className={`nav-link ${styles['nav-link']}`}
                                 id="pills-request-tab"
@@ -449,9 +453,9 @@ export default function (props) {
                             >
                                 Yêu cầu
                             </button>
-                        </li> : null }
+                        </li> : null}
 
-                        {profile.relation=="ME" ? <li className="nav-item w-auto" role="presentation">
+                        {profile.relation == "ME" ? <li className="nav-item w-auto" role="presentation">
                             <button
                                 className={`nav-link ${styles['nav-link']}`}
                                 id="pills-invite-tab"
@@ -465,9 +469,9 @@ export default function (props) {
                             >
                                 Lời mời
                             </button>
-                        </li> : null }
+                        </li> : null}
 
-                        {profile.relation=="ME" ? <li className="nav-item w-auto" role="presentation">
+                        {profile.relation == "ME" ? <li className="nav-item w-auto" role="presentation">
                             <button
                                 className={`nav-link ${styles['nav-link']}`}
                                 id="pills-learning-tab"
@@ -523,7 +527,7 @@ export default function (props) {
                             aria-labelledby="pills-followed-tab"
                             tabIndex={0}
                         >
-                            <ListFollow email={email} type={0}>
+                            <ListFollow email={email} type={1}>
 
                             </ListFollow>
                         </div>
@@ -534,7 +538,7 @@ export default function (props) {
                             aria-labelledby="pills-following-tab"
                             tabIndex={0}
                         >
-                            <ListFollow email={email} type={1}>
+                            <ListFollow email={email} type={0}>
 
                             </ListFollow>
                         </div>
