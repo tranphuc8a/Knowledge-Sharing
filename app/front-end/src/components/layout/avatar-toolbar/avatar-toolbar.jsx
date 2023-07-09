@@ -46,9 +46,8 @@ class AvatarToolbar extends React.Component {
     }
 
     updateSession = () => {
-        this.setState({
-            user: Session.getInstance().mainUser
-        });
+        this.state.user = Session.getInstance().mainUser;
+        this.setState(this.state);
     }
 
     clickAvatar = (event) => {
