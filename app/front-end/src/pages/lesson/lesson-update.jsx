@@ -76,7 +76,7 @@ class LessonUpdate extends React.Component{
             <div style={{...style, width: '90%', margin: '72px 0px 72px 0px', flexDirection: 'column'}}>
                 <div style={{justifyContent: 'space-between', fontSize: '24px', fontWeight: '500', margin: '0px 0px 12px 0px'}}>
                     {"Chỉnh sửa bài học"}
-                    <Button style={{width: 'auto', backgroundColor: 'red', margin: '0 12px'}} text="Xóa khóa học" onclick={this.showDeletePopup} />
+                    <Button style={{width: 'auto', backgroundColor: 'red', margin: '0 12px'}} text="Xóa bài học" onclick={this.showDeletePopup} />
                 </div>
                 <Separate style={{margin: '0 0 72px 0'}} />
                 { this.inputLessonTitle() }
