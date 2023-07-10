@@ -5,6 +5,7 @@ import Session from "../../../session/session";
 import DomainConfig from "../../../config/domain-config";
 import withRouter from "../../router/withRouter";
 import { AiOutlineSearch as Search } from 'react-icons/ai'
+import Avatar from "../../user/avatar";
 
 class AvatarToolbar extends React.Component {
     constructor(props) {
@@ -35,10 +36,12 @@ class AvatarToolbar extends React.Component {
                     </div>
                 </div>
                 <div className="avatar" style={{ padding: '0px 12px' }}>
-                    <div onClick={this.clickAvatar}
+                    <div 
+                        // onClick={this.clickAvatar}
                         style={{ cursor: 'pointer', borderRadius: '50%', width: '45px', height: '45px', overflow: 'hidden', border: 'solid violet 1px' }}>
-                        <img src={this.state.user.avatar} alt="Avatar"
-                            style={{ height: '30px', width: 'auto' }} />
+                        {/* <img src={this.state.user.avatar} alt="Avatar"
+                            style={{ height: '30px', width: 'auto' }} /> */}
+                        <Avatar src={this.state.user.avatar} alt="Avatar" onclick={this.clickAvatar} />
                     </div>
                 </div>
             </div>

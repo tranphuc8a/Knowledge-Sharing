@@ -116,7 +116,7 @@ class CourseBanner extends React.Component{
     CIInfo(){
         return <div className="ci-info">
             <div className="ci-avatar" style={{padding: '0 16px 0 0'}}>
-                <img src={this.course.thumbnail} alt="Course thumbnail" style={{borderRadius: '8px'}} />
+                <img src={this.course.thumbnail} alt="Course thumbnail" style={{borderRadius: '8px', maxHeight: ''}} />
             </div>
             <div className="ci-info-info">
                 <p className="ci-title">{this.course.title}</p>

@@ -28,14 +28,14 @@ class CourseCard extends React.Component{
 
     getThumbnail(){
         let course = this.course;
-        return <div className="leson-thumbnail" style={{width: '75px', justifyContent:'flex-start', borderRadius: '4px'}}>
-            <img src={course.thumbnail} alt={course.title} />
+        return <div className="leson-thumbnail" style={{width: '75px', height: '75px', justifyContent:'flex-start', borderRadius: '4px', overflow: 'hidden'}}>
+            <img src={course.thumbnail} alt={course.title} style={{width: '100%', height: '100%'}} />
         </div>;
     }
 
     getCourseInfo(){
         let course = this.course;
-        return <div className="course-info" >
+        return <div className="course-info" style={{flex: '1'}} >
             <div className="li-info" style={{ justifyContent: 'flex-start', alignItems: 'flex-start'}}>
                 <div style={{
                     justifyContent: 'flex-start',

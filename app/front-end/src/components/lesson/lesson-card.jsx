@@ -20,7 +20,7 @@ class LessonCard extends React.Component{
         this.lesson = lesson;
         this.formatLesson(lesson);
         return (
-            <div className="lesson-card" style={{...style}} onClick={this.clickLesson}>
+            <div className="lesson-card" style={{ justifyContent: 'space-between', ...style}} onClick={this.clickLesson}>
                 { this.getThumbnail() }
                 { this.getLessonInfo() }
             </div>
@@ -29,14 +29,14 @@ class LessonCard extends React.Component{
 
     getThumbnail(){
         let lesson = this.lesson;
-        return <div className="leson-thumbnail" style={{width: '75px', justifyContent:'flex-start', borderRadius: '4px'}}>
-            <img src={lesson.thumbnail} alt={lesson.title} />
+        return <div className="leson-thumbnail" style={{width: '75px', height: '75px', justifyContent:'flex-start', borderRadius: '4px', overflow: 'hidden'}}>
+            <img src={lesson.thumbnail} alt={lesson.title} style={{width: '100%', height: '100%'}} />
         </div>;
     }
 
     getLessonInfo(){
         let lesson = this.lesson;
-        return <div className="lesson-info" >
+        return <div className="lesson-info" style={{flex: '1'}} >
             <div className="li-info" style={{ justifyContent: 'flex-start', alignItems: 'flex-start'}}>
                 <div style={{
                     justifyContent: 'flex-start',
