@@ -60,7 +60,7 @@ class Comment extends React.Component{
                 onClick={this.clickUser}
                 >
                 <img src={comment.avatar} alt={comment.name} 
-                    style={{height: '35px', width: 'auto'}} 
+                    style={{height: '100%', width: '100%'}} 
                 />
             </div>
         </div>

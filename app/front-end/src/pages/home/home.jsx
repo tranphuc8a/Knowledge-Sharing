@@ -6,6 +6,7 @@ import ListCourses from './list-courses';
 import ListLesson from './list-lesson';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ListUser from './list-user';
+import Banner from '../../components/layout/banner/banner';
 
 
 class Home extends React.Component {
@@ -16,7 +17,8 @@ class Home extends React.Component {
     render() {
         return <Layout >
             <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-                <div style={{ margin: '8px 64px 0px 64px', width: "90%", height: "auto" }}>
+                <Banner />
+                <div style={{ margin: '64px 64px 0px 64px', width: "90%", height: "auto" }}>
                     <ListUser />
                 </div>
 
